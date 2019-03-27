@@ -1,0 +1,22 @@
+Scrum #1:
+  Meeting 1:
+    Question 1: What do the stakeholders mean when they say want the three lists
+                to be reordered?
+      - Does this mean reordering the contents of the list?
+        -- If so, does this mean by alphabetical, cost of time, is this up to us?
+      - Does this mean reordering the lists in the drop down menu?
+    Question 2: How are we going to overcome challenges like being able to meet
+                up at least six times for Scrum #1?
+      - We decided to make our best effort to meet up after classes
+      - We're going to have a skype call session this Saturday because we 
+        won't all be in town
+
+    Approach to setting radius in restaurant search:
+      - Edit the calls to the google API to include a range
+      - Implement front end form to the search page to allow the user to set a range
+      - Include new form entry in the front end call to the back end
+
+    Approach to reordering any of the three lists:
+      - Current understanding is that this might mean reordering the items inside each list
+      - This can be done using javascript when pressing and holding down the item and switching places with each item it passes
+      - This can update the list on the front-end and when done it should update the list on the server
