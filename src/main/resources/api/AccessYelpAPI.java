@@ -26,6 +26,7 @@ public class AccessYelpAPI {
 	static double ttLong = -118.284668;
 	
 	static double convertMileToMeter = 0.00062137;
+	static int MAX_Radius = 40000;
 
 	/*
 	 * Queries Yelp API using user-provided search term and number of results.
@@ -36,7 +37,9 @@ public class AccessYelpAPI {
 		searchTerm = URLEncoder.encode(searchTerm, "UTF-8");
 		
 		int radiusInMeter = radius * convertMileToMeter;
-	
+		radiusInMeter = (radiusInMeter > MAX_Radius ? MAX_Radius : radiusInMeter); // make sure AREA_TOO_LARGE will not be retuend from yelp API
+		radiusInMeter = (radiusInMeter < 0 ? 0 : radiusInMeter); // if requested redius is negtive, set it to be 0
+		
 		String GET_URL = "https://api.yelp.com/v3/businesses/search?"
 				+ "term=_____" // Search Term
 				+ "&latitude=34.020807&longitude=-118.284668" // Coordinates of Tommy Trojan
