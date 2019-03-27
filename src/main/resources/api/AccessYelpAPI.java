@@ -29,7 +29,7 @@ public class AccessYelpAPI {
 	 * Queries Yelp API using user-provided search term and number of results.
 	 * Returns a vector of Restaurant objects, each of which contains all the information needed to display in subsequent pages
 	 */
-	public static Vector<Restaurant> YelpRestaurantSearch(String searchTerm, int resultCount) throws UnsupportedEncodingException, IOException {
+	public static Vector<Restaurant> YelpRestaurantSearch(String searchTerm, int resultCount/*, int radius*/) throws UnsupportedEncodingException, IOException {
 		
 		searchTerm = URLEncoder.encode(searchTerm, "UTF-8");
 	
@@ -76,7 +76,7 @@ public class AccessYelpAPI {
 			}
 			// limit is the number of results the Yelp API will return. Max is 50.
 			// offset is the number of results to skip
-			URL url = new URL(GET_URL + "&limit=" + limit + "&offset=" + offset);
+			URL url = new URL(GET_URL + "&limit=" + limit + "&offset=" + offset + "&radius=" + radius); //************** radius added
 			offset += limit;
 			// Query Yelp API with constructed url
 			HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
