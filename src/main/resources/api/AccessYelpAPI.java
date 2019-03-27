@@ -29,7 +29,7 @@ public class AccessYelpAPI {
 	 * Queries Yelp API using user-provided search term and number of results.
 	 * Returns a vector of Restaurant objects, each of which contains all the information needed to display in subsequent pages
 	 */
-	public static Vector<Restaurant> YelpRestaurantSearch(String searchTerm, int resultCount/*, int radius*/) throws UnsupportedEncodingException, IOException {
+	public static Vector<Restaurant> YelpRestaurantSearch(String searchTerm, int resultCount, int radius) throws UnsupportedEncodingException, IOException {
 		
 		searchTerm = URLEncoder.encode(searchTerm, "UTF-8");
 	
