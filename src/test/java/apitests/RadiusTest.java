@@ -30,6 +30,7 @@ public class RadiusTest {
 	 *  Test to make sure that correct number of Restaurant will be returned 
 	 *  if pass in the requested radius.
 	 */
+	@Test
 	public void testNormalRadiusInput() throws IOException {
 		int count = 50;
 		int radius = 1000;
