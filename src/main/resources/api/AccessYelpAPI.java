@@ -24,6 +24,8 @@ public class AccessYelpAPI {
 	
 	static double ttLat = 34.020807;	//Latitude & Longitude of tommy trojan
 	static double ttLong = -118.284668;
+	
+	static double convertMileToMeter = 0.00062137;
 
 	/*
 	 * Queries Yelp API using user-provided search term and number of results.
@@ -32,13 +34,15 @@ public class AccessYelpAPI {
 	public static Vector<Restaurant> YelpRestaurantSearch(String searchTerm, int resultCount, int radius) throws UnsupportedEncodingException, IOException {
 		
 		searchTerm = URLEncoder.encode(searchTerm, "UTF-8");
+		
+		int radiusInMeter = radius * convertMileToMeter;
 	
 		String GET_URL = "https://api.yelp.com/v3/businesses/search?"
 				+ "term=_____" // Search Term
 				+ "&latitude=34.020807&longitude=-118.284668" // Coordinates of Tommy Trojan
 				+ "&sort_by=distance" // Sort by distance
 				+ "&categories=restaurants"
-				+ "&radius=" + radius; // radius set
+				+ "&radius=" + radiusInMeter; // radius set
 		GET_URL = GET_URL.replace("_____", searchTerm);
 		
 									
