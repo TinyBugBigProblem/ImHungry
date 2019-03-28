@@ -50,6 +50,8 @@ public class AccessYelpAPI {
 		
 									
 		Vector<Restaurant> resultsVec = new Vector<Restaurant>();
+		if(radiusInMeter <= 0){
+			return resultsVec;
 		/*
 		 * Declare and initialize variables that store parsed restaurant information
 		 * If data is not available, numeric values will be -1 and String values will be "NULL"
