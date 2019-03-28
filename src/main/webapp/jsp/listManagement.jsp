@@ -125,6 +125,8 @@
         	        	<input type="hidden" name="arrNum" value="<%=j%>">
             	    	<% request.setAttribute("item", restaurantArr.get(j)); %>
                 		<select id="moveDropDown" class="form-control" name="opType">
+                			<option value="up">Move Up</option>
+                			<option value="down">Move Down</option>
 	                		<option value="f">Favorites</option>
     	            		<option value="t">To Explore</option>
         	        		<option value="d">Do Not Show</option>
@@ -133,6 +135,7 @@
 	                	<button id="moveButton" class="form-control" type="submit">Move</button>
 					</form>
     	</div>
+    	
          <% j++;} %>
 
     	<!-- Recipes -->
@@ -226,6 +229,8 @@
         	        	<input type="hidden" name="arrNum" value="<%=k%>">
             	    	<% request.setAttribute("item", recipeArr.get(k)); %>
                 		<select id="moveDropDown" class="form-control" name="opType">
+                			<option value="up">Move Up</option>
+                			<option value="down">Move Down</option>
 	                		<option value="f">Favorites</option>
     	            		<option value="t">To Explore</option>
         	        		<option value="d">Do Not Show</option>
@@ -275,11 +280,19 @@
 		var userInput = document.getElementById('dropDownBar').value;
 		if (userInput == null || userInput.length == 0){
 			return false;	
+		}
+		else{
+			form.action = "/FeedMe/listManagement";
+		}
 	}
-	else{
-		form.action = "/FeedMe/listManagement";
-	}
-} 
+	$('div').on('mousedown mouseup', function mouseState(e){
+		if(e.type == "mousedown"){
+			console.log("mousedown: " + e);	
+		}
+		else if(e.type == "mouseup"){
+			console.log("mouseup: " + e);
+		}
+	});
 </script>
   </body>
   <style>

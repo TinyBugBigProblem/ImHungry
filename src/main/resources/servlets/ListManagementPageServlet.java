@@ -67,22 +67,57 @@ public class ListManagementPageServlet extends HttpServlet {
 				else if(op.equals("d")) {
 					toListNum = 1;
 				}
-				else {
+				else if(op.equals("t")) {
+						
 					toListNum = 2;
+				}
+				else if(op.equals("up")) {
+					toListNum = listNum;
+				}
+				else if(op.equals("down")) {
+					toListNum = listNum;
 				}
 				UserList toList = userLists[toListNum];
 				
 				// Decide whether the data type is a Recipe or Restaurant.
 				if(recOrRest.equals("rec")) {
 					if(!toList.contains(fromList.getRecipes().get(arrNum))) {
-						toList.add(fromList.getRecipes().get(arrNum));
-						fromList.remove(fromList.getRecipes().get(arrNum));
+						if(!op.equals("up") && !op.equals("down")) {
+							toList.add(fromList.getRecipes().get(arrNum));
+							fromList.remove(fromList.getRecipes().get(arrNum));	
+						}
+						else if((arrNum != 0 && op.equals("up")) || (arrNum != toList.getRecipes().size()-1 && op.equals("down"))){
+							if(op.equals("up")) {
+								Recipe temp = toList.getRecipes().get(arrNum - 1);
+								toList.getRecipes().set(arrNum-1, toList.getRecipes().get(arrNum));
+								toList.getRecipes().set(arrNum, temp);
+							}
+							else {
+								Recipe temp = toList.getRecipes().get(arrNum + 1);
+								toList.getRecipes().set(arrNum+1, toList.getRecipes().get(arrNum));
+								toList.getRecipes().set(arrNum, temp);
+							}
+						}
 					}
 				}
 				else {
 					if(!toList.contains(fromList.getRestaurants().get(arrNum))) {  // Check if the list already has the item
-						toList.add(fromList.getRestaurants().get(arrNum));  // Add the item to the new list
-						fromList.remove(fromList.getRestaurants().get(arrNum));  // Remove the item from the old list
+						if(!op.equals("up") && !op.equals("down")) {
+							toList.add(fromList.getRestaurants().get(arrNum));  // Add the item to the new list
+							fromList.remove(fromList.getRestaurants().get(arrNum));  // Remove the item from the old list
+						}
+						else if((arrNum != 0 && op.equals("up")) || (arrNum != toList.getRestaurants().size()-1 && op.equals("down"))){
+							if(op.equals("up")) {
+								Restaurant temp = toList.getRestaurants().get(arrNum - 1);
+								toList.getRestaurants().set(arrNum-1, toList.getRestaurants().get(arrNum));
+								toList.getRestaurants().set(arrNum, temp);	
+							}
+							else {
+								Restaurant temp = toList.getRestaurants().get(arrNum + 1);
+								toList.getRestaurants().set(arrNum+1, toList.getRestaurants().get(arrNum));
+								toList.getRestaurants().set(arrNum, temp);
+							}
+						}
 					}
 				}
 				
