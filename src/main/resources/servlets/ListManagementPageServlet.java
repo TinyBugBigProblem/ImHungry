@@ -19,7 +19,7 @@ public class ListManagementPageServlet extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		UserList[] userLists = (UserList[]) session.getAttribute("userLists");
-		if (userLists == null) {
+		if (userLists == null) { // Send to the search page if user lists haven't been created
 			RequestDispatcher dispatch = request.getRequestDispatcher("/jsp/search.jsp");
 			dispatch.forward(request,  response);
 			return;
@@ -52,10 +52,21 @@ public class ListManagementPageServlet extends HttpServlet {
 			
 			if(op.equals("r")) {
 				if(recOrRest.equals("rec")) {
-					fromList.remove(fromList.getRecipes().get(arrNum));
+					// Get the array number for recipe from regular list
+					int num = fromList.getArrayNum(fromList.getLists().get(arrNum).getRecipe());
+					// Remove from regular list
+					fromList.remove(fromList.getRecipes().get(num));
+					// Remove from list management lists
+					fromList.getLists().remove(arrNum);
 				}
 				else {
-					fromList.remove(fromList.getRestaurants().get(arrNum));
+					// Get array number for restaurant from regular list
+					int num = fromList.getArrayNum(fromList.getLists().get(arrNum).getRestaurant());
+					// Remove from regular list
+					fromList.remove(fromList.getRestaurants().get(num));
+					// Remove from list management list
+					fromList.getLists().remove(arrNum);
+					
 				}
 			}else {
 				
@@ -77,50 +88,63 @@ public class ListManagementPageServlet extends HttpServlet {
 				else if(op.equals("down")) {
 					toListNum = listNum;
 				}
+				else {
+					toListNum = listNum;
+				}
 				UserList toList = userLists[toListNum];
 				
 				// Decide whether the data type is a Recipe or Restaurant.
 				if(recOrRest.equals("rec")) {
-					if(!toList.contains(fromList.getRecipes().get(arrNum))) {
-						if(!op.equals("up") && !op.equals("down")) {
-							toList.add(fromList.getRecipes().get(arrNum));
-							fromList.remove(fromList.getRecipes().get(arrNum));	
+					if(!op.equals("up") && !op.equals("down") && (!toList.contains(fromList.getRecipes().get(fromList.getArrayNum(fromList.getLists().get(arrNum).getRecipe()))))) { // When moving list item from one to another
+						// Get recipe arrNum from original list
+						int num = fromList.getArrayNum(fromList.getLists().get(arrNum).getRecipe());
+						// Add recipe item to both lists
+						toList.add(fromList.getRecipes().get(num));
+						// Remove recipe item from previous original list
+						fromList.remove(fromList.getRecipes().get(arrNum));
+						// Remove recipe item from previous original list
+						fromList.getLists().remove(arrNum);
+					}
+					// When it's possible to move an item up or down inside a list
+					else{
+						// Move item up list
+						if(arrNum != 0 && op.equals("up")) {
+							ListItem temp = fromList.getLists().get(arrNum - 1);
+							fromList.getLists().set(arrNum-1, toList.getLists().get(arrNum));
+							fromList.getLists().set(arrNum, temp);
 						}
-						else if((arrNum != 0 && op.equals("up")) || (arrNum != toList.getRecipes().size()-1 && op.equals("down"))){
-							if(op.equals("up")) {
-								Recipe temp = toList.getRecipes().get(arrNum - 1);
-								toList.getRecipes().set(arrNum-1, toList.getRecipes().get(arrNum));
-								toList.getRecipes().set(arrNum, temp);
-							}
-							else {
-								Recipe temp = toList.getRecipes().get(arrNum + 1);
-								toList.getRecipes().set(arrNum+1, toList.getRecipes().get(arrNum));
-								toList.getRecipes().set(arrNum, temp);
-							}
+						// Move item down list
+						else if(arrNum != fromList.getLists().size() - 1 && op.equals("down")) {
+							ListItem temp = fromList.getLists().get(arrNum + 1);
+							toList.getLists().set(arrNum+1, toList.getLists().get(arrNum));
+							toList.getLists().set(arrNum, temp);
 						}
 					}
 				}
 				else {
-					if(!toList.contains(fromList.getRestaurants().get(arrNum))) {  // Check if the list already has the item
-						if(!op.equals("up") && !op.equals("down")) {
-							toList.add(fromList.getRestaurants().get(arrNum));  // Add the item to the new list
-							fromList.remove(fromList.getRestaurants().get(arrNum));  // Remove the item from the old list
+					if(!op.equals("up") && !op.equals("down") && (!toList.contains(fromList.getRestaurants().get(fromList.getArrayNum(fromList.getLists().get(arrNum).getRestaurant()))))) {
+						// Get recipe arrNum from original list
+						int num = fromList.getArrayNum(fromList.getLists().get(arrNum).getRestaurant());
+						// Add recipe item to new both lists
+						toList.add(fromList.getRestaurants().get(num));
+						// Remove recipe item from previous original list
+						fromList.remove(fromList.getRestaurants().get(num));
+						// Remove recipe item from previous original list
+						fromList.getLists().remove(arrNum);
+					}
+					else{
+						if(arrNum != 0 && op.equals("up")) {
+							ListItem temp = fromList.getLists().get(arrNum - 1);
+							fromList.getLists().set(arrNum-1, fromList.getLists().get(arrNum));
+							fromList.getLists().set(arrNum, temp);	
 						}
-						else if((arrNum != 0 && op.equals("up")) || (arrNum != toList.getRestaurants().size()-1 && op.equals("down"))){
-							if(op.equals("up")) {
-								Restaurant temp = toList.getRestaurants().get(arrNum - 1);
-								toList.getRestaurants().set(arrNum-1, toList.getRestaurants().get(arrNum));
-								toList.getRestaurants().set(arrNum, temp);	
-							}
-							else {
-								Restaurant temp = toList.getRestaurants().get(arrNum + 1);
-								toList.getRestaurants().set(arrNum+1, toList.getRestaurants().get(arrNum));
-								toList.getRestaurants().set(arrNum, temp);
-							}
+						else if(arrNum != fromList.getLists().size() - 1 && op.equals("down")) {
+							ListItem temp = fromList.getLists().get(arrNum + 1);
+							fromList.getLists().set(arrNum+1, toList.getLists().get(arrNum));
+							fromList.getLists().set(arrNum, temp);
 						}
 					}
 				}
-				
 			}
 		}
 
@@ -132,6 +156,7 @@ public class ListManagementPageServlet extends HttpServlet {
 				request.setAttribute("listName", "Favorites"); // Send the list name
 				session.setAttribute("restaurants", userLists[0].getRestaurants()); // So that when user clicks on item, it shows in the details page
 				session.setAttribute("recipes", userLists[0].getRecipes()); // Same as previous comment
+				session.setAttribute("list", userLists[0].getLists());
 				
 				break;
 			case 'd': // User wants to go to Do not Show list
@@ -139,6 +164,7 @@ public class ListManagementPageServlet extends HttpServlet {
 				request.setAttribute("listName", "Don't Show"); // Send the list name
 				session.setAttribute("restaurants", userLists[1].getRestaurants()); // So that when user clicks on item, it shows in the details page
 				session.setAttribute("recipes", userLists[1].getRecipes());
+				session.setAttribute("list", userLists[1].getLists());
 				
 				break;
 			case 't': // User wants to go to To Explore list
@@ -146,11 +172,12 @@ public class ListManagementPageServlet extends HttpServlet {
 				request.setAttribute("listName", "To Explore"); // Send the list name
 				session.setAttribute("restaurants", userLists[2].getRestaurants()); // So that when user clicks on item, it shows in the details page
 				session.setAttribute("recipes", userLists[2].getRecipes()); // Same as previous comment
+				session.setAttribute("list", userLists[2].getLists());
 				
 				break;
 			}			
 		}
-
+		
 		session.setAttribute("userLists", userLists); // Send the entire array of lists to session, so that we can access any item on front end 
 		RequestDispatcher dispatch = request.getRequestDispatcher("/jsp/listManagement.jsp");
 		dispatch.forward(request,  response);

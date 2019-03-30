@@ -12,11 +12,13 @@ public class UserList implements Serializable {
 	// ArrayList of restaurants and recipes in the predefined list
 	private ArrayList<Restaurant> restaurants;
 	private ArrayList<Recipe> recipes;
+	private ArrayList<ListItem> lists;
 	
 	// Empty when the list is created (created when a new session is started)
 	public UserList() {
 		restaurants = new ArrayList<Restaurant>();
 		recipes = new ArrayList<Recipe>();
+		lists = new ArrayList<ListItem>();
 	}
 	
 	public ArrayList<Restaurant> getRestaurants() {
@@ -25,6 +27,9 @@ public class UserList implements Serializable {
 
 	public ArrayList<Recipe> getRecipes() {
 		return recipes;
+	}
+	public ArrayList<ListItem> getLists(){
+		return lists;
 	}
 
 	/*
@@ -38,6 +43,8 @@ public class UserList implements Serializable {
 		}
 		else {
 			recipes.add(r);
+			ListItem item = new ListItem(null, r, "rec");
+			lists.add(item);
 			return true;
 		}
 	}
@@ -48,6 +55,8 @@ public class UserList implements Serializable {
 		}
 		else {
 			restaurants.add(r);
+			ListItem item = new ListItem(r, null, "res");
+			lists.add(item);
 			return true;
 		}
 	}
@@ -75,5 +84,26 @@ public class UserList implements Serializable {
 	
 	public boolean contains(Restaurant r) {
 		return restaurants.contains(r);
+	}
+	/*
+	 * contains methods:
+	 * Returns pos int if the passed object is in the list
+	 * Returns -1 if the passed object is not in the list
+	 */
+	public int getArrayNum(Recipe r) {
+		for(int i = 0; i < recipes.size(); ++i) {
+			if(recipes.get(i).equals(r)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	public int getArrayNum(Restaurant r) {
+		for(int i = 0; i < restaurants.size(); ++i) {
+			if(restaurants.get(i).equals(r)) {
+				return i;
+			}
+		}
+		return -1;
 	}
 }

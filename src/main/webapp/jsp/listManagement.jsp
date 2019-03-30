@@ -31,10 +31,12 @@
     UserList lists = (UserList) request.getAttribute("listVal");
     ArrayList<Restaurant> restaurantArr = null;
     ArrayList<Recipe> recipeArr = null;
+    ArrayList<ListItem> managementList = null;
     // Check if the list exists
     if(lists != null){ // If it does, get the two different lists from it
     	restaurantArr = lists.getRestaurants();
         recipeArr = lists.getRecipes();
+        managementList = lists.getLists();
     }
     
   %>
@@ -47,9 +49,10 @@
       <div class="p-2 ml-2">
       <!-- Restaurants and Recipes lists  -->
       	<h1><%=listName %> List</h1>
-      		<% // Used to alternate colors
+      		<% 
+      		// Used to alternate colors
    			int j = 0;
-          	while(j < restaurantArr.size()){ 
+          	while(j < managementList.size()){ 
           	String colorStyle = "";
         	if (j%2 == 0){
           		colorStyle = "silver";
@@ -58,18 +61,81 @@
           		colorStyle = "grey";
           	}
           	%>
-          	<!-- This is the restaurant div -->
-          	<div class="col-12" id="Restaurant<%=j%>">
+    <!-- This is the restaurant div -->
+          	<div class="col-12" id="managementList<%=j%>">
+          	<%
+          		String type = managementList.get(j).getType();
+          		String name = "";
+          		String stars = "";
+          		String minutesOrCookTime = "";
+          		String addressOrPrepTime = "";
+          		String price = "";
+          		String link = "";
+          		
+          		if(type.equals("rec")){
+          			// Get array num of item in original list
+					int num = lists.getArrayNum(lists.getLists().get(j).getRecipe());
+          			
+          			System.out.println("Recipe Original List Num: " + num);
+          			System.out.println("Recipe List Management Num: " + j);
+          			
+          			Recipe temp = managementList.get(j).getRecipe();
+          			name = temp.getName();
+          			stars = String.format("%.1f",temp.getRating());
+          			if(temp.getCookTime() == -1){
+              			minutesOrCookTime = "<strong>Cook Time:</strong></br> <p>0</p>";
+          			}
+          			else{
+              			minutesOrCookTime = "<strong>Cook Time:</strong></br> <p>" + temp.getCookTime() + "</p>";
+          			}
+          			if(temp.getPrepTime() == -1){
+          				addressOrPrepTime = "<strong>Prep Time:</strong></br> <p>0</p>";
+          			}
+          			else{
+          				addressOrPrepTime = "<strong>Prep Time:</strong></br> <p>" + temp.getPrepTime() + "</p>";
+          			}
+          			link = "/FeedMe/recipeDetails?arrNum=" + num;
+          		}
+          		else{
+					int num = lists.getArrayNum(lists.getLists().get(j).getRestaurant());
+					
+					System.out.println("Restaurant Original List Num: " + num);
+          			System.out.println("Restaurant List Management Num: " + j);
+          			
+					
+          			Restaurant temp = managementList.get(j).getRestaurant();
+          			name = temp.getName();
+          			stars = String.format("%.1f",temp.getRating());
+          			minutesOrCookTime = "<strong>Minutes:</strong></br> <p>" + temp.getDrivingTime() + "</p>";
+          			addressOrPrepTime = "<strong>Address:</strong></br> <p>" + temp.getAddress() + "</p>";
+          			
+          			int priceToString = (int)managementList.get(j).getRestaurant().getPrice();
+					if (priceToString == 1){
+						price = "<strong>Price: <p>$</p></strong>";
+					}
+					else if (priceToString == 2){
+						price = "<strong>Price: <p>$$</p></strong>";
+					}
+					else if (priceToString == 3) {
+						price = "<strong>Price: <p>$$$</p></strong>";
+					}
+					else {
+						price = "<strong>Price: <p>$$$$</p></strong>";
+					}
+
+          			link = "/FeedMe/restaurantDetails?arrNum=" + num;
+          		}
+          	%>
          			<div class="row no-gutters border rounded overflow-hidden flex-md-row mb-8 shadow-sm h-md-250 position-relative">
         			<div style="background-color:<%=colorStyle %>;"class="col p-4 d-flex flex-column position-static">
           			<div class="container">
   						<div class="row">
     					<div class="col-sm">
-							<strong>Name:</strong> <br><p> <%= restaurantArr.get(j).getName() %> </p>
+							<strong>Name:</strong> <br><p> <%=name%> </p>
    						</div>
 
     					<div class="col-sm">
-     	 						<strong>Stars:</strong> <br> <p> <%=restaurantArr.get(j).getRating() %> </p>
+     	 						<strong>Stars:</strong> <br> <p> <%=stars%> </p>
     					</div>
     					<div class="col-sm">
      	 						
@@ -86,162 +152,44 @@
   						</div>
   						<div class="row">
     						<div class="col-sm">
-      							<strong>Minutes:</strong> <br> <p><%=restaurantArr.get(j).getDrivingTime() %> </p>
+      							<%=minutesOrCookTime%>
    							</div>
 
     					<div class="col-sm">
-     	 						<strong>Address: </strong><br> <p><%=restaurantArr.get(j).getAddress() %></p>
+     	 						<%=addressOrPrepTime%>
     					</div>
     					<div class="col-sm text-right">
-    							<%
-        							String restaurantPrice = "";
-        							int price = (int)restaurantArr.get(j).getPrice();
-        							if (price == 1){
-        							restaurantPrice = "$";
-        							}
-        							else if (price == 2){
-        							restaurantPrice = "$$";
-        							}
-        							else if (price == 3) {
-        								restaurantPrice = "$$$";
-        							}
-        							else {
-        								restaurantPrice = "$$$$";
-        							}
-        							%>
-     	 						<strong>Price: <%=restaurantPrice%></strong>
+     	 						<%=price%>
     					</div>
   						</div>
 					</div>
 
-          			<a href="/FeedMe/restaurantDetails?arrNum=<%=j%>" class="stretched-link"></a>
+          			<a href="<%=link%>" class="stretched-link"></a>
         			</div>
       				</div>
       				<!-- This form takes the item to the specified list page -->
       				<form style="display:flex;flex-direction:column;justify-content:center;" method="POST" action="/FeedMe/listManagement">
              			<input type="hidden" name="listName" value="<%=listName.toLowerCase().charAt(0)%>">
 	 	            	<input type="hidden" name="fromList" value="<%=listName.toLowerCase().charAt(0)%>">
-    	            	<input type="hidden" name="recOrRest" value="rest">
+    	            	<input type="hidden" name="recOrRest" value=<%=type%>>
         	        	<input type="hidden" name="arrNum" value="<%=j%>">
-            	    	<% request.setAttribute("item", restaurantArr.get(j)); %>
                 		<select id="moveDropDown" class="form-control" name="opType">
+                			<option value="" disabled>---- Reorder Item ----</option>
                 			<option value="up">Move Up</option>
                 			<option value="down">Move Down</option>
+                			<option value="" disabled>---- Move Item to list ----</option>
 	                		<option value="f">Favorites</option>
     	            		<option value="t">To Explore</option>
         	        		<option value="d">Do Not Show</option>
+                			<option value="" disabled>---- Remove Item from list ----</option>
             	    		<option value="r">Trash</option>
                 		</select>
 	                	<button id="moveButton" class="form-control" type="submit">Move</button>
 					</form>
-    	</div>
-    	
+    		</div>
          <% j++;} %>
-
-    	<!-- Recipes -->
-    		<%
-    		// Use the number of items in the restauarant array to coordinate the background color for the recipes
-   			int k = 0;
-          	while(k < recipeArr.size()){
-          	String colorStyle = "";
-        	if     (k%2 == 0 && restaurantArr.size() % 2 == 0){
-          		colorStyle = "silver";
-        	}
-        	else if(k%2 != 0 && restaurantArr.size() % 2 == 0){
-          		colorStyle = "grey";
-          	}
-        	else if(k%2 == 0 && restaurantArr.size() % 2 != 0){
-        		colorStyle = "grey";
-        	}
-          	else if(k%2 != 0 && restaurantArr.size() % 2 != 0){
-          		colorStyle = "silver";	
-          	}
-          	%>
-          	<!-- Where the recipes start -->
-    		<div class="col-12" id="Recipe<%=k%>">
-         			<div class="row no-gutters border rounded overflow-hidden flex-md-row mb-8 shadow-sm h-md-250 position-relative">
-        			<div style="background-color:<%=colorStyle %>;" class="col p-4 d-flex flex-column position-static">
-          			<div class="container">
-  						<div class="row">
-    						<div class="col-sm">
-      							<strong>Name:</strong> <br><p><%=recipeArr.get(k).getName() %></p>
-   							</div>
-
-    					<div class="col-sm">
-    						<% String recipeRating = String.format("%.1f",recipeArr.get(k).getRating()); %>
-     	 						<strong>Stars:</strong> <br> <p> <%=recipeRating %> </p>
-    					</div>
-    				
-  						</div>
-  						<div class="row">
-    						<div class="col-sm">
-
-   							</div>
-
-    					<div class="col-sm">
-
-    					</div>
-  						</div>
-  						<div class="row">
-    						<div class="col-sm">
-    							<%
-    								// Check the cook time for proper values
-    								double cookTime = recipeArr.get(k).getCookTime();
-    								String renderCookTime = "";
-    								if (cookTime < 0){
-    									renderCookTime = "Not Available";
-    								}
-    								else{
-    									renderCookTime = Double.toString(cookTime);
-    								}
-    								// Check the prep time for proper values
-    								double prepTime = recipeArr.get(k).getPrepTime();
-    								String renderPrepTime = "";
-    								if (prepTime < 0){
-    									renderPrepTime = "Not Available";
-    								}
-    								else{
-    									renderPrepTime = Double.toString(prepTime);
-    								}			
-    							%>
-      							<strong>Cook Time:</strong> <br> <p><%=renderCookTime %></p>
-   							</div>
-
-    					<div class="col-sm">
-     	 						<strong>Prep Time: </strong><br> <p><%=renderPrepTime%></p>
-    					</div>
-    				
-  						</div>
-					</div>
-
-
-					<!-- Link that takes user to recipe details page -->
-          			<a href="/FeedMe/recipeDetails?arrNum=<%=k%>" class="stretched-link"></a>
-        			</div>
-        			<div class="col-auto d-none d-lg-block">
-          			</div>
-      				</div>
-      				<!-- Moves the recipe to the specified list -->
-      				<form style="display:flex;flex-direction:column;justify-content:center;" method="POST" action="/FeedMe/listManagement">
-             			<input type="hidden" name="listName" value="<%=listName.toLowerCase().charAt(0)%>">
-	 	            	<input type="hidden" name="fromList" value="<%=listName.toLowerCase().charAt(0)%>">
-    	            	<input type="hidden" name="recOrRest" value="rec">
-        	        	<input type="hidden" name="arrNum" value="<%=k%>">
-            	    	<% request.setAttribute("item", recipeArr.get(k)); %>
-                		<select id="moveDropDown" class="form-control" name="opType">
-                			<option value="up">Move Up</option>
-                			<option value="down">Move Down</option>
-	                		<option value="f">Favorites</option>
-    	            		<option value="t">To Explore</option>
-        	        		<option value="d">Do Not Show</option>
-            	    		<option value="r">Trash</option>
-                		</select>
-	                	<button id="moveButton" class="form-control" type="submit">Move</button>
-					</form>
-    	</div>
-    	
-        <%k++; }%>
-        </div>
+	</div>
+    	      	
 	<!-- Takes the user to the specified list -->
    	<div id="buttons" class="buttons align-middle p-1">
 		<form name="list" onsubmit="return manageList(this);">
@@ -285,14 +233,6 @@
 			form.action = "/FeedMe/listManagement";
 		}
 	}
-	$('div').on('mousedown mouseup', function mouseState(e){
-		if(e.type == "mousedown"){
-			console.log("mousedown: " + e);	
-		}
-		else if(e.type == "mouseup"){
-			console.log("mouseup: " + e);
-		}
-	});
 </script>
   </body>
   <style>
