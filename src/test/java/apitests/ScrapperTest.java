@@ -3,21 +3,17 @@ package apitests;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Vector;
 
 import org.junit.Test;
 
+import api.GoogleDirections;
 import api.Scrapper;
 import data.Recipe;
 
-/*
- * Test for the Scrapper class, which scrapes recipe data from allrecipes.com. 
- */
 public class ScrapperTest {
 
-	/*
-	 * Test to make sure that the parseTime function correctly parses a datetime String into seconds.
-	 */
 	@Test
 	public void parseTimeTest() {
 		int value = Scrapper.parseTime("PT1H");
@@ -43,9 +39,7 @@ public class ScrapperTest {
 		
 	}
 	
-	/*
-	 * Test the get function will return the correct Recipe information for a url.
-	 */
+	
 	@Test
 	public void getTest() throws IOException {
 		
@@ -73,9 +67,7 @@ public class ScrapperTest {
 		
 	}
 	
-	/*
-	 * Test that a search larger than the amount of recipes that can fit on one page will succeed.
-	 */
+	
 	@Test
 	public void searchTest() throws IOException {
 		Vector<Recipe> recipes = Scrapper.search("chicken", 5);
@@ -86,19 +78,16 @@ public class ScrapperTest {
 		
 	}
 	
-	/*
-	 * Tests requests which return less than the specified amount of results.
-	 */
 	@Test
 	public void searchBadRequestTest() throws IOException {
 		Vector<Recipe> recipes = Scrapper.search("qwertyuiop", 25);
 		assertEquals(0, recipes.size());
-				
+		
+		recipes = Scrapper.search("shoe", 25);
+		assertEquals(3, recipes.size());
+		
 	}
 	
-	/*
-	 *  Tests a multi word search.
-	 */
 	@Test
 	public void searchMultipleTermsTest() throws IOException {
 		Vector<Recipe> recipes = Scrapper.search("chicken curry", 2);

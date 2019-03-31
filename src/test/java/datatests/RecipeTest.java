@@ -5,20 +5,15 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Vector;
 
 import org.junit.Test;
 
 import data.Recipe;
 import data.Restaurant;
 
-/*
- *  Test for the Recipe data structure.
- */
 public class RecipeTest {
 
-	/*
-	 *  Test that the Recipe can be constructed and correctly stores necessary information.
-	 */
 	@Test
 	public void testConstructor() {
 		String name = "Good Food";
@@ -45,9 +40,6 @@ public class RecipeTest {
 		
 	}
 	
-	/*
-	 * Test that the compares functions will correctly compare Recipe objects when calling Collections.sort().
-	 */
 	@Test
 	public void testCompare() {
 		
@@ -88,9 +80,6 @@ public class RecipeTest {
 		
 	}
 	
-	/*
-	 * Test that the equals functions will correctly compare Recipe objects when calling contains. Also makes sure that Restaurants and Recipes cannot be compared.
-	 */
 	@Test
 	public void testEquals() {
 		String name = "Good Food";

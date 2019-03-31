@@ -3,9 +3,8 @@ Given(/^I am on the ImHungry Search Page$/) do
 end
 
 Then(/^there is a searchTerm input field$/) do
-  page.should have_selector("input[type=text][id=userInput][placeholder='Enter Food']")
+  page.should have_selector("input[type=text][id=userInput]")
 end
-
 
 Then(/^there is a searchNumber input field$/) do
   page.should have_selector("input[type=text][id=searchTermTest]")

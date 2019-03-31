@@ -1,7 +1,7 @@
 package servlettests;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -14,16 +14,15 @@ import javax.servlet.http.HttpSession;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import data.Recipe;
 import data.UserList;
 import servlets.RecipeDetailsPageServlet;
+import servlets.RecipeDetailsPageServlet;
 
-/*
- * Tests for the RecipeDetailsPageServlet servlet.
- */
 public class RecipeDetailsPageServletTest {
 
 	@Mock
@@ -79,9 +78,6 @@ public class RecipeDetailsPageServletTest {
         when(session.getAttribute("userLists")).thenReturn(userLists);
 	}
 
-	/*
-	 * Test for adding a Recipe to the Favorites list.
-	 */
 	@Test
 	public void testAddToFavorites() throws Exception {
 
@@ -92,18 +88,11 @@ public class RecipeDetailsPageServletTest {
 
 		verify(rd).forward(request, response);
 		
-		UserList tmp = new UserList();
-		tmp.add(results[1]);
-		assertEquals(1, userLists[0].getRecipes().size());
-		assertEquals(0, userLists[1].getRecipes().size());
-		assertEquals(0, userLists[2].getRecipes().size());
-		assertEquals(tmp.getRecipes().get(0), userLists[0].getRecipes().get(0));
+		userLists[0].add(results[1]);
+		verify(session).setAttribute(ArgumentMatchers.eq("userLists"), ArgumentMatchers.eq(userLists));
 
 	}
 	
-	/*
-	 *  Test adding a Recipe to the To Explore list.
-	 */
 	@Test
 	public void testAddToToExplore() throws Exception {
 
@@ -114,18 +103,11 @@ public class RecipeDetailsPageServletTest {
 
 		verify(rd).forward(request, response);
 		
-		UserList tmp = new UserList();
-		tmp.add(results[1]);
-		assertEquals(0, userLists[0].getRecipes().size());
-		assertEquals(0, userLists[1].getRecipes().size());
-		assertEquals(1, userLists[2].getRecipes().size());
-		assertEquals(tmp.getRecipes().get(0), userLists[2].getRecipes().get(0));
+		userLists[2].add(results[1]);
+		verify(session).setAttribute(ArgumentMatchers.eq("userLists"), ArgumentMatchers.eq(userLists));
 
 	}
 	
-	/*
-	 *  Test adding a Recipe to Do Not Show.
-	 */
 	@Test
 	public void testAddToDoNotShow() throws Exception {
 
@@ -136,18 +118,11 @@ public class RecipeDetailsPageServletTest {
 
 		verify(rd).forward(request, response);
 		
-		UserList tmp = new UserList();
-		tmp.add(results[1]);
-		assertEquals(0, userLists[0].getRecipes().size());
-		assertEquals(1, userLists[1].getRecipes().size());
-		assertEquals(0, userLists[2].getRecipes().size());
-		assertEquals(tmp.getRecipes().get(0), userLists[1].getRecipes().get(0));
+		userLists[1].add(results[1]);
+		verify(session).setAttribute(ArgumentMatchers.eq("userLists"), ArgumentMatchers.eq(userLists));
 
 	}
 	
-	/*
-	 *  Test adding to the Favorites list if the Recipe is already in the Do Not Show list.
-	 */
 	@Test
 	public void testAddToFavoritesDuplicate1() throws Exception {
 
@@ -160,18 +135,10 @@ public class RecipeDetailsPageServletTest {
 
 		verify(rd).forward(request, response);
 		
-		UserList tmp = new UserList();
-		tmp.add(results[1]);
-		assertEquals(0, userLists[0].getRecipes().size());
-		assertEquals(1, userLists[1].getRecipes().size());
-		assertEquals(0, userLists[2].getRecipes().size());
-		assertEquals(tmp.getRecipes().get(0), userLists[1].getRecipes().get(0));
+		verify(session).setAttribute(ArgumentMatchers.eq("userLists"), ArgumentMatchers.eq(userLists));
 
 	}
 	
-	/*
-	 *  Test adding to the To Explore list if the Recipe is already in the Favorite list.
-	 */
 	@Test
 	public void testAddToToExploreDuplicate1() throws Exception {
 
@@ -184,18 +151,10 @@ public class RecipeDetailsPageServletTest {
 
 		verify(rd).forward(request, response);
 		
-		UserList tmp = new UserList();
-		tmp.add(results[1]);
-		assertEquals(1, userLists[0].getRecipes().size());
-		assertEquals(0, userLists[1].getRecipes().size());
-		assertEquals(0, userLists[2].getRecipes().size());
-		assertEquals(tmp.getRecipes().get(0), userLists[0].getRecipes().get(0));		
+		verify(session).setAttribute(ArgumentMatchers.eq("userLists"), ArgumentMatchers.eq(userLists));
 
 	}
 	
-	/*
-	 *  Test adding to the Do Not Show list if the Recipe is already in the Favorite list.
-	 */
 	@Test
 	public void testAddToDoNotShowDuplicate1() throws Exception {
 
@@ -208,17 +167,10 @@ public class RecipeDetailsPageServletTest {
 
 		verify(rd).forward(request, response);
 		
-		UserList tmp = new UserList();
-		tmp.add(results[1]);
-		assertEquals(1, userLists[0].getRecipes().size());
-		assertEquals(0, userLists[1].getRecipes().size());
-		assertEquals(0, userLists[2].getRecipes().size());
-		assertEquals(tmp.getRecipes().get(0), userLists[0].getRecipes().get(0));
+		verify(session).setAttribute(ArgumentMatchers.eq("userLists"), ArgumentMatchers.eq(userLists));
+
 	}
 	
-	/*
-	 *  Test adding to the Favorites list if the Recipe is already in the To Explore list.
-	 */
 	@Test
 	public void testAddToFavoritesDuplicate2() throws Exception {
 
@@ -231,17 +183,10 @@ public class RecipeDetailsPageServletTest {
 
 		verify(rd).forward(request, response);
 		
-		UserList tmp = new UserList();
-		tmp.add(results[1]);
-		assertEquals(0, userLists[0].getRecipes().size());
-		assertEquals(0, userLists[1].getRecipes().size());
-		assertEquals(1, userLists[2].getRecipes().size());
-		assertEquals(tmp.getRecipes().get(0), userLists[2].getRecipes().get(0));
+		verify(session).setAttribute(ArgumentMatchers.eq("userLists"), ArgumentMatchers.eq(userLists));
+
 	}
 	
-	/*
-	 *  Test adding to the To Explore list if the Recipe is already in the Do Not Show list.
-	 */
 	@Test
 	public void testAddToToExploreDuplicate2() throws Exception {
 
@@ -254,17 +199,10 @@ public class RecipeDetailsPageServletTest {
 
 		verify(rd).forward(request, response);
 		
-		UserList tmp = new UserList();
-		tmp.add(results[1]);
-		assertEquals(0, userLists[0].getRecipes().size());
-		assertEquals(1, userLists[1].getRecipes().size());
-		assertEquals(0, userLists[2].getRecipes().size());
-		assertEquals(tmp.getRecipes().get(0), userLists[1].getRecipes().get(0));
+		verify(session).setAttribute(ArgumentMatchers.eq("userLists"), ArgumentMatchers.eq(userLists));
+
 	}
 	
-	/*
-	 *  Test adding to the Do Not Show list if the Recipe is already in the To Explore.
-	 */
 	@Test
 	public void testAddToDoNotShowDuplicate2() throws Exception {
 
@@ -277,17 +215,10 @@ public class RecipeDetailsPageServletTest {
 
 		verify(rd).forward(request, response);
 		
-		UserList tmp = new UserList();
-		tmp.add(results[1]);
-		assertEquals(0, userLists[0].getRecipes().size());
-		assertEquals(0, userLists[1].getRecipes().size());
-		assertEquals(1, userLists[2].getRecipes().size());
-		assertEquals(tmp.getRecipes().get(0), userLists[2].getRecipes().get(0));
+		verify(session).setAttribute(ArgumentMatchers.eq("userLists"), ArgumentMatchers.eq(userLists));
+
 	}	
 	
-	/*
-	 *  Test to make sure the servlet will not modify the lists if there is not list specified.
-	 */
 	@Test
 	public void testNoList() throws Exception {
 
@@ -297,34 +228,26 @@ public class RecipeDetailsPageServletTest {
 		new RecipeDetailsPageServlet().service(request, response);
 
 		verify(rd).forward(request, response);
-		
-		assertEquals(0, userLists[0].getRecipes().size());
-		assertEquals(0, userLists[1].getRecipes().size());
-		assertEquals(0, userLists[2].getRecipes().size());
+		verify(session, never()).setAttribute(ArgumentMatchers.eq("userLists"), ArgumentMatchers.eq(userLists));
+
 	}
 	
-	/*
-	 *  Test to make sure the servlet will not modify the lists if the one specified is not correct.
-	 */
 	@Test
 	public void testIncorrectList() throws Exception {
 
         when(request.getRequestDispatcher("/jsp/recipeDetails.jsp")).thenReturn(rd);
         when(request.getParameter("listType")).thenReturn("a");
 
+		
 		new RecipeDetailsPageServlet().service(request, response);
 
 		verify(rd).forward(request, response);
-		
-		assertEquals(0, userLists[0].getRecipes().size());
-		assertEquals(0, userLists[1].getRecipes().size());
-		assertEquals(0, userLists[2].getRecipes().size());
+		verify(session).setAttribute(ArgumentMatchers.eq("userLists"), ArgumentMatchers.eq(userLists));
 
 	}
 	
-	/*
-	 *  Test to make sure the servlet will redirect back to the search page if the session has expired.
-	 */
+	
+	
 	@Test
 	public void testExpiredSession() throws Exception {
 		

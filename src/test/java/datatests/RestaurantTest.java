@@ -11,14 +11,9 @@ import org.junit.Test;
 import data.Recipe;
 import data.Restaurant;
 
-/*
- *  Tests for the Restaurant data structure.
- */
 public class RestaurantTest {
 	
-	/*
-	 *  Test that the Restaurant can be constructed and correctly stores necessary information.
-	 */
+
 	@Test
 	public void testConstructor() {
 		
@@ -42,9 +37,6 @@ public class RestaurantTest {
 		
 	}
 	
-	/*
-	 * Test that the compares functions will correctly compare Restaurant objects when calling Collections.sort().
-	 */
 	@Test
 	public void testCompare() {
 		
@@ -82,9 +74,6 @@ public class RestaurantTest {
 		
 	}
 	
-	/*
-	 * Test that the equals functions will correctly compare Restaurant objects when calling contains. Also makes sure that Restaurants and Recipes cannot be compared.
-	 */
 	@Test
 	public void testEquals() {
 		

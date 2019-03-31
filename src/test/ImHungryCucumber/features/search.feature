@@ -31,13 +31,6 @@ Scenario: Check the Transition to the results page
 	And press search
 	Then I should see results for "burger"
 
-Scenario: Check the Transition while input wrong search number
-
-	When I enter "burger" in the search box
-	And I enter "-1" in the search number box
-	And press search
-	Then I should see search page title
-
 Scenario: Check the background color
 	
 	Then the background color is smoke white

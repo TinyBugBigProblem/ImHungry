@@ -71,7 +71,7 @@ public class ResultsPageServlet extends HttpServlet {
 		 * Fetch a list of restaurant objects made from query results given by Yelp API
 		 * Get enough results to make up for restaurants/recipes in Do Not Show list, which will not be displayed
 		 */
-		Vector<Restaurant> restaurants = AccessYelpAPI.YelpRestaurantSearch(searchTerm, resultCount + doNotShowRestaurants.size());
+		Vector<Restaurant> restaurants = AccessYelpAPI.YelpRestaurantSearch(searchTerm, resultCount + doNotShowRestaurants.size(), 10); // TODO fix 10 in front end to pass variable over
 		/*
 		 * Sort restaurants in ascending order of drive time from Tommy Trojan,
 		 * using compareTo method overridden in Restaurant class

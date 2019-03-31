@@ -50,6 +50,9 @@ public class Scrapper {
 				currentPage++;
 				doc = Jsoup.connect(baseUrl + "&page=" + currentPage).get();
 				elem = doc.getElementById("fixedGridSection");
+				if(elem == null) {
+					break;
+				}
 				recipeBoxes = elem.getElementsByClass("fixed-recipe-card__info");
 				
 				n -= i - 1;

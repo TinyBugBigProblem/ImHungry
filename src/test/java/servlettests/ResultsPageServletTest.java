@@ -1,9 +1,12 @@
 package servlettests;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -22,9 +25,6 @@ import data.Restaurant;
 import data.UserList;
 import servlets.ResultsPageServlet;
 
-/*
- *  Tests for the ResultsPageServlet class.
- */
 public class ResultsPageServletTest {
 
 	@Mock
@@ -51,10 +51,10 @@ public class ResultsPageServletTest {
 		session = mock(HttpSession.class);
 		rd = mock(RequestDispatcher.class);
 		
-		
 		when(request.getSession()).thenReturn(session);
 		when(request.getRequestDispatcher("/jsp/results.jsp")).thenReturn(rd);
 		
+		String name = "Good Food";
 		String pictureUrl = "http://www.todayifoundout.com/wp-content/uploads/2017/11/rick-astley.png";
 		double prepTime = 10;
 		double cookTime = 25;
@@ -66,11 +66,11 @@ public class ResultsPageServletTest {
 		instructions.add("Cook until done.");
 		double rating = 4.5;
 		
-		recipe1 = new Recipe("Curry Stand Chicken Tikka Masala Sauce", pictureUrl, prepTime, cookTime, ingredients, instructions, rating);
-		recipe2 = new Recipe("Chicken Parmesan", pictureUrl, prepTime, cookTime, ingredients, instructions, rating);
+		recipe1 = new Recipe(name, pictureUrl, prepTime, cookTime, ingredients, instructions, rating);
+		recipe2 = new Recipe("Not" + name, pictureUrl, prepTime, cookTime, ingredients, instructions, rating);
 
-		restaurant1 = new Restaurant("Lemonade", "https://www.mcdonalds.com/us/en-us.html", 1, "Everywhere", "(123)456-7890", 2.25, 5);
-		restaurant2 = new Restaurant("Panda Express", "https://www.bk.com/", 2, "Almost everywhere", "(123)456-7896", 1.25, 50);
+		restaurant1 = new Restaurant("A Good Restaurant", "https://www.mcdonalds.com/us/en-us.html", 1, "Everywhere", "(123)456-7890", 2.25, 5);
+		restaurant2 = new Restaurant("A Bad Restaurant", "https://www.bk.com/", 2, "Almost everywhere", "(123)456-7896", 1.25, 50);
 		
 		userLists = new UserList[3];
 		for (int i = 0; i < 3; ++i) {
@@ -79,12 +79,19 @@ public class ResultsPageServletTest {
 		
 	}
 
-	/*
-	 *  Test to make sure a valid search from the search page will perform correctly.
-	 */
 	@Test
 	public void testFromSearch() throws Exception {
+		
+		// Add to Favorites
+		userLists[0].add(recipe1);
+		userLists[0].add(restaurant1);
+		
+		// Add to Do Not Show
+		userLists[1].add(recipe2);
+		userLists[1].add(restaurant2);
+				
 
+		when(session.getAttribute("userLists")).thenReturn(userLists);
 		when(request.getParameter("q")).thenReturn("Chicken");
 		when(request.getParameter("n")).thenReturn("3");
 		
@@ -92,103 +99,45 @@ public class ResultsPageServletTest {
 		
 		verify(rd).forward(request, response);
 		verify(session).setAttribute(ArgumentMatchers.eq("resultsOrList"), ArgumentMatchers.eq("results"));
-		verify(request).setAttribute(ArgumentMatchers.eq("imageUrlVec"), ArgumentMatchers.any());
-		verify(request).setAttribute(ArgumentMatchers.eq("restaurantArr"), ArgumentMatchers.any());
-		verify(request).setAttribute(ArgumentMatchers.eq("recipeArr"), ArgumentMatchers.any());
-		verify(request).setAttribute(ArgumentMatchers.eq("searchTerm"), ArgumentMatchers.eq("Chicken"));
-		verify(request).setAttribute(ArgumentMatchers.eq("resultCount"), ArgumentMatchers.eq(3));
-		verify(session).setAttribute(ArgumentMatchers.eq("restaurantResults"), ArgumentMatchers.any());
-		verify(session).setAttribute(ArgumentMatchers.eq("recipeResults"), ArgumentMatchers.any());
-		verify(session).setAttribute(ArgumentMatchers.eq("searchTerm"), ArgumentMatchers.eq("Chicken"));
-		verify(session).setAttribute(ArgumentMatchers.eq("resultCount"), ArgumentMatchers.eq(3));
+
 		
 	}
 	
-	/*
-	 * Test to make sure going to back to the results page will work.
-	 */
 	@Test
 	public void testFromBackToSearch() throws Exception {
 
 		when(session.getAttribute("userLists")).thenReturn(userLists);
-		when(session.getAttribute("searchTerm")).thenReturn("Chicken");		
-		when(session.getAttribute("resultCount")).thenReturn(3);
+		when(session.getAttribute("searchTerm")).thenReturn("Chicken");
+		when(request.getParameter("resultCount")).thenReturn("3");
+		
+		new ResultsPageServlet().service(request, response);
+		
+		verify(rd).forward(request, response);
+		verify(session).setAttribute(ArgumentMatchers.eq("resultsOrList"), ArgumentMatchers.eq("results"));
 
-		new ResultsPageServlet().service(request, response);
-		
-		verify(rd).forward(request, response);
-		verify(session).setAttribute(ArgumentMatchers.eq("resultsOrList"), ArgumentMatchers.eq("results"));
-		verify(request).setAttribute(ArgumentMatchers.eq("imageUrlVec"), ArgumentMatchers.any());
-		verify(request).setAttribute(ArgumentMatchers.eq("restaurantArr"), ArgumentMatchers.any());
-		verify(request).setAttribute(ArgumentMatchers.eq("recipeArr"), ArgumentMatchers.any());
-		verify(request).setAttribute(ArgumentMatchers.eq("searchTerm"), ArgumentMatchers.eq("Chicken"));
-		verify(request).setAttribute(ArgumentMatchers.eq("resultCount"), ArgumentMatchers.eq(3));
-		verify(session).setAttribute(ArgumentMatchers.eq("restaurantResults"), ArgumentMatchers.any());
-		verify(session).setAttribute(ArgumentMatchers.eq("recipeResults"), ArgumentMatchers.any());
-		verify(session).setAttribute(ArgumentMatchers.eq("searchTerm"), ArgumentMatchers.eq("Chicken"));
-		verify(session).setAttribute(ArgumentMatchers.eq("resultCount"), ArgumentMatchers.eq(3));
 		
 	}
 	
-	/*
-	 *  Test for favorites list logic.
-	 */
 	@Test
-	public void testFavorites() throws Exception{
-		
-		// Add to Favorites
-		userLists[0].add(recipe1);
-		userLists[0].add(restaurant1);				
-		
-		when(session.getAttribute("userLists")).thenReturn(userLists);
-		when(request.getParameter("q")).thenReturn("Chicken");
-		when(request.getParameter("n")).thenReturn("3");
+	public void testNullValues() throws Exception {
 		
 		new ResultsPageServlet().service(request, response);
 		
 		verify(rd).forward(request, response);
 		verify(session).setAttribute(ArgumentMatchers.eq("resultsOrList"), ArgumentMatchers.eq("results"));
-		verify(session).setAttribute(ArgumentMatchers.eq("resultsOrList"), ArgumentMatchers.eq("results"));
-		verify(request).setAttribute(ArgumentMatchers.eq("imageUrlVec"), ArgumentMatchers.any());
-		verify(request).setAttribute(ArgumentMatchers.eq("restaurantArr"), ArgumentMatchers.any());
-		verify(request).setAttribute(ArgumentMatchers.eq("recipeArr"), ArgumentMatchers.any());
-		verify(request).setAttribute(ArgumentMatchers.eq("searchTerm"), ArgumentMatchers.eq("Chicken"));
-		verify(request).setAttribute(ArgumentMatchers.eq("resultCount"), ArgumentMatchers.eq(3));
-		verify(session).setAttribute(ArgumentMatchers.eq("restaurantResults"), ArgumentMatchers.any());
-		verify(session).setAttribute(ArgumentMatchers.eq("recipeResults"), ArgumentMatchers.any());
-		verify(session).setAttribute(ArgumentMatchers.eq("searchTerm"), ArgumentMatchers.eq("Chicken"));
-		verify(session).setAttribute(ArgumentMatchers.eq("resultCount"), ArgumentMatchers.eq(3));
+		
 	}
 	
-	/*
-	 *  Test for Do Not Show list logic.
-	 */
 	@Test
-	public void testDoNotShow() throws Exception{
+	public void testNullValues2() throws Exception {
 		
-		// Add to Do Not Show
-		userLists[1].add(recipe2);
-		userLists[1].add(restaurant2);		
-		
-		when(session.getAttribute("userLists")).thenReturn(userLists);
-		when(request.getParameter("q")).thenReturn("Chicken");
-		when(request.getParameter("n")).thenReturn("3");
+		when(request.getParameter("n")).thenReturn("0");
 		
 		new ResultsPageServlet().service(request, response);
 		
 		verify(rd).forward(request, response);
 		verify(session).setAttribute(ArgumentMatchers.eq("resultsOrList"), ArgumentMatchers.eq("results"));
-		verify(session).setAttribute(ArgumentMatchers.eq("resultsOrList"), ArgumentMatchers.eq("results"));
-		verify(request).setAttribute(ArgumentMatchers.eq("imageUrlVec"), ArgumentMatchers.any());
-		verify(request).setAttribute(ArgumentMatchers.eq("restaurantArr"), ArgumentMatchers.any());
-		verify(request).setAttribute(ArgumentMatchers.eq("recipeArr"), ArgumentMatchers.any());
-		verify(request).setAttribute(ArgumentMatchers.eq("searchTerm"), ArgumentMatchers.eq("Chicken"));
-		verify(request).setAttribute(ArgumentMatchers.eq("resultCount"), ArgumentMatchers.eq(3));
-		verify(session).setAttribute(ArgumentMatchers.eq("restaurantResults"), ArgumentMatchers.any());
-		verify(session).setAttribute(ArgumentMatchers.eq("recipeResults"), ArgumentMatchers.any());
-		verify(session).setAttribute(ArgumentMatchers.eq("searchTerm"), ArgumentMatchers.eq("Chicken"));
-		verify(session).setAttribute(ArgumentMatchers.eq("resultCount"), ArgumentMatchers.eq(3));
+		
 	}
-	
 	
 }

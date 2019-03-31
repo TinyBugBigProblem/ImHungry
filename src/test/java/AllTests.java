@@ -7,9 +7,6 @@ import apitests.APITests;
 import datatests.DataTests;
 import servlettests.ServletTests;
 
-/*
- *  Test suite for running all of the tests at once.
- */
 @RunWith(Suite.class)
 @SuiteClasses({ APITests.class, DataTests.class, ServletTests.class })
 public class AllTests {

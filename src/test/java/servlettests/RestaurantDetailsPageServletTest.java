@@ -1,7 +1,7 @@
 package servlettests;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -12,16 +12,15 @@ import javax.servlet.http.HttpSession;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import data.Restaurant;
 import data.UserList;
 import servlets.RestaurantDetailsPageServlet;
+import servlets.RestaurantDetailsPageServlet;
 
-/*
- * Tests for the RestaurantDetailsPageServlet servlet.
- */
 public class RestaurantDetailsPageServletTest {
 
 
@@ -63,9 +62,6 @@ public class RestaurantDetailsPageServletTest {
         when(session.getAttribute("userLists")).thenReturn(userLists);
 	}
 
-	/*
-	 * Test for adding a Restaurant to the Favorites list.
-	 */
 	@Test
 	public void testAddToFavorites() throws Exception {
 
@@ -76,18 +72,11 @@ public class RestaurantDetailsPageServletTest {
 
 		verify(rd).forward(request, response);
 		
-		UserList tmp = new UserList();
-		tmp.add(results[1]);
-		assertEquals(1, userLists[0].getRestaurants().size());
-		assertEquals(0, userLists[1].getRestaurants().size());
-		assertEquals(0, userLists[2].getRestaurants().size());
-		assertEquals(tmp.getRestaurants().get(0), userLists[0].getRestaurants().get(0));
+		userLists[0].add(results[1]);
+		verify(session).setAttribute(ArgumentMatchers.eq("userLists"), ArgumentMatchers.eq(userLists));
 
 	}
 	
-	/*
-	 *  Test adding a Restaurant to the To Explore list.
-	 */
 	@Test
 	public void testAddToToExplore() throws Exception {
 
@@ -98,18 +87,11 @@ public class RestaurantDetailsPageServletTest {
 
 		verify(rd).forward(request, response);
 		
-		UserList tmp = new UserList();
-		tmp.add(results[1]);
-		assertEquals(0, userLists[0].getRestaurants().size());
-		assertEquals(0, userLists[1].getRestaurants().size());
-		assertEquals(1, userLists[2].getRestaurants().size());
-		assertEquals(tmp.getRestaurants().get(0), userLists[2].getRestaurants().get(0));
+		userLists[2].add(results[1]);
+		verify(session).setAttribute(ArgumentMatchers.eq("userLists"), ArgumentMatchers.eq(userLists));
 
 	}
 	
-	/*
-	 *  Test adding a Restaurant to Do Not Show.
-	 */
 	@Test
 	public void testAddToDoNotShow() throws Exception {
 
@@ -120,18 +102,11 @@ public class RestaurantDetailsPageServletTest {
 
 		verify(rd).forward(request, response);
 		
-		UserList tmp = new UserList();
-		tmp.add(results[1]);
-		assertEquals(0, userLists[0].getRestaurants().size());
-		assertEquals(1, userLists[1].getRestaurants().size());
-		assertEquals(0, userLists[2].getRestaurants().size());
-		assertEquals(tmp.getRestaurants().get(0), userLists[1].getRestaurants().get(0));
+		userLists[1].add(results[1]);
+		verify(session).setAttribute(ArgumentMatchers.eq("userLists"), ArgumentMatchers.eq(userLists));
 
 	}
 	
-	/*
-	 *  Test adding to the Favorites list if the Restaurant is already in the Do Not Show list.
-	 */
 	@Test
 	public void testAddToFavoritesDuplicate1() throws Exception {
 
@@ -144,18 +119,10 @@ public class RestaurantDetailsPageServletTest {
 
 		verify(rd).forward(request, response);
 		
-		UserList tmp = new UserList();
-		tmp.add(results[1]);
-		assertEquals(0, userLists[0].getRestaurants().size());
-		assertEquals(1, userLists[1].getRestaurants().size());
-		assertEquals(0, userLists[2].getRestaurants().size());
-		assertEquals(tmp.getRestaurants().get(0), userLists[1].getRestaurants().get(0));
+		verify(session).setAttribute(ArgumentMatchers.eq("userLists"), ArgumentMatchers.eq(userLists));
 
 	}
 	
-	/*
-	 *  Test adding to the To Explore list if the Restaurant is already in the Favorite list.
-	 */
 	@Test
 	public void testAddToToExploreDuplicate1() throws Exception {
 
@@ -168,18 +135,10 @@ public class RestaurantDetailsPageServletTest {
 
 		verify(rd).forward(request, response);
 		
-		UserList tmp = new UserList();
-		tmp.add(results[1]);
-		assertEquals(1, userLists[0].getRestaurants().size());
-		assertEquals(0, userLists[1].getRestaurants().size());
-		assertEquals(0, userLists[2].getRestaurants().size());
-		assertEquals(tmp.getRestaurants().get(0), userLists[0].getRestaurants().get(0));		
+		verify(session).setAttribute(ArgumentMatchers.eq("userLists"), ArgumentMatchers.eq(userLists));
 
 	}
 	
-	/*
-	 *  Test adding to the Do Not Show list if the Restaurant is already in the Favorite list.
-	 */
 	@Test
 	public void testAddToDoNotShowDuplicate1() throws Exception {
 
@@ -192,17 +151,10 @@ public class RestaurantDetailsPageServletTest {
 
 		verify(rd).forward(request, response);
 		
-		UserList tmp = new UserList();
-		tmp.add(results[1]);
-		assertEquals(1, userLists[0].getRestaurants().size());
-		assertEquals(0, userLists[1].getRestaurants().size());
-		assertEquals(0, userLists[2].getRestaurants().size());
-		assertEquals(tmp.getRestaurants().get(0), userLists[0].getRestaurants().get(0));
+		verify(session).setAttribute(ArgumentMatchers.eq("userLists"), ArgumentMatchers.eq(userLists));
+
 	}
 	
-	/*
-	 *  Test adding to the Favorites list if the Restaurant is already in the To Explore list.
-	 */
 	@Test
 	public void testAddToFavoritesDuplicate2() throws Exception {
 
@@ -215,17 +167,10 @@ public class RestaurantDetailsPageServletTest {
 
 		verify(rd).forward(request, response);
 		
-		UserList tmp = new UserList();
-		tmp.add(results[1]);
-		assertEquals(0, userLists[0].getRestaurants().size());
-		assertEquals(0, userLists[1].getRestaurants().size());
-		assertEquals(1, userLists[2].getRestaurants().size());
-		assertEquals(tmp.getRestaurants().get(0), userLists[2].getRestaurants().get(0));
+		verify(session).setAttribute(ArgumentMatchers.eq("userLists"), ArgumentMatchers.eq(userLists));
+
 	}
 	
-	/*
-	 *  Test adding to the To Explore list if the Restaurant is already in the Do Not Show list.
-	 */
 	@Test
 	public void testAddToToExploreDuplicate2() throws Exception {
 
@@ -238,17 +183,10 @@ public class RestaurantDetailsPageServletTest {
 
 		verify(rd).forward(request, response);
 		
-		UserList tmp = new UserList();
-		tmp.add(results[1]);
-		assertEquals(0, userLists[0].getRestaurants().size());
-		assertEquals(1, userLists[1].getRestaurants().size());
-		assertEquals(0, userLists[2].getRestaurants().size());
-		assertEquals(tmp.getRestaurants().get(0), userLists[1].getRestaurants().get(0));
+		verify(session).setAttribute(ArgumentMatchers.eq("userLists"), ArgumentMatchers.eq(userLists));
+
 	}
 	
-	/*
-	 *  Test adding to the Do Not Show list if the Restaurant is already in the To Explore.
-	 */
 	@Test
 	public void testAddToDoNotShowDuplicate2() throws Exception {
 
@@ -261,17 +199,10 @@ public class RestaurantDetailsPageServletTest {
 
 		verify(rd).forward(request, response);
 		
-		UserList tmp = new UserList();
-		tmp.add(results[1]);
-		assertEquals(0, userLists[0].getRestaurants().size());
-		assertEquals(0, userLists[1].getRestaurants().size());
-		assertEquals(1, userLists[2].getRestaurants().size());
-		assertEquals(tmp.getRestaurants().get(0), userLists[2].getRestaurants().get(0));
+		verify(session).setAttribute(ArgumentMatchers.eq("userLists"), ArgumentMatchers.eq(userLists));
+
 	}	
 	
-	/*
-	 *  Test to make sure the servlet will not modify the lists if there is not list specified.
-	 */
 	@Test
 	public void testNoList() throws Exception {
 
@@ -281,34 +212,26 @@ public class RestaurantDetailsPageServletTest {
 		new RestaurantDetailsPageServlet().service(request, response);
 
 		verify(rd).forward(request, response);
-		
-		assertEquals(0, userLists[0].getRestaurants().size());
-		assertEquals(0, userLists[1].getRestaurants().size());
-		assertEquals(0, userLists[2].getRestaurants().size());
+		verify(session, never()).setAttribute(ArgumentMatchers.eq("userLists"), ArgumentMatchers.eq(userLists));
+
 	}
 	
-	/*
-	 *  Test to make sure the servlet will not modify the lists if the one specified is not correct.
-	 */
 	@Test
 	public void testIncorrectList() throws Exception {
 
         when(request.getRequestDispatcher("/jsp/restaurantDetails.jsp")).thenReturn(rd);
         when(request.getParameter("listType")).thenReturn("a");
 
+		
 		new RestaurantDetailsPageServlet().service(request, response);
 
 		verify(rd).forward(request, response);
-		
-		assertEquals(0, userLists[0].getRestaurants().size());
-		assertEquals(0, userLists[1].getRestaurants().size());
-		assertEquals(0, userLists[2].getRestaurants().size());
+		verify(session).setAttribute(ArgumentMatchers.eq("userLists"), ArgumentMatchers.eq(userLists));
 
 	}
 	
-	/*
-	 *  Test to make sure the servlet will redirect back to the search page if the session has expired.
-	 */
+	
+	
 	@Test
 	public void testExpiredSession() throws Exception {
 		

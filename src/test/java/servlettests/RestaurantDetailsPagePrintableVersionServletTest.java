@@ -3,6 +3,7 @@ package servlettests;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.never;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
@@ -15,12 +16,12 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import data.Recipe;
 import data.Restaurant;
+import data.UserList;
+import servlets.RecipeDetailsPagePrintableVersionServlet;
 import servlets.RestaurantDetailsPagePrintableVersionServlet;
 
-/*
- *  Tests for the RestaurantDetailsPagePrintableVersionServlet servlet.
- */
 public class RestaurantDetailsPagePrintableVersionServletTest {
 
 	@Mock
@@ -45,9 +46,6 @@ public class RestaurantDetailsPagePrintableVersionServletTest {
 		when(request.getSession()).thenReturn(session);
 	}
 
-	/*
-	 *  Test to make sure that the correct Restaurant is being selected by the servlet and that it is redirecting to the correct location.
-	 */
 	@Test
 	public void testStandard() throws Exception {
 
@@ -67,9 +65,7 @@ public class RestaurantDetailsPagePrintableVersionServletTest {
 
 	}
 	
-	/*
-	 * Test to make sure that the servlet will redirect back to the search page if the session expired.	
-	 */
+	
 	@Test
 	public void testExpiredSession() throws Exception {
 		

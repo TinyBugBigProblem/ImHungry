@@ -1,8 +1,12 @@
 package servlettests;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
@@ -16,9 +20,6 @@ import org.mockito.MockitoAnnotations;
 
 import servlets.SearchPageServlet;
 
-/*
- * Tests for the SearchPageServlet class.
- */
 public class SearchPageServletTest {
 
 	@Mock
@@ -34,20 +35,18 @@ public class SearchPageServletTest {
 	@Before
 	public void setUp(){
 		MockitoAnnotations.initMocks(this);
-		
-		request = mock(HttpServletRequest.class);
-		response = mock(HttpServletResponse.class);
-		rd = mock(RequestDispatcher.class);
-		
 	}
 
-	/*
-	 * Test to make sure that the servlet redirects to the correct location.
-	 */
 	@Test
 	public void test() throws Exception {
+
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		HttpServletResponse response = mock(HttpServletResponse.class);
+		HttpSession session = mock(HttpSession.class);
+		RequestDispatcher rd = mock(RequestDispatcher.class);
 		
         when(request.getRequestDispatcher("/jsp/search.jsp")).thenReturn(rd);
+        when(request.getSession()).thenReturn(session);
 
 		new SearchPageServlet().service(request, response);
 

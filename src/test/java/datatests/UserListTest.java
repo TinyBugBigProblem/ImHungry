@@ -12,9 +12,6 @@ import data.Recipe;
 import data.Restaurant;
 import data.UserList;
 
-/*
- *  Tests for the UserList data structure.
- */
 public class UserListTest {
 	
 	static Recipe recipe1;
@@ -44,9 +41,6 @@ public class UserListTest {
 		
 	}
 
-	/*
-	 * Test to make sure that add, contains, and remove work for both recipes and restaurants in expected situations.
-	 */
 	@Test
 	public void testBasicFunctionality() {
 	
@@ -74,9 +68,6 @@ public class UserListTest {
 
 	}
 	
-	/*
-	 * Test that the getRecipes and getRestaurants functions work as expected.
-	 */
 	@Test
 	public void testGetArray() {
 		
@@ -110,9 +101,6 @@ public class UserListTest {
 			
 	}
 	
-	/*
-	 * Test that the add will fail if the object is already in the UserList.
-	 */
 	@Test
 	public void testAdd() {
 		UserList list = new UserList();
