@@ -30,10 +30,10 @@ public class ReorderTest {
 		stanford = new Restaurant("Stanford", "stanford.edu", 5, "Stanford Campus", "456789123", 5.0, 20);
 		berkeley = new Restaurant("Berkeley", "berkeley.edu", 2, "Berkeley Campus", "789123456", 5.0, 30);
 		
-		System.out.println("Add USC: " + ulist.add(usc));
-		System.out.println("Add UCLA: " + ulist.add(ucla));
-		System.out.println("Add Stanford: " + ulist.add(stanford));
-		System.out.println("Add Berkeley: " + ulist.add(berkeley));
+		ulist.add(usc);
+		ulist.add(ucla);
+		ulist.add(stanford);
+		ulist.add(berkeley);
 	}
 
 	@Test
