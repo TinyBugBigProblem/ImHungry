@@ -53,18 +53,28 @@ public class ResultsPageServlet extends HttpServlet {
 		// input validation should be done on front end (empty string, non-integer for resultCount, etc.)
 		String searchTerm = request.getParameter("q");
 		String resultCountRaw = request.getParameter("n");
-		Integer resultCount = null;
+		String restaurantRadiusRaw = request.getParameter("r");
+		if(resultCountRaw == null) {
+			resultCountRaw = "5";
+		}
+		if(restaurantRadiusRaw == null) {
+			restaurantRadiusRaw = "10";
+		}
 		
+		Integer resultCount = null;
+		Integer restaurantRadius = null;
 		/*
 		 *  If user clicked "return to search", get parameters from session.
 		 * 	Else, get parameters from url
 		 */
-		if (searchTerm == null && resultCountRaw == null) {
+		if (searchTerm == null) {
 			searchTerm = (String) session.getAttribute("searchTerm");
 			resultCount = (Integer) session.getAttribute("resultCount");
+			restaurantRadius = (Integer) session.getAttribute("restaurantRadius");
 		}
 		else {
 			resultCount = Integer.parseInt(resultCountRaw);
+			restaurantRadius = Integer.parseInt(restaurantRadiusRaw);
 		}
 		
 		/*
@@ -80,7 +90,7 @@ public class ResultsPageServlet extends HttpServlet {
 		 * Fetch a list of restaurant objects made from query results given by Yelp API
 		 * Get enough results to make up for restaurants/recipes in Do Not Show list, which will not be displayed
 		 */
-		Vector<Restaurant> restaurants = AccessYelpAPI.YelpRestaurantSearch(searchTerm, resultCount + doNotShowRestaurants.size(), 10); // TODO fix 10 in front end to pass variable over
+		Vector<Restaurant> restaurants = AccessYelpAPI.YelpRestaurantSearch(searchTerm, resultCount + doNotShowRestaurants.size(), restaurantRadius); // TODO fix 10 in front end to pass variable over
 		/*
 		 * Sort restaurants in ascending order of drive time from Tommy Trojan,
 		 * using compareTo method overridden in Restaurant class
@@ -159,6 +169,7 @@ public class ResultsPageServlet extends HttpServlet {
 		imageUrlVec.toArray(imageUrlArr);
 		
 		// Pass variables needed for generating front-end
+		request.setAttribute("restaurantRadius", restaurantRadius);
 		request.setAttribute("imageUrlVec", imageUrlArr);
 		request.setAttribute("restaurantArr", restaurantArr);
 		request.setAttribute("recipeArr", recipeArr);

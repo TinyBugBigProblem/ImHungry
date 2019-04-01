@@ -16,18 +16,18 @@
     </div>
     <div class="col-6">
       	<h2 class="text-center">I'm Hungry</h2>
-      <p>
+      	
       <div class="col-md-12 text-center"> 
     	<form id="form" onsubmit= "return changeEmoji(this);"> <!-- Calls the js function that changes the emoji -->
-  		<input id="userInput" type="text" name="q" placeholder="Enter Food">
-  		 <input id="searchTermTest" title="Number of items to show in results" type="text" name="n" value="5" >
+  		 <input id="userInput" type="text" name="q" placeholder="Enter Food">
+  		 <input id="searchTermTest" title="Number of items to show in results" type="text" name="n" value="" placeholder="Enter number of items to show in results">
+  		 <input id="restaurantRadius" title="Radius in miles for restaurants" type="text" name="r" value="" placeholder="Enter radius, in miles, to show restaurant">
   			<br>
   			<img src="https://images.emojiterra.com/twitter/v11/512px/1f620.png" id ="emoji" height = 20 width = 20>
   			<button class="text-center" type="submit" value="Feed Me" name ="feedMeButton"id="feedMeButton" style="color: red;">Feed Me!</button>
-  			</div>
-		</form>
-
-    </p>
+  		</form>
+  	  </div>
+		
     </div>
     <div class="col">
 

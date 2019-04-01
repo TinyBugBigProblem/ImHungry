@@ -9,7 +9,7 @@ function changeEmoji(form){
 		var userInput = document.getElementById('userInput').value;
 		var searchCount = document.getElementById('searchTermTest').value;
 		console.log(userInput);
-		if (userInput == null || userInput.length == 0 || searchCount != parseInt(searchCount) || searchCount < 1){
+		if (userInput == null || userInput.length == 0){
 			return false;
 		}
 		else {
