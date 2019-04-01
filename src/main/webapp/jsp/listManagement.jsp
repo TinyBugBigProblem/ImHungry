@@ -13,7 +13,7 @@
     <!-- Import java data structures -->
 	<%@page import="java.util.*" %>
 	<%@page import="data.*"%>
-  	<% 
+  	<%
   	// Set the session attribute to indicate that this page was last seen
     request.getSession().setAttribute("resultsOrList", "list");
   	// Name of the list
@@ -44,12 +44,9 @@
     
     // Get pagination index start
     int index = 0;
-    if(request.getAttribute("index") != null){
-    	index = Integer.parseInt((String) request.getParameter("index"));
-      System.out.println("not null index: " + index);
+    if(request.getParameter("page") != null){
+    	index = Integer.parseInt((String) request.getParameter("page"));
     }
-    System.out.println("front end index: " + index);
-    
   %>
 
     <!-- Title -->
@@ -178,6 +175,7 @@
 	 	            	<input type="hidden" name="fromList" value="<%=listName.toLowerCase().charAt(0)%>">
     	            	<input type="hidden" name="recOrRest" value=<%=type%>>
         	        	<input type="hidden" name="arrNum" value="<%=j%>">
+                    <input id="paginationPage1" type="hidden" name="page" value="<%=index%>">
                 		<select id="moveDropDown" class="form-control" name="opType">
                 			<option value="" disabled>---- Reorder Item ----</option>
                 			<option value="up">Move Up</option>
@@ -227,13 +225,13 @@
 	        - For this, can keep the original list on front end
 	   -->
 	   <form id="paginationForm" method="POST" action="/FeedMe/listManagement">
-	     <input type="hidden" name="listName" value="<%=listName.toLowerCase().charAt(0)%>">
-	     <input type="hidden" name="page" value="">
+	     <input id="paginationListName" type="hidden" name="listName" value="<%=listName.toLowerCase().charAt(0)%>">
+	     <input id="paginationPage2" type="hidden" name="page" value="">
 	   </form>
-	   <p>Pagination</p>
+	   <p>Page <%=index%></p>
 	   <nav aria-label="Page pagination">
 	     <ul class="pagination">
-	       <% for(int i = 0; i <= managementList.size()/5; ++i){ %>
+	       <% for(int i = 0; i <= managementList.size()/5; ++i){%>
 	         <li class="page-item"><a class="page-link" onclick="paginationForm(<%=i%>)"><%=i%></a></li>
 	       <%} %>
 	     </ul>
@@ -245,8 +243,8 @@
   <script>
   function paginationForm(page){
 	  var form = document.getElementById("paginationForm");
-	  form.page = page;
-	  console.log(page);
+	  form.page.value = page;
+	  console.log(form);
 	  form.submit();
   }
 	function restaurantRedirect(form){

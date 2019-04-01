@@ -6,7 +6,6 @@
 	<%@page import="java.util.*" %>
 	<%@page import="data.*"%>
 	<%
-
 	request.getSession().setAttribute("resultsOrList", "results");
 	String[] imageUrlVec = (String[])request.getAttribute("imageUrlVec");
 	String searchTerm =  (String) request.getAttribute("searchTerm");
@@ -239,9 +238,9 @@
     	</div>
 
    		</div>
-
 	</div>
-	
+</body>	
+
 <script>
 
 function manageList(form){
@@ -256,4 +255,3 @@ function manageList(form){
 	}
 } 
 </script>
-</body>
