@@ -24,6 +24,20 @@ public class ListManagementPageServlet extends HttpServlet {
 			dispatch.forward(request,  response);
 			return;
 		}
+		/*
+		 * Implement pagination by sending starting index to jsp 
+		 */
+		if(request.getAttribute("page") == null) {
+			request.setAttribute("index", 0);
+			System.out.println("null, server, index = 0");
+		}
+		else {
+			int index = Integer.parseInt( (String) request.getAttribute("page"));
+			System.out.println("not null, server, index: " + index);
+			request.setAttribute("index", index);
+		}
+		System.out.println("Server side index: " + request.getAttribute("page"));
+		
 		String listType = request.getParameter("listName");
 //		System.out.println("ListType: " + listType.charAt(0));
 		
@@ -177,7 +191,9 @@ public class ListManagementPageServlet extends HttpServlet {
 				break;
 			}			
 		}
-		
+		/*
+		 * Redirect back to list management page
+		 */
 		session.setAttribute("userLists", userLists); // Send the entire array of lists to session, so that we can access any item on front end 
 		RequestDispatcher dispatch = request.getRequestDispatcher("/jsp/listManagement.jsp");
 		dispatch.forward(request,  response);

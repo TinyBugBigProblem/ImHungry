@@ -66,7 +66,16 @@ public class ResultsPageServlet extends HttpServlet {
 		else {
 			resultCount = Integer.parseInt(resultCountRaw);
 		}
-	
+		
+		/*
+		 * Check if these value are still null, then that means the session expired and needs to be reset
+		 * 
+		 */
+		if(searchTerm == null || resultCount == null) {
+			RequestDispatcher dispatch = request.getRequestDispatcher("/jsp/results.jsp");
+			dispatch.forward(request,  response);		
+		}
+		
 		/* 
 		 * Fetch a list of restaurant objects made from query results given by Yelp API
 		 * Get enough results to make up for restaurants/recipes in Do Not Show list, which will not be displayed

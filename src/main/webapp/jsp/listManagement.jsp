@@ -34,10 +34,21 @@
     ArrayList<ListItem> managementList = null;
     // Check if the list exists
     if(lists != null){ // If it does, get the two different lists from it
-    	restaurantArr = lists.getRestaurants();
+    	  restaurantArr = lists.getRestaurants();
         recipeArr = lists.getRecipes();
         managementList = lists.getLists();
     }
+    else{
+    	managementList = new ArrayList<ListItem>();
+    }
+    
+    // Get pagination index start
+    int index = 0;
+    if(request.getAttribute("index") != null){
+    	index = Integer.parseInt((String) request.getParameter("index"));
+      System.out.println("not null index: " + index);
+    }
+    System.out.println("front end index: " + index);
     
   %>
 
@@ -51,8 +62,9 @@
       	<h1><%=listName %> List</h1>
       		<% 
       		// Used to alternate colors
-   			int j = 0;
-          	while(j < managementList.size()){ 
+   			int j = index;
+      	int k = 0;
+          	while(j < managementList.size() && k < 5){ 
           	String colorStyle = "";
         	if (j%2 == 0){
           		colorStyle = "silver";
@@ -74,10 +86,7 @@
           		
           		if(type.equals("rec")){
           			// Get array num of item in original list
-					int num = lists.getArrayNum(lists.getLists().get(j).getRecipe());
-          			
-          			System.out.println("Recipe Original List Num: " + num);
-          			System.out.println("Recipe List Management Num: " + j);
+					      int num = lists.getArrayNum(lists.getLists().get(j).getRecipe());
           			
           			Recipe temp = managementList.get(j).getRecipe();
           			name = temp.getName();
@@ -97,11 +106,7 @@
           			link = "/FeedMe/recipeDetails?arrNum=" + num;
           		}
           		else{
-					int num = lists.getArrayNum(lists.getLists().get(j).getRestaurant());
-					
-					System.out.println("Restaurant Original List Num: " + num);
-          			System.out.println("Restaurant List Management Num: " + j);
-          			
+          		  int num = lists.getArrayNum(lists.getLists().get(j).getRestaurant());
 					
           			Restaurant temp = managementList.get(j).getRestaurant();
           			name = temp.getName();
@@ -110,18 +115,18 @@
           			addressOrPrepTime = "<strong>Address:</strong></br> <p>" + temp.getAddress() + "</p>";
           			
           			int priceToString = (int)managementList.get(j).getRestaurant().getPrice();
-					if (priceToString == 1){
-						price = "<strong>Price: <p>$</p></strong>";
-					}
-					else if (priceToString == 2){
-						price = "<strong>Price: <p>$$</p></strong>";
-					}
-					else if (priceToString == 3) {
-						price = "<strong>Price: <p>$$$</p></strong>";
-					}
-					else {
-						price = "<strong>Price: <p>$$$$</p></strong>";
-					}
+								if (priceToString == 1){
+									price = "<strong>Price: <p>$</p></strong>";
+								}
+								else if (priceToString == 2){
+									price = "<strong>Price: <p>$$</p></strong>";
+								}
+								else if (priceToString == 3) {
+									price = "<strong>Price: <p>$$$</p></strong>";
+								}
+								else {
+									price = "<strong>Price: <p>$$$$</p></strong>";
+								}
 
           			link = "/FeedMe/restaurantDetails?arrNum=" + num;
           		}
@@ -187,7 +192,7 @@
 	                	<button id="moveButton" class="form-control" type="submit">Move</button>
 					</form>
     		</div>
-         <% j++;} %>
+         <% ++j;++k;} %>
 	</div>
     	      	
 	<!-- Takes the user to the specified list -->
@@ -208,15 +213,42 @@
       	<button class="Button" id="returnToSearch" onclick="javascript:location.href = this.value;">Return to Search</button>
       </form>
       <!-- Takes the user to the results page -->
-	  <form action ="/FeedMe/results">
+	   <form action ="/FeedMe/results">
       	<button class="Button" id="backToResults" onclick="javascript:location.href = this.value;">Return to Results</button>
       </form>
 	
-	</div>
-	</div>
-
+	  </div>
+	 </div>
+	 
+	 <!-- This is where the pagination is -->
+	 <div id="pagination" class="">
+	   <!-- 
+	       Need a current page, and size of list
+	        - For this, can keep the original list on front end
+	   -->
+	   <form id="paginationForm" method="POST" action="/FeedMe/listManagement">
+	     <input type="hidden" name="listName" value="<%=listName.toLowerCase().charAt(0)%>">
+	     <input type="hidden" name="page" value="">
+	   </form>
+	   <p>Pagination</p>
+	   <nav aria-label="Page pagination">
+	     <ul class="pagination">
+	       <% for(int i = 0; i <= managementList.size()/5; ++i){ %>
+	         <li class="page-item"><a class="page-link" onclick="paginationForm(<%=i%>)"><%=i%></a></li>
+	       <%} %>
+	     </ul>
+	   </nav>
+	 </div>
+	<!-- End of html/java code -->
+  </body>
     <!-- Homebrew JS -->
-    <script>
+  <script>
+  function paginationForm(page){
+	  var form = document.getElementById("paginationForm");
+	  form.page = page;
+	  console.log(page);
+	  form.submit();
+  }
 	function restaurantRedirect(form){
 		form.submit();
 	}
@@ -234,7 +266,6 @@
 		}
 	}
 </script>
-  </body>
   <style>
     <%@ include file="/css/buttons.css"%>
   </style>
