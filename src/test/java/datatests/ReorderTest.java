@@ -71,10 +71,20 @@ public class ReorderTest {
 	}
 	
 	@Test
-	public void testReturnNumber() throws IOException {
-		assertEquals(0, ulist.getArrayNum(usc));
+	public void testRemoveAll() throws IOException {
+		assertEquals(4, ulist.getRestaurants().size());
 		ulist.remove(usc);
-		assertEquals(-1, ulist.getArrayNum(usc));
+		assertEquals(0, ulist.getRestaurants().size());
+	}
+	
+	@Test
+	public void testReturnNumber() throws IOException {
+		assertEquals(4, ulist.getArrayNum(usc));
+		ulist.remove(usc);
+		ulist.remove(ucla);
+		ulist.remove(stanford);
+		ulist.remove(berkeley);
+		assertEquals(0, ulist.getArrayNum(usc));
 	}
 	
 	@Test
