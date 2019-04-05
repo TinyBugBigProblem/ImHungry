@@ -20,7 +20,7 @@ public class YelpTest {
 		AccessYelpAPI y = new AccessYelpAPI();
 		
 		int count = 20;
-		Vector<Restaurant> arr = AccessYelpAPI.YelpRestaurantSearch("mexican", count);
+		Vector<Restaurant> arr = AccessYelpAPI.YelpRestaurantSearch("mexican", count, 1000);
 		assertEquals(count, arr.size());
 		
 		for (int i = 0; i < count; i++) {
@@ -33,7 +33,7 @@ public class YelpTest {
 	@Test
 	public void testMultipleWordInput() throws IOException {
 		int count = 20;
-		Vector<Restaurant> arr = AccessYelpAPI.YelpRestaurantSearch("mexican chicken", count);
+		Vector<Restaurant> arr = AccessYelpAPI.YelpRestaurantSearch("mexican chicken", count, 1000);
 		assertEquals(count, arr.size());
 		
 		for (int i = 0; i < count; i++) {
@@ -46,7 +46,7 @@ public class YelpTest {
 	@Test
 	public void testBadInput() throws IOException {
 		int count = 20;
-		Vector<Restaurant> arr = AccessYelpAPI.YelpRestaurantSearch("qwertyuioiuytrewwdc", count);
+		Vector<Restaurant> arr = AccessYelpAPI.YelpRestaurantSearch("qwertyuioiuytrewwdc", count, 1000);
 		assertEquals(0, arr.size());
 		
 	}
@@ -54,7 +54,7 @@ public class YelpTest {
 	@Test
 	public void testLargeInput() throws IOException {
 		int count = 55;
-		Vector<Restaurant> arr = AccessYelpAPI.YelpRestaurantSearch("pizza", count);
+		Vector<Restaurant> arr = AccessYelpAPI.YelpRestaurantSearch("pizza", count, 1000);
 		assertEquals(55, arr.size());
 		
 	}
