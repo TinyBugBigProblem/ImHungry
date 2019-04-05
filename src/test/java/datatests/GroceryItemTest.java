@@ -44,8 +44,15 @@ public class GroceryItemTest {
 		groceries.add(food2);
 		groceries.add(food3);
 		groceries.add(food4);
-		groceries.add(food5);
+		assertTrue(groceries.add(food5));
 		assertEquals(0, groceries.getArrayNum(food1));
+		assertFalse(groceries.add(food1));
+		assertEquals(4, groceries.getArrayNum(food5));
+		assertFalse(groceries.add(food5));
+		assertTrue(groceries.remove(food5));
+		assertFalse(groceries.remove(food5));
+		assertTrue(groceries.contains(food4));
+		assertFalse(groceries.contains(food5));
 	}
 
 }
