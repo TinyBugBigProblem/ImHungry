@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ GoogleDirectionsTest.class, GoogleImageSearchTest.class, ScrapperTest.class, YelpTest.class })
+@SuiteClasses({ GoogleDirectionsTest.class, GoogleImageSearchTest.class, RadiusTest.class, ScrapperTest.class, YelpTest.class })
 public class APITests {
 
 }
