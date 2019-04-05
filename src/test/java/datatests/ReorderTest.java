@@ -77,4 +77,11 @@ public class ReorderTest {
 		assertEquals(-1, ulist.getArrayNum(usc));
 	}
 	
+	@Test
+	public void OOBswitch() throws IOException {
+		assertEquals(0, ulist.getArrayNum(usc));
+		ulist.getRestaurants().set(7, usc);
+		assertEquals(0, ulist.getArrayNum(usc));
+	}
+	
 }
