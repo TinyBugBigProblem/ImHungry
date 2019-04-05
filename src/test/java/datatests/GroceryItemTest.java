@@ -10,6 +10,8 @@ import java.util.Vector;
 import org.junit.Test;
 
 import data.GroceryItem;
+import data.GroceryList;
+import data.Restaurant;
 
 public class GroceryItemTest {
 
@@ -32,7 +34,18 @@ public class GroceryItemTest {
 	
 	@Test
 	public void listTest() {
+		GroceryList groceries = new GroceryList();
 		GroceryItem food1 = new GroceryItem("milk", 1, "Gallon", "Fat Free", 5);
+		GroceryItem food2 = new GroceryItem("eggs", 12, "Egg", "", 1);
+		GroceryItem food3 = new GroceryItem("butter", 1, "Tsp", "Salted", 5);
+		GroceryItem food4 = new GroceryItem("sugar", 1, "cup", "Fat Free", 5);
+		GroceryItem food5 = new GroceryItem("salt", 1, "pinch", "", 5);
+		groceries.add(food1);
+		groceries.add(food2);
+		groceries.add(food3);
+		groceries.add(food4);
+		groceries.add(food5);
+		assertEquals(0, groceries.getArrayNum(food1));
 	}
 
 }
