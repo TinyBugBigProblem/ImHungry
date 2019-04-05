@@ -11,10 +11,12 @@ public class GroceryItem implements Serializable{
 	private double cost = 0;
 	
 	// Constructor
-	public GroceryItem(String name, double amount, String units) {
+	public GroceryItem(String name, double amount, String units, String qualifier, double cost) {
 		this.name = name;
 		this.amount = amount;
 		this.units = units;
+		this.qualifier = qualifier;
+		this.cost = cost;
 	}
 	/*
 	 * Returns the name of the grocery item
@@ -33,5 +35,17 @@ public class GroceryItem implements Serializable{
 	 */
 	public String getUnits() {
 		return units;
+	}
+	/*
+	 * Returns the units used for the grocery item
+	 */
+	public String getQualifier() {
+		return qualifier;
+	}
+	/*
+	 * Returns the units used for the grocery item
+	 */
+	public double getCost() {
+		return cost;
 	}
 }

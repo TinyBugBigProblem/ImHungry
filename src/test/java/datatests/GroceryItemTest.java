@@ -21,11 +21,18 @@ public class GroceryItemTest {
 		String qualifier = "Fat Free";
 		double cost = 5;
 		
-		GroceryItem food = new GroceryItem(name, amount, units);
+		GroceryItem food = new GroceryItem(name, amount, units, qualifier, cost);
 		
 		assertEquals(name, food.getName());
 		assertEquals(amount, food.getAmount(), 0);	// 3rd argument of 0 is because of how java does doubles' precision
 		assertEquals(units, food.getUnits());
+		assertEquals(qualifier, food.getQualifier());
+		assertEquals(cost, food.getCost(), 0);
+	}
+	
+	@Test
+	public void listTest() {
+		GroceryItem food1 = new GroceryItem("milk", 1, "Gallon", "Fat Free", 5);
 	}
 
 }
