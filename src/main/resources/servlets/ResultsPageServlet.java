@@ -79,7 +79,6 @@ public class ResultsPageServlet extends HttpServlet {
 		
 		/*
 		 * Check if these value are still null, then that means the session expired and needs to be reset
-		 * 
 		 */
 		if(searchTerm == null || resultCount == null) {
 			RequestDispatcher dispatch = request.getRequestDispatcher("/jsp/results.jsp");

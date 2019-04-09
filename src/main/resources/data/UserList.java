@@ -13,23 +13,27 @@ public class UserList implements Serializable {
 	private ArrayList<Restaurant> restaurants;
 	private ArrayList<Recipe> recipes;
 	private ArrayList<ListItem> lists;
+	private ArrayList<Recipe> GroceryList;
 	
 	// Empty when the list is created (created when a new session is started)
 	public UserList() {
 		restaurants = new ArrayList<Restaurant>();
 		recipes = new ArrayList<Recipe>();
 		lists = new ArrayList<ListItem>();
+		GroceryList = new ArrayList<Recipe>();
 	}
 	
 	public ArrayList<Restaurant> getRestaurants() {
 		return restaurants;
 	}
-
 	public ArrayList<Recipe> getRecipes() {
 		return recipes;
 	}
 	public ArrayList<ListItem> getLists(){
 		return lists;
+	}
+	public ArrayList<Recipe> getGroceries() {
+		return GroceryList;
 	}
 
 	/*

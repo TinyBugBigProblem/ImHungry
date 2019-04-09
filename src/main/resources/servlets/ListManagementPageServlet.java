@@ -55,8 +55,11 @@ public class ListManagementPageServlet extends HttpServlet {
 			else if(sFromList.equals("d")) {
 				listNum = 1;
 			}
-			else {
+			else if(sFromList.contentEquals("t")){
 				listNum = 2;
+			}
+			else {
+				listNum = 3;
 			}
 //			Get position of item in question from current list
 			int arrNum = Integer.parseInt(request.getParameter("arrNum"));

@@ -16,9 +16,13 @@ public class GroceryListSimple implements Serializable {
 	private ArrayList<String> groceries;
 	
 	// Empty when the list is created (created when a new session is started)
-	public GroceryListSimple(String title) {
-		recipe = title;
+	public GroceryListSimple() {
+		recipe = "";
 		groceries = new ArrayList<String>();
+	}
+	
+	public void setTitle(String t) {
+		recipe = t;
 	}
 	
 	public String getTitle() {

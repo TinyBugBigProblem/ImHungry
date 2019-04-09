@@ -98,6 +98,7 @@
           	<option id="favoriteOption" value="f" >Favorites</option>
           	<option id="toExploreOption" value="t">To Explore</option>
           	<option id="doNotShowOption" value="d">Do Not Show</option>
+          	<option id="groceryOption" value ="g">Grocery List</option>
           </select>
 	      <!-- Button to add item to selected list, doesn't do anything if choice is empty -->
 	      <button type="submit" id="addToList" class="Button">Add to List</button>
