@@ -48,4 +48,16 @@ public class GroceryItem implements Serializable{
 	public double getCost() {
 		return cost;
 	}
+	/*
+	 * Equals overridden for vector::contains() method
+	 */
+	public boolean equals(Object obj) {
+		if (obj instanceof GroceryItem) {
+			GroceryItem o = (GroceryItem) obj;
+			return (this.name.equals(o.name));
+		}
+		else {
+			return false;
+		}
+	}
 }
