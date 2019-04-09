@@ -2,22 +2,30 @@ package data;
 import java.io.Serializable;
 import java.util.ArrayList;
 /*
- * A GroceryList object will be a list of GroceryItems
- * 1 GroceryList objects will be stored in session
+ * An GroceryListSimple object will be a list of Strings, with a String recipe title
+ * 1 GroceryListSimple object will be stored in session
  */
 // Implements Serializable Interface to allow storing in session 
-public class GroceryList implements Serializable {
+public class GroceryListSimple implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	// ArrayList of GroceryItems in the predefined list
-	private ArrayList<GroceryItem> groceries;
+	// Recipe title
+	private String recipe;
+	
+	// ArrayList of Strings in the predefined list
+	private ArrayList<String> groceries;
 	
 	// Empty when the list is created (created when a new session is started)
-	public GroceryList() {
-		groceries = new ArrayList<GroceryItem>();
+	public GroceryListSimple(String title) {
+		recipe = title;
+		groceries = new ArrayList<String>();
 	}
 	
-	public ArrayList<GroceryItem> getGroceries() {
+	public String getTitle() {
+		return recipe;
+	}
+	
+	public ArrayList<String> getGroceries() {
 		return groceries;
 	}
 	
@@ -27,7 +35,7 @@ public class GroceryList implements Serializable {
 	 * Returns true if successfully added to the list
 	 * EDIT THIS LATER, SUCH THAT IF PREEXISTING ITEM EXISTS, ADD THE AMOUNTS
 	 */
-	public boolean add(GroceryItem g){
+	public boolean add(String g){
 		if (groceries.contains(g)) {
 			return false;
 		}
@@ -42,7 +50,7 @@ public class GroceryList implements Serializable {
 	 * Returns true if successfully removed from the list
 	 * Returns false if the passed object is not in the list
 	 */
-	public boolean remove(GroceryItem g) {
+	public boolean remove(String g) {
 		return groceries.remove(g);
 	}
 	
@@ -51,7 +59,7 @@ public class GroceryList implements Serializable {
 	 * Returns true if the passed object is in the list
 	 * Returns false if the passed object is not in the list
 	 */
-	public boolean contains(GroceryItem g) {
+	public boolean contains(String g) {
 		return groceries.contains(g);
 	}
 	
@@ -60,7 +68,7 @@ public class GroceryList implements Serializable {
 	 * Returns pos int if the passed object is in the list
 	 * Returns -1 if the passed object is not in the list
 	 */
-	public int getArrayNum(GroceryItem g) {
+	public int getArrayNum(String g) {
 		for(int i = 0; i < groceries.size(); ++i) {
 			if(groceries.get(i).equals(g)) {
 				return i;
