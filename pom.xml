@@ -33,6 +33,11 @@
 	    <version>4.0.1</version>
 	    <scope>provided</scope>
 	</dependency>
+	<dependency>
+  		<groupId>com.google.firebase</groupId>
+  		<artifactId>firebase-admin</artifactId>
+  		<version>6.8.0</version>
+	</dependency>
   </dependencies>
   <build>
     <finalName>FeedMe</finalName>
