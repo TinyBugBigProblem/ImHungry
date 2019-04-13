@@ -72,172 +72,172 @@
 			</div>
 			<div class="col-sm-3 order-1"></div>
 		</div>
-
-		<!-- Search For xx  -->
-		<div class="py-5 text-center">
-   			<h2 id="titleHeader">Results For <%=searchTerm %></h2>
-   		</div>
-
-   		<!-- Restaurants and Recipes lists  -->
-   		<div class="row md-2">
-   			<div class="col-md-6">
-      			<h2 id="restaurantTitle" class="text-center"> Restaurants</h2>
-          		<%
-
-          		for(int i = 0; i < resultCount; i++){
-          			String colorStyle = "";
-          			if (i%2 == 0){
-          				colorStyle = "silver";
-          			}
-          			else{
-          				colorStyle = "grey";
-          			}
-          		%>
-          		<% if(restaurantArr[i] != null){ %>
-          			<% System.out.println("Rest Arr: " + i + " " + (restaurantArr[i] == null));  %>
-         			<div class="row no-gutters border rounded overflow-hidden flex-md-row md-4 shadow-md h-md-250 position-relative" id="Restaurant<%=i%>">
-        			<div style="background-color:<%=colorStyle %>;"class="col p-4 d-flex flex-column position-static">
-          			<div class="container">
-  						<div class="row">
-    					<div class="col-sm">
-							<strong id="NameRestaurant">Name:</strong> <br><p><%=restaurantArr[i].getName() %> </p>
-   						</div>
-
-    					<div class="col-sm">
-     	 						<strong id="starsRestaurant">Stars:</strong> <br> <p> <%=restaurantArr[i].getRating() %> </p>
-    					</div>
-    					<div class="col-sm">
-     	 						
-    					</div>
-  						</div>
-  						<div class="row">
-    						<div class="col-sm">
-
-   							</div>
-
-    					<div class="col-sm">
-
-    					</div>
-  						</div>
-  						<div class="row">
-    						<div class="col-sm">
-      							<strong id="minutesRestaurant">Minutes:</strong> <br> <p><%=restaurantArr[i].getDrivingTime() %> </p>
-   							</div>
-
-    					<div class="col-sm">
-     	 						<strong id="addressRestaurant">Address: </strong><br> <p><%=restaurantArr[i].getAddress() %></p>
-    					</div>
-    					<div class="col-sm text-right">
-    							<%
-        							String restaurantPrice = "";
-        							int price = (int)restaurantArr[i].getPrice();
-        							if (price == 1){
-        							restaurantPrice = "$";
-        							}
-        							else if (price == 2){
-        							restaurantPrice = "$$";
-        							}
-        							else{
-        								restaurantPrice = "$$$";
-        							}
-        							%>
-     	 						<strong>Price: <%=restaurantPrice%></strong>
-    					</div>
-  						</div>
-					</div>
-
-          			<a href="/FeedMe/restaurantDetails?arrNum=<%=i%>" class="stretched-link" title="restaurantDetailsLink<%=i%>"></a>
-        			</div>
-        			<div class="col-auto d-none d-lg-block">
-        			
-          			</div>
-      				</div>
-      				
-          		<% }} %>
-		
-    	</div>
-    	
-
-    	<!-- Recipes -->
-    		<div class="col-md-6">
-      			<h2 id="recipeTitle" class= "text-center"> Recipes</h2>
-          		<% for(int i = 0; i < resultCount; i++){ 
-          			String colorStyle = "";
-          			if (i%2 == 0){
-          				colorStyle = "silver";
-          			}
-          			else{
-          				colorStyle = "grey";
-          			}
-          		%>
-          			<% if(recipeArr[i] != null){ %>
-          			<% System.out.println("Rest Arr: " + i + " " + (restaurantArr[i] == null));  %>
-         			<div class="row no-gutters border rounded overflow-hidden flex-md-row md-4 shadow-md h-md-250 position-relative" id="Recipe<%=i%>">
-        			<div style="background-color:<%=colorStyle %>;" class="col p-4 d-flex flex-column position-static">
-          			<div class="container">
-  						<div class="row">
-    						<div class="col-sm">
-      							<strong id="NameRecipe">Name:</strong> <br><p><%=recipeArr[i].getName() %></p>
-   							</div>
-
-    					<div class="col-sm">
-    						<% String recipeRating = String.format("%.1f",recipeArr[i].getRating()); %>
-     	 						<strong id="starsRecipe">Stars:</strong> <br> <p> <%=recipeRating %> </p>
-    					</div>
-    				
-  						</div>
-  						<div class="row">
-    						<div class="col-sm">
-
-   							</div>
-
-    					<div class="col-sm">
-
-    					</div>
-  						</div>
-  						<div class="row">
-    						<div class="col-sm">
-    							<%
-    								double cookTime = recipeArr[i].getCookTime();
-    								String renderCookTime = "";
-    								if (cookTime < 0){
-    									renderCookTime = "Not Available";
-    								}
-    								else{
-    									renderCookTime = Double.toString(cookTime);
-    								}
-    								
-    								double prepTime = recipeArr[i].getPrepTime();
-    								String renderPrepTime = "";
-    								if (prepTime < 0){
-    									renderPrepTime = "Not Available";
-    								}
-    								else{
-    									renderPrepTime = Double.toString(prepTime);
-    								}			
-    							%>
-      							<strong id="cooktimeRecipe">Cook Time:</strong> <br> <p><%=renderCookTime %></p>
-   							</div>
-
-    					<div class="col-sm">
-     	 						<strong id="preptimeRecipe">Prep Time: </strong><br> <p><%=renderPrepTime%></p>
-    					</div>
-    				
-  						</div>
-					</div>
-
-
-
-          			<a href="/FeedMe/recipeDetails?arrNum=<%=i%>" class="stretched-link"></a>
-        			</div>
-        			<div class="col-auto d-none d-lg-block">
-          			</div>
-      				</div>
-          		<% }} %>
-
-    	</div>
-
-   		</div>
+		<div style="background-color: rgba(245, 245, 245, 0.5);">
+			<!-- Search For xx  -->
+			<div class="py-5 text-center">
+	   			<h2 id="titleHeader">Results For <%=searchTerm %></h2>
+	   		</div>
+	
+	   		<!-- Restaurants and Recipes lists  -->
+	   		<div class="row md-2">
+	   			<div class="col-md-6">
+	      			<h2 id="restaurantTitle" class="text-center"> Restaurants</h2>
+	          		<%
+	
+	          		for(int i = 0; i < resultCount; i++){
+	          			String colorStyle = "";
+	          			if (i%2 == 0){
+	          				colorStyle = "silver";
+	          			}
+	          			else{
+	          				colorStyle = "grey";
+	          			}
+	          		%>
+	          		<% if(restaurantArr[i] != null){ %>
+	          			<% System.out.println("Rest Arr: " + i + " " + (restaurantArr[i] == null));  %>
+	         			<div class="row no-gutters border rounded overflow-hidden flex-md-row md-4 shadow-md h-md-250 position-relative" id="Restaurant<%=i%>">
+	        			<div style="background-color:<%=colorStyle %>;"class="col p-4 d-flex flex-column position-static">
+	          			<div class="container">
+	  						<div class="row">
+	    					<div class="col-sm">
+								<strong id="NameRestaurant">Name:</strong> <br><p><%=restaurantArr[i].getName() %> </p>
+	   						</div>
+	
+	    					<div class="col-sm">
+	     	 						<strong id="starsRestaurant">Stars:</strong> <br> <p> <%=restaurantArr[i].getRating() %> </p>
+	    					</div>
+	    					<div class="col-sm">
+	     	 						
+	    					</div>
+	  						</div>
+	  						<div class="row">
+	    						<div class="col-sm">
+	
+	   							</div>
+	
+	    					<div class="col-sm">
+	
+	    					</div>
+	  						</div>
+	  						<div class="row">
+	    						<div class="col-sm">
+	      							<strong id="minutesRestaurant">Minutes:</strong> <br> <p><%=restaurantArr[i].getDrivingTime() %> </p>
+	   							</div>
+	
+	    					<div class="col-sm">
+	     	 						<strong id="addressRestaurant">Address: </strong><br> <p><%=restaurantArr[i].getAddress() %></p>
+	    					</div>
+	    					<div class="col-sm text-right">
+	    							<%
+	        							String restaurantPrice = "";
+	        							int price = (int)restaurantArr[i].getPrice();
+	        							if (price == 1){
+	        							restaurantPrice = "$";
+	        							}
+	        							else if (price == 2){
+	        							restaurantPrice = "$$";
+	        							}
+	        							else{
+	        								restaurantPrice = "$$$";
+	        							}
+	        							%>
+	     	 						<strong>Price: <%=restaurantPrice%></strong>
+	    					</div>
+	  						</div>
+						</div>
+	
+	          			<a href="/FeedMe/restaurantDetails?arrNum=<%=i%>" class="stretched-link" title="restaurantDetailsLink<%=i%>"></a>
+	        			</div>
+	        			<div class="col-auto d-none d-lg-block">
+	        			
+	          			</div>
+	      				</div>
+	      				
+	          		<% }} %>
+			
+	    	</div>
+	    	
+	
+	    	<!-- Recipes -->
+	    		<div class="col-md-6">
+	      			<h2 id="recipeTitle" class= "text-center"> Recipes</h2>
+	          		<% for(int i = 0; i < resultCount; i++){ 
+	          			String colorStyle = "";
+	          			if (i%2 == 0){
+	          				colorStyle = "silver";
+	          			}
+	          			else{
+	          				colorStyle = "grey";
+	          			}
+	          		%>
+	          			<% if(recipeArr[i] != null){ %>
+	          			<% System.out.println("Rest Arr: " + i + " " + (restaurantArr[i] == null));  %>
+	         			<div class="row no-gutters border rounded overflow-hidden flex-md-row md-4 shadow-md h-md-250 position-relative" id="Recipe<%=i%>">
+	        			<div style="background-color:<%=colorStyle %>;" class="col p-4 d-flex flex-column position-static">
+	          			<div class="container">
+	  						<div class="row">
+	    						<div class="col-sm">
+	      							<strong id="NameRecipe">Name:</strong> <br><p><%=recipeArr[i].getName() %></p>
+	   							</div>
+	
+	    					<div class="col-sm">
+	    						<% String recipeRating = String.format("%.1f",recipeArr[i].getRating()); %>
+	     	 						<strong id="starsRecipe">Stars:</strong> <br> <p> <%=recipeRating %> </p>
+	    					</div>
+	    				
+	  						</div>
+	  						<div class="row">
+	    						<div class="col-sm">
+	
+	   							</div>
+	
+	    					<div class="col-sm">
+	
+	    					</div>
+	  						</div>
+	  						<div class="row">
+	    						<div class="col-sm">
+	    							<%
+	    								double cookTime = recipeArr[i].getCookTime();
+	    								String renderCookTime = "";
+	    								if (cookTime < 0){
+	    									renderCookTime = "Not Available";
+	    								}
+	    								else{
+	    									renderCookTime = Double.toString(cookTime);
+	    								}
+	    								
+	    								double prepTime = recipeArr[i].getPrepTime();
+	    								String renderPrepTime = "";
+	    								if (prepTime < 0){
+	    									renderPrepTime = "Not Available";
+	    								}
+	    								else{
+	    									renderPrepTime = Double.toString(prepTime);
+	    								}			
+	    							%>
+	      							<strong id="cooktimeRecipe">Cook Time:</strong> <br> <p><%=renderCookTime %></p>
+	   							</div>
+	
+	    					<div class="col-sm">
+	     	 						<strong id="preptimeRecipe">Prep Time: </strong><br> <p><%=renderPrepTime%></p>
+	    					</div>
+	    				
+	  						</div>
+						</div>
+	
+	
+	
+	          			<a href="/FeedMe/recipeDetails?arrNum=<%=i%>" class="stretched-link"></a>
+	        			</div>
+	        			<div class="col-auto d-none d-lg-block">
+	          			</div>
+	      				</div>
+	          		<% }} %>
+	
+	    		</div>
+	   		</div>
+	   	</div>
 	</div>
 </body>	
 

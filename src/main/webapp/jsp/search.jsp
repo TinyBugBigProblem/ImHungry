@@ -10,21 +10,20 @@
 </head>
 
 <body style="background-color:whitesmoke; background-image: url('http://localhost:8080/FeedMe/images/searchPageBackground.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
-<div class="view container" >
+<div class="view container" style="position:relative; top:30%;">
   <div class="row">
     <div class="col">
     </div>
-    <div class="col-6">
-      	<h2 class="text-center">I'm Hungry</h2>
-      	
+    <div class="col-6" style="background-color: rgba(245, 245, 245, 0.5);">
+      <h1 class="text-center display-1">I'm Hungry</h1>
+  
       <div class="col-md-12 text-center"> 
     	<form id="form" onsubmit= "return changeEmoji(this);"> <!-- Calls the js function that changes the emoji -->
-  		 <input id="userInput" type="text" name="q" placeholder="Enter Food">
-  		 <input id="searchTermTest" title="Number of items to show in results" type="text" name="n" value="" placeholder="Enter number of items to show in results">
-  		 <input id="restaurantRadius" title="Radius in miles for restaurants" type="text" name="r" value="" placeholder="Enter radius, in miles, to show restaurant">
-  			<br>
-  			<img src="https://images.emojiterra.com/twitter/v11/512px/1f620.png" id ="emoji" height = 20 width = 20>
-  			<button class="text-center" type="submit" value="Feed Me" name ="feedMeButton"id="feedMeButton" style="color: red;">Feed Me!</button>
+  		 <input id="userInput" type="text" name="q" placeholder="Enter Food"><br>
+  		 <input id="searchTermTest" title="Number of items to show in results" type="text" name="n" value="" placeholder="Enter number of items to show in results"><br>
+  		 <input id="restaurantRadius" title="Radius in miles for restaurants" type="text" name="r" value="" placeholder="Enter radius, in miles, to show restaurant"><br>
+  		 <img src="https://images.emojiterra.com/twitter/v11/512px/1f620.png" id ="emoji" height = 20 width = 20>
+  		 <button class="text-center" type="submit" value="Feed Me" name ="feedMeButton"id="feedMeButton" style="color: red;">Feed Me!</button>
   		</form>
   	  </div>
 		
