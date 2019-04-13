@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height:100%;">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">    
     <meta charset="ISO-8859-1">
@@ -33,7 +33,7 @@
     <title>Restaurant Details</title>
   </head>
 
-  <body style="background-color:whitesmoke;">
+  <body style="background-color:whitesmoke; background-image: url('http://localhost:8080/FeedMe/images/breadboard.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
     <!-- Row -->
     <div class="row">
 	    <div class="col-sm-8">
