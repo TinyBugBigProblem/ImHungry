@@ -39,7 +39,7 @@
 	 <title><%=searchTerm %></title>
 </head>
 
-<body style="background-color:whitesmoke; background-image: url('http://localhost:8080/FeedMe/images/simpleBoard.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+<body style="background-color:whitesmoke; background-image: url('http://localhost:8080/FeedMe/images/knifeAndFoodBoard.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
 	<div class="container mt-2">
 		<!-- Row for collage and buttons -->
 		<div class = "row align-items-start">

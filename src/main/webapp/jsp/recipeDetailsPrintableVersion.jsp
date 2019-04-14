@@ -21,7 +21,7 @@
   </head>
 
 
-  <body style="background-color:whitesmoke; background-image: url('http://localhost:8080/FeedMe/images/vegetables2.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+  <body style="background-color:whitesmoke; background-image: url('http://localhost:8080/FeedMe/images/knifeAndNutsBoard.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
     <!-- Main Div -->
     <div id="main">
       <!-- Title -->

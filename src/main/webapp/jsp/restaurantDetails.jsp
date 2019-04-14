@@ -33,7 +33,7 @@
     <title>Restaurant Details</title>
   </head>
 
-  <body style="background-color:whitesmoke; background-image: url('http://localhost:8080/FeedMe/images/breadboard.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+  <body style="background-color:whitesmoke; background-image: url('http://localhost:8080/FeedMe/images/knifeAndFruitesBoard.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
     <!-- Row -->
     <div class="row">
 	    <div class="col-sm-8">
