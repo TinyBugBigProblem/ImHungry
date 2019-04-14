@@ -29,6 +29,7 @@ public class ResultsPageServlet extends HttpServlet {
 	/*
 	 * service method is invoked whenever user attempts to 
 	 */
+	@SuppressWarnings("unchecked")
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		session.setAttribute("resultsOrList", "results");
@@ -54,27 +55,33 @@ public class ResultsPageServlet extends HttpServlet {
 		String searchTerm = request.getParameter("q");
 		String resultCountRaw = request.getParameter("n");
 		String restaurantRadiusRaw = request.getParameter("r");
-		if(resultCountRaw == null) {
-			resultCountRaw = "5";
-		}
-		if(restaurantRadiusRaw == null) {
-			restaurantRadiusRaw = "10";
-		}
-		
+
 		Integer resultCount = null;
 		Integer restaurantRadius = null;
+		
+		
 		/*
 		 *  If user clicked "return to search", get parameters from session.
 		 * 	Else, get parameters from url
 		 */
 		if (searchTerm == null) {
 			searchTerm = (String) session.getAttribute("searchTerm");
+		}
+		if (resultCountRaw == null) {
 			resultCount = (Integer) session.getAttribute("resultCount");
+		} else {
+			resultCount = Integer.parseInt(resultCountRaw);
+		}
+		if(restaurantRadiusRaw == null) {
 			restaurantRadius = (Integer) session.getAttribute("restaurantRadius");
 		}
-		else {
-			resultCount = Integer.parseInt(resultCountRaw);
-			restaurantRadius = Integer.parseInt(restaurantRadiusRaw);
+		
+		
+		if(resultCount == null) {
+			resultCount = 5;
+		}
+		if(restaurantRadius == null) {
+			restaurantRadius = 10;
 		}
 		
 		/*
@@ -82,15 +89,37 @@ public class ResultsPageServlet extends HttpServlet {
 		 * 
 		 */
 		if(searchTerm == null || resultCount == null) {
-			RequestDispatcher dispatch = request.getRequestDispatcher("/jsp/results.jsp");
+			RequestDispatcher dispatch = request.getRequestDispatcher("/jsp/search.jsp");
 			dispatch.forward(request,  response);		
 		}
 		
+		/*
+		 * Check if user is changing pagination page for either list 
+		 */
+		String listType = (String) request.getParameter("listName");
+		int recipePage = 0;
+		int restaurantPage = 0;
+		System.out.println("listType: " + listType);
+		
+		if(listType != null) {
+				restaurantPage =  Integer.parseInt((String) request.getParameter("restaurantIndex"));
+			
+				recipePage = Integer.parseInt((String) request.getParameter("recipeIndex"));
+			
+		}
+		System.out.println("Recipe page: " + recipePage);
+		System.out.println("Restaurant page: " + restaurantPage);
 		/* 
 		 * Fetch a list of restaurant objects made from query results given by Yelp API
 		 * Get enough results to make up for restaurants/recipes in Do Not Show list, which will not be displayed
 		 */
-		Vector<Restaurant> restaurants = AccessYelpAPI.YelpRestaurantSearch(searchTerm, resultCount + doNotShowRestaurants.size(), restaurantRadius); // TODO fix 10 in front end to pass variable over
+		Vector<Restaurant> restaurants;
+		if(session.getAttribute("restaurantResultsVector") == null) {
+			restaurants = AccessYelpAPI.YelpRestaurantSearch(searchTerm, resultCount + doNotShowRestaurants.size(), restaurantRadius);
+		}
+		else {
+			restaurants = (Vector<Restaurant>) session.getAttribute("restaurantResultsVector");
+		}
 		/*
 		 * Sort restaurants in ascending order of drive time from Tommy Trojan,
 		 * using compareTo method overridden in Restaurant class
@@ -125,7 +154,13 @@ public class ResultsPageServlet extends HttpServlet {
 		/* 
 		 * Fetch a list of recipe objects made by web scraping from allrecipes.com
 		 */
-		Vector<Recipe> recipes  = Scrapper.search(searchTerm, resultCount + doNotShowRecipes.size());
+		Vector<Recipe> recipes;
+		if(session.getAttribute("recipeResultsVector") == null) {
+			recipes  = Scrapper.search(searchTerm, resultCount + doNotShowRecipes.size());
+		}
+		else {
+			recipes = (Vector<Recipe>) session.getAttribute("recipeResultsVector");
+		}
 		/*
 		 * Sort recipes in ascending order of prep time,
 		 * using compareTo method overridden in Recipe class
@@ -169,7 +204,8 @@ public class ResultsPageServlet extends HttpServlet {
 		imageUrlVec.toArray(imageUrlArr);
 		
 		// Pass variables needed for generating front-end
-		request.setAttribute("restaurantRadius", restaurantRadius);
+		request.setAttribute("recipeIndex", recipePage);
+		request.setAttribute("restaurantIndex", restaurantPage);
 		request.setAttribute("imageUrlVec", imageUrlArr);
 		request.setAttribute("restaurantArr", restaurantArr);
 		request.setAttribute("recipeArr", recipeArr);
@@ -179,6 +215,9 @@ public class ResultsPageServlet extends HttpServlet {
 		session.setAttribute("restaurantResults", restaurantArr);
 		session.setAttribute("recipeResults", recipeArr);
 		// store searchTerm and resultCount -> used when user clicks "Return to Search"
+		session.setAttribute("restaurantResultsVector", restaurants);
+		session.setAttribute("recipeResultsVector", recipes);
+		session.setAttribute("restaurantRadius", restaurantRadius);
 		session.setAttribute("searchTerm", searchTerm);
 		session.setAttribute("resultCount", resultCount);
 		

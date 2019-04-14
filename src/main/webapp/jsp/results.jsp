@@ -13,6 +13,16 @@
 	Restaurant[] restaurantArr = (Restaurant[]) request.getAttribute("restaurantArr");
 	Recipe[] recipeArr = (Recipe[]) request.getAttribute("recipeArr");
 	
+    // Get pagination index start
+    int restaurantIndex = 0;
+    if(request.getAttribute("restaurantIndex") != null){
+    	restaurantIndex = (Integer) request.getAttribute("restaurantIndex");
+    }
+    // Get pagination index start
+    int recipeIndex = 0;
+    if(request.getAttribute("recipeIndex") != null){
+    	recipeIndex = (Integer) request.getAttribute("recipeIndex");
+    }
 	%>
 	  <!-- Bootstrap CSS  -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -30,7 +40,7 @@
 </head>
 
 <body style="background-color:whitesmoke; background-image: url('http://localhost:8080/FeedMe/images/simpleBoard.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
-	<div class="container mt-5">
+	<div class="container mt-2">
 		<!-- Row for collage and buttons -->
 		<div class = "row align-items-start">
 			<div class="col-sm-2 order-3">
@@ -79,12 +89,12 @@
 	   		</div>
 	
 	   		<!-- Restaurants and Recipes lists  -->
-	   		<div class="row md-2">
+	   		<div class="row md-6">
 	   			<div class="col-md-6">
 	      			<h2 id="restaurantTitle" class="text-center"> Restaurants</h2>
 	          		<%
-	
-	          		for(int i = 0; i < resultCount; i++){
+					int j = 0;
+	          		for(int i = restaurantIndex*5; (j < 5) && (i < restaurantArr.length); i++, j++){
 	          			String colorStyle = "";
 	          			if (i%2 == 0){
 	          				colorStyle = "silver";
@@ -95,7 +105,7 @@
 	          		%>
 	          		<% if(restaurantArr[i] != null){ %>
 	          			<% System.out.println("Rest Arr: " + i + " " + (restaurantArr[i] == null));  %>
-	         			<div class="row no-gutters border rounded overflow-hidden flex-md-row md-4 shadow-md h-md-250 position-relative" id="Restaurant<%=i%>">
+	         			<div class="row no-gutters border rounded overflow-hidden flex-md-row md-4 shadow-md h-sm-250 position-relative" id="Restaurant<%=i%>" style="height:190px;">
 	        			<div style="background-color:<%=colorStyle %>;"class="col p-4 d-flex flex-column position-static">
 	          			<div class="container">
 	  						<div class="row">
@@ -154,14 +164,35 @@
 	      				</div>
 	      				
 	          		<% }} %>
-			
+          		 <!-- This is where the pagination is -->
+				 <div id="restaurantPagination" class="">
+				   <!-- 
+				       Need a current page, and size of list
+				        - For this, can keep the original list on front end
+				   -->
+				   <form id="restaurantPaginationForm" method="POST" action="/FeedMe/results">
+				     <input id="paginationRestaurntListName" type="hidden" name="listName" value="restaurantList">
+					 <input id="paginationRecipePage" type="hidden" name="restaurantIndex" value="<%=restaurantIndex%>">
+					 <input id="paginationRecipePage" type="hidden" name="recipeIndex" value="<%=recipeIndex%>">
+				   </form>
+				   <p>Page <%=restaurantIndex%></p>
+				   <nav aria-label="Page pagination">
+				     <ul class="pagination">
+				       <% for(int i = 0; i < restaurantArr.length/5; ++i){%>
+				         <li class="page-item"><a class="page-link" onclick="paginationForm(<%=i%>, 'restaurant')"><%=i%></a></li>
+				       <%} %>
+				     </ul>
+				   </nav>
+				 </div>	
 	    	</div>
 	    	
 	
 	    	<!-- Recipes -->
 	    		<div class="col-md-6">
 	      			<h2 id="recipeTitle" class= "text-center"> Recipes</h2>
-	          		<% for(int i = 0; i < resultCount; i++){ 
+	          		<% 
+	          			j = 0;
+	          			for(int i = recipeIndex*5; j < 5 && i < recipeArr.length ; i++,j++){ 
 	          			String colorStyle = "";
 	          			if (i%2 == 0){
 	          				colorStyle = "silver";
@@ -172,7 +203,7 @@
 	          		%>
 	          			<% if(recipeArr[i] != null){ %>
 	          			<% System.out.println("Rest Arr: " + i + " " + (restaurantArr[i] == null));  %>
-	         			<div class="row no-gutters border rounded overflow-hidden flex-md-row md-4 shadow-md h-md-250 position-relative" id="Recipe<%=i%>">
+	         			<div class="row no-gutters border rounded overflow-hidden flex-md-row md-4 shadow-md h-sm-250 position-relative" id="Recipe<%=i%>" style="height:190px;">
 	        			<div style="background-color:<%=colorStyle %>;" class="col p-4 d-flex flex-column position-static">
 	          			<div class="container">
 	  						<div class="row">
@@ -234,15 +265,47 @@
 	          			</div>
 	      				</div>
 	          		<% }} %>
-	
+					 <!-- This is where the pagination for recipes is -->
+					 <div id="recipeRagination" class="">
+					   <!-- 
+					       Need a current page, and size of list
+					        - For this, can keep the original list on front end
+					   -->
+					   <form id="recipePaginationForm" method="POST" action="/FeedMe/results">
+					     <input id="paginationRecipeListName" type="hidden" name="listName" value="recipeList">
+					     <input id="paginationRecipePage" type="hidden" name="restaurantIndex" value="<%=restaurantIndex%>">
+					     <input id="paginationRecipePage" type="hidden" name="recipeIndex" value="<%=recipeIndex%>">
+					   </form>
+					   <p>Page <%=recipeIndex%></p>
+					   <nav aria-label="Page pagination">
+					     <ul class="pagination">
+					       <% for(int i = 0; i < recipeArr.length/5; ++i){%>
+					         <li class="page-item"><a class="page-link" onclick="paginationForm(<%=i%>, 'recipe')"><%=i%></a></li>
+					       <%} %>
+					     </ul>
+					   </nav>
+					 </div>
 	    		</div>
 	   		</div>
 	   	</div>
 	</div>
+	
 </body>	
 
 <script>
-
+function paginationForm(page, type){
+	var form;
+	if(type == 'restaurant'){
+		form = document.getElementById("restaurantPaginationForm");
+		form.restaurantIndex.value = page;
+	}
+	else{
+		form = document.getElementById("recipePaginationForm");
+		form.recipeIndex.value = page;
+	}
+	console.log(form);
+	form.submit();
+}
 function manageList(form){
 	var userInput = document.getElementById('listName').value;
 	console.log(userInput);
