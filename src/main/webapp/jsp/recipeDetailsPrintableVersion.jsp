@@ -12,76 +12,89 @@
   	 <%@page import="java.util.*" %>
 	<%@page import="data.*"%>
     <% 
-    	// Get recipe item and it's place in the list from servlet
-		Recipe recipeVal = (Recipe) request.getAttribute("recipeVal");
-    	Integer arrNum = (Integer) request.getAttribute("arrNum");
+    String resultsOrList = (String) request.getSession().getAttribute("resultsOrList");
+	Recipe recipeVal = (Recipe) request.getAttribute("recipeVal");
+    int arrNum = Integer.parseInt((String) request.getParameter("arrNum"));
+	if(resultsOrList.equals("list")){
+		ArrayList<Recipe> rest = (ArrayList<Recipe>) request.getSession().getAttribute("recipes");
+		recipeVal = rest.get(arrNum);
+	}
     %>
     <!-- Title -->
     <title>Recipe Details</title>
   </head>
 
 
-  <body style="background-color:whitesmoke; background-image: url('http://localhost:8080/FeedMe/images/knifeAndNutsBoard.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
-    <!-- Main Div -->
-    <div id="main">
-      <!-- Title -->
-      <h1 id="recipeName"><%= recipeVal.getName() %></h1>
-      <!-- Holds image, prep and cook time of recipe-->
-      <div id="details">
-      	<% String picUrl = recipeVal.getPictureUrl(); %>
-        <img id="recipePicture" src="<%= picUrl %>" alt="Recipe Image"/>
-        <%     
-        	// Get the proper cook time, makes sure it's not negative
-			double cookTime = recipeVal.getCookTime();
-			String renderCookTime = "";
-			if (cookTime < 0){
-				renderCookTime = "Not Available";
-			}
-			else{
-				renderCookTime = Double.toString(cookTime) + " minutes";
-			}
-			// Get the proper prep time, makes sure it's not negative
-			double prepTime = recipeVal.getPrepTime();
-			String renderPrepTime = "";
-			if (prepTime < 0){
-				renderPrepTime = "Not Available";
-			}
-			else{
-				renderPrepTime = Double.toString(prepTime) + " minutes";
-			}			
-        %>
-        <!-- Display both times -->
-        <p id="prepTime"><strong>Prep Time: </strong><%=renderPrepTime %></p>
-        <p id="cookTime"><strong>Cook Time: </strong><%=renderCookTime %></p>
-      </div>
-      <!-- Ingredients -->
-      <div id="ingredientsBloc" class="">
-        <h2>Ingredients</h2>
-        <ul id="ingredients" class="r-inline-flex clearfix">
-          <% ArrayList<String> ingredients = (ArrayList<String>) recipeVal.getIngredients();%>
-          <% for(int i = 0; i < ingredients.size(); i++){ %>
-          	<li class="" style="width:45%;float:left;margin-right:5%;"><p><%=ingredients.get(i) %></p></li>
-          <% } %>
-        </ul>
-      </div>
-      <!-- Instructions -->
-      <div id="instructionsBloc" class="">
-        <h2 class="">Instructions</h2>
-        <ol id="instructions" class="r-inline-flex clearfix">
-          <% ArrayList<String> ins = (ArrayList<String>) recipeVal.getInstructions();%>
-          <% for(int i = 0; i < ins.size(); i++) { %>
-          	<li class=""><p><%=ins.get(i) %></p></li>
-          <% } %>
-        </ol>
-        <br/>
-      </div>
-    </div>
-    <!-- Holds all the buttons -->
-    <div id="buttons">
-      
+  <body class="text-center" style="background-color:whitesmoke; background-image: url('http://localhost:8080/FeedMe/images/knifeAndNutsBoard.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+    <!-- Row -->
+    <div class="row">
+	    <div id="recipeDiv" class="col-sm-10" style="display:inline;position:relative;width:60%;margin:5% auto 5% auto;">
+	      <!-- Title -->
+	      <h1 id="recipeName"><%= recipeVal.getName() %></h1><br>
+	      <!-- Holds image, prep and cook time of recipe-->
+	      <div id="details">
+	      	<% String picUrl = recipeVal.getPictureUrl(); %>
+	        <img id="recipePicture" src="<%= picUrl %>" alt="Recipe Image"/><br>
+	        <div></div>
+	        <%     
+				double cookTime = recipeVal.getCookTime();
+				String renderCookTime = "";
+				if (cookTime < 0){
+					renderCookTime = "Not Available";
+				}
+				else{
+					renderCookTime = Double.toString(cookTime) + " minutes";
+				}
+			
+				double prepTime = recipeVal.getPrepTime();
+				String renderPrepTime = "";
+				if (prepTime < 0){
+					renderPrepTime = "Not Available";
+				}
+				else{
+					renderPrepTime = Double.toString(prepTime) + " minutes";
+				}			
+	        %>
+	        <p id="prepTime" style="background-color: rgba(245, 245, 245, 0.5);"><strong>Prep Time: </strong><%=renderPrepTime %></p>
+	        <p id="cookTime" style="background-color: rgba(245, 245, 245, 0.5);"><strong>Cook Time: </strong><%=renderCookTime %></p>
+	      </div>
+	      <!-- Ingredients -->
+	      <div id="ingredientsBloc" class="" style="background-color: rgba(245, 245, 245, 0.5);">
+	        <h2>Ingredients</h2>
+	        <ul id="ingredients" class="r-inline-flex clearfix">
+	          <% ArrayList<String> ingredients = (ArrayList<String>) recipeVal.getIngredients();%>
+	          <% for(int i = 0; i < ingredients.size(); i++){ %>
+	          	<li class="" style="width:45%;float:left;margin-right:5%;"><p><%=ingredients.get(i) %></p></li>
+	          <% } %>
+	        </ul>
+	      </div>
+	      <!-- Instructions -->
+	      <div id="instructionsBloc" class="" style="background-color: rgba(245, 245, 245, 0.5);">
+	        <h2 class="">Instructions</h2>
+	        <ol id="instructions" class="r-inline-flex clearfix">
+	          <% ArrayList<String> ins = (ArrayList<String>) recipeVal.getInstructions();%>
+	          <% for(int i = 0; i < ins.size(); i++) { %>
+	          	<li class=""><p><%=ins.get(i) %></p></li>
+	          <% } %>
+	        </ol>
+	        <br/>
+	      </div>
+	    </div>
     </div>
     <!-- Homebrew JS -->
-    
+    <script>
+    // Adds the item to the specified list, if the user specifies the proper list
+    function addToList(form){
+    	var userInput = document.getElementById('listType').value;
+    	console.log(userInput);
+    	if (userInput == null || userInput.length == 0){
+    		return false;	
+    	}
+    	else{
+    		form.action = "/FeedMe/recipeDetails";
+    	}
+    }
+    </script>
     <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import data.GroceryItem;
 import data.GroceryList;
+import data.GroceryListSimple;
 import data.Restaurant;
 
 public class GroceryItemTest {
@@ -30,6 +31,10 @@ public class GroceryItemTest {
 		assertEquals(units, food.getUnits());
 		assertEquals(qualifier, food.getQualifier());
 		assertEquals(cost, food.getCost(), 0);
+		
+		GroceryListSimple simpleList = new GroceryListSimple("Biscuit");
+		assertEquals("Bisuit", simpleList.getTitle());
+		assertEquals(null, simpleList.getGroceries());
 	}
 	
 	@Test
@@ -74,6 +79,27 @@ public class GroceryItemTest {
 		groceries.add(food5);
 		assertEquals(groceries.getGroceries().size(), 5);
 		assertEquals(groceries.getArrayNum(food6),-1);
+	}
+	
+	@Test
+	public void lastGroceryListTest() {
+		GroceryListSimple simpleList = new GroceryListSimple("Muffins");
+		simpleList.add("Milk");
+		simpleList.add("Eggs");
+		simpleList.add("Poppies");
+		
+		assertFalse(simpleList.add("Milk"));
+		assertTrue(simpleList.add("Corn"));
+		assertEquals(0, simpleList.getArrayNum("Milk"));
+		assertTrue(simpleList.contains("Milk"));
+		assertTrue(simpleList.remove("Milk"));
+
+		assertEquals(0, simpleList.contains("Milk"));
+		assertEquals(-1, simpleList.contains("Fat"));
+		assertEquals(-1, simpleList.contains(""));
+
+		assertTrue(simpleList.getGroceries() instanceof ArrayList<?>);
+		
 	}
 
 }

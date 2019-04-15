@@ -34,9 +34,33 @@
   </head>
 
   <body style="background-color:whitesmoke; background-image: url('http://localhost:8080/FeedMe/images/knifeAndFruitesBoard.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+   	<!-- Holds all the buttons -->
+    <div id="buttonDiv" class="btn-group btn-group-lg" role="group" style="width:300px;position:absolute;top:2%; left:42%;">
+      <!-- Brings user to a printable version of the page -->
+      <form id="printableForm" action="/FeedMe/recipeDetailsPagePrintableVersion?arrNum=<%=arrNum%>" method= "POST">
+      	<button id="printButton" type="submit button" class="btn btn-primary" style="width:97px;">Printable Version</button>
+      </form>
+      
+      <!-- Brings user back to results page -->
+       <form action="/FeedMe/results" method="POST">
+        <button id="backToResults" type="submit button" class="btn btn-primary" style="width:97px;margin-left:3px">Back To Results</button>
+      </form>
+      <!-- This is the drop-down menu -->
+      <form id="addForm" method="POST" onsubmit="return addToList(this)">
+      <!-- Button to add item to selected list, doesn't do anything if choice is empty -->
+      <button type="submit button" id="addToList" class="btn btn-primary" style="width:97px;margin-left:3px">Add to List</button>
+      <input type="hidden" name="arrNum" value="<%= arrNum %>">
+      <select name="listType" id="dropDownBar" class="dropDownBar">
+         	<option disabled selected value id="defaultOption"> -- select an option -- </option>
+         	<option id="favoriteOption" value="f" >Favorites</option>
+         	<option id="toExploreOption" value="t">To Explore</option>
+         	<option id="doNotShowOption" value="d">Do Not Show</option>
+         </select>
+      </form>
+    </div>
     <!-- Row -->
-    <div class="row">
-	    <div class="col-sm-8">
+    <div class="row" >
+	    <div class="col-sm-10" style="display:inline;position:relative;width:80%;margin:auto auto 5% auto;text-align:center;">
 	       <!-- Title -->
 	       <h1 id="restaurantName"><%= restaurantVal.getName() %></h1>
 	       <!-- Holds image, prep and cook time of recipe-->
@@ -46,33 +70,7 @@
 	         <a id="website" href="<%= restaurantVal.getWebsiteUrl() %>"><strong>Website Address: </strong><%= restaurantVal.getWebsiteUrl() %></a>
 	       </div>
 	    </div>
-	    <!-- Holds all the buttons -->
-	    <div class="buttons col-sm">
-	      <!-- Brings user to a printable version of the page -->
-	      
-	      <form action="/FeedMe/restaurantDetailsPagePrintableVersion?arrNum=<%=arrNum%>" method="POST">
-	      <button class="Button" id="printButton">Printable Version</button>
-	      <!-- Brings user back to results page -->
-	      
-	      </form>
-	            <!-- Brings user back to results page -->
-	      <form action="/FeedMe/results" method="POST">
-	        <button id="backToResults" class="Button">Back To Results</button>
-	      </form>
-	      <!-- This is the drop-down menu -->
-	      <form method="POST" onsubmit="return addToList(this)">
-	      <input type="hidden" name="arrNum" value="<%= arrNum %>">
-	      <select name="listType" id="dropDownBar" class="dropDownBar">
-          	<option disabled selected value id="defaultOption"> -- select an option -- </option>
-          	<option id="favoriteOption" value="f" >Favorites</option>
-          	<option id="toExploreOption" value="t">To Explore</option>
-          	<option id="doNotShowOption" value="d">Do Not Show</option>
-      	  </select>
-	      <!-- Button to add item to selected list, doesn't do anything if choice is empty -->
-	      <button type="submit" id="addToList" class="Button">Add to List</button>
-	      </form>
-	    </div>
-	 </div>
+	</div>
     <!-- Homebrew JS -->
     <script>
     // Adds the item to the specified list, if the proper one is selected

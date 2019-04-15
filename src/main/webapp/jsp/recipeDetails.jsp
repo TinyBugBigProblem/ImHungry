@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-
+  	 <%@page import="java.util.*" %>
+	<%@page import="data.*"%>
 <%@ page import="data.Recipe"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,8 +10,6 @@
     <meta charset="ISO-8859-1">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  	 <%@page import="java.util.*" %>
-	<%@page import="data.*"%>
     <% 
     String resultsOrList = (String) request.getSession().getAttribute("resultsOrList");
 	Recipe recipeVal = (Recipe) request.getAttribute("recipeVal");
@@ -25,16 +24,41 @@
   </head>
 
 
-  <body style="background-color:whitesmoke; background-image: url('http://localhost:8080/FeedMe/images/knifeAndNutsBoard.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+  <body class="text-center" style="background-color:whitesmoke; background-image: url('http://localhost:8080/FeedMe/images/knifeAndNutsBoard.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+	    <!-- Holds all the buttons -->
+	    <div id="buttonDiv" class="btn-group btn-group-lg" role="group" style="width:300px;position:absolute;top:2%; left:42%;">
+	      <!-- Brings user to a printable version of the page -->
+	      <form id="printableForm" action="/FeedMe/recipeDetailsPagePrintableVersion?arrNum=<%=arrNum%>" method= "POST">
+	      	<button id="printButton" type="submit button" class="btn btn-primary" style="width:97px;">Printable Version</button>
+	      </form>
+	      
+	      <!-- Brings user back to results page -->
+	       <form action="/FeedMe/results" method="POST">
+	        <button id="backToResults" type="submit button" class="btn btn-primary" style="width:97px;margin-left:3px">Back To Results</button>
+	      </form>
+	      <!-- This is the drop-down menu -->
+	      <form id="addForm" method="POST" onsubmit="return addToList(this)">
+	      <!-- Button to add item to selected list, doesn't do anything if choice is empty -->
+	      <button type="submit button" id="addToList" class="btn btn-primary" style="width:97px;margin-left:3px">Add to List</button>
+	      <input type="hidden" name="arrNum" value="<%= arrNum %>">
+	      <select name="listType" id="dropDownBar" class="dropDownBar">
+          	<option disabled selected value id="defaultOption"> -- select an option -- </option>
+          	<option id="favoriteOption" value="f" >Favorites</option>
+          	<option id="toExploreOption" value="t">To Explore</option>
+          	<option id="doNotShowOption" value="d">Do Not Show</option>
+          </select>
+	      </form>
+	    </div>
     <!-- Row -->
     <div class="row">
-	    <div class="col-sm-10">
+	    <div id="recipeDiv" class="col-sm-10" style="display:inline;position:relative;width:60%;margin:5% auto 5% auto;">
 	      <!-- Title -->
-	      <h1 id="recipeName"><%= recipeVal.getName() %></h1>
+	      <h1 id="recipeName"><%= recipeVal.getName() %></h1><br>
 	      <!-- Holds image, prep and cook time of recipe-->
 	      <div id="details">
 	      	<% String picUrl = recipeVal.getPictureUrl(); %>
-	        <img id="recipePicture" src="<%= picUrl %>" alt="Recipe Image"/>
+	        <img id="recipePicture" src="<%= picUrl %>" alt="Recipe Image"/><br>
+	        <div></div>
 	        <%     
 				double cookTime = recipeVal.getCookTime();
 				String renderCookTime = "";
@@ -54,11 +78,11 @@
 					renderPrepTime = Double.toString(prepTime) + " minutes";
 				}			
 	        %>
-	        <p id="prepTime"><strong>Prep Time: </strong><%=renderPrepTime %></p>
-	        <p id="cookTime"><strong>Cook Time: </strong><%=renderCookTime %></p>
+	        <p id="prepTime" style="background-color: rgba(245, 245, 245, 0.5);"><strong>Prep Time: </strong><%=renderPrepTime %></p>
+	        <p id="cookTime" style="background-color: rgba(245, 245, 245, 0.5);"><strong>Cook Time: </strong><%=renderCookTime %></p>
 	      </div>
 	      <!-- Ingredients -->
-	      <div id="ingredientsBloc" class="">
+	      <div id="ingredientsBloc" class="" style="background-color: rgba(245, 245, 245, 0.5);">
 	        <h2>Ingredients</h2>
 	        <ul id="ingredients" class="r-inline-flex clearfix">
 	          <% ArrayList<String> ingredients = (ArrayList<String>) recipeVal.getIngredients();%>
@@ -68,7 +92,7 @@
 	        </ul>
 	      </div>
 	      <!-- Instructions -->
-	      <div id="instructionsBloc" class="">
+	      <div id="instructionsBloc" class="" style="background-color: rgba(245, 245, 245, 0.5);">
 	        <h2 class="">Instructions</h2>
 	        <ol id="instructions" class="r-inline-flex clearfix">
 	          <% ArrayList<String> ins = (ArrayList<String>) recipeVal.getInstructions();%>
@@ -78,30 +102,6 @@
 	        </ol>
 	        <br/>
 	      </div>
-	    </div>
-	    <!-- Holds all the buttons -->
-	    <div class="buttons col-sm">
-	      <!-- Brings user to a printable version of the page -->
-	      <form action="/FeedMe/recipeDetailsPagePrintableVersion?arrNum=<%= arrNum%>" method= "POST">
-	      	<button id="printButton" class="Button">Printable Version</button>
-	      </form>
-	      
-	      <!-- Brings user back to results page -->
-	       <form action="/FeedMe/results" method="POST">
-	        <button id="backToResults" class="Button">Back To Results</button>
-	      </form>
-	      <!-- This is the drop-down menu -->
-	      <form method="POST" onsubmit="return addToList(this)">
-	      <input type="hidden" name="arrNum" value="<%= arrNum %>">
-	      <select name="listType" id="dropDownBar" class="dropDownBar">
-          	<option disabled selected value id="defaultOption"> -- select an option -- </option>
-          	<option id="favoriteOption" value="f" >Favorites</option>
-          	<option id="toExploreOption" value="t">To Explore</option>
-          	<option id="doNotShowOption" value="d">Do Not Show</option>
-          </select>
-	      <!-- Button to add item to selected list, doesn't do anything if choice is empty -->
-	      <button type="submit" id="addToList" class="Button">Add to List</button>
-	      </form>
 	    </div>
     </div>
     <!-- Homebrew JS -->
@@ -123,9 +123,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   </body>
-  <!-- Homebrew CSS  -->
-  <style>
-    <%@ include file="/css/buttons.css"%>
-    <%@ include file="/css/details.css"%>
-  </style>
 </html>
