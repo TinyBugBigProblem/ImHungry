@@ -53,6 +53,8 @@ public class GroceryItemTest {
 		assertFalse(groceries.remove(food5));
 		assertTrue(groceries.contains(food4));
 		assertFalse(groceries.contains(food5));
+		assertFalse(food1.equals(groceries));
+
 	}
 
 }
