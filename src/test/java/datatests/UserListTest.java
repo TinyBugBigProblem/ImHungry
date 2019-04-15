@@ -126,5 +126,18 @@ public class UserListTest {
 
 	}
 	
+	@Test
+	public void moreUserListTest() {
+		UserList list = new UserList();
+		
+		assertTrue(list.add(restaurant1));
+		assertTrue(list.add(recipe1));
+		assertEquals(list.getLists().size(), 2);
+		assertEquals(list.getArrayNum(recipe1), 0);
+		assertEquals(list.getArrayNum(recipe2), -1);
+		assertEquals(list.getArrayNum(restaurant2), -1);
+		assertEquals(list.getArrayNum(restaurant1), 0);
+	}
+	
 
 }
