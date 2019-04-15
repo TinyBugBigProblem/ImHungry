@@ -52,7 +52,7 @@
     <!-- Title -->
     <title>List Management</title>
   </head>
-  <body style="background-color:whitesmoke; background-image: url('http://localhost:8080/FeedMe/images/simpleBoard.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+  <body style="height:100%; background-color:whitesmoke; background-image: url('http://localhost:8080/FeedMe/images/breadBoard.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
     <div id="main" class="d-inline-flex p-1">
       <div class="p-2 ml-2">
       <!-- Restaurants and Recipes lists  -->
