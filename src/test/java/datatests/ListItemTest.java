@@ -35,7 +35,9 @@ public class ListItemTest {
 		assertEquals(newRes, null);
 		
 		String type = item.getType();
-		assertTrue(type == "res");
+		//assertTrue(type == "res");
+		assertEquals(type,"res");
+
 		
 		
 	}
