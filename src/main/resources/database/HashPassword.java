@@ -8,7 +8,7 @@ public class HashPassword {
 		return (power == 0 ? 1 : 128 * power_base(--power));
 	}
 
-	public long getHashPassword(String password) {
+	public String getHashPassword(String password) {
 
 		BigInteger hashedpassword = new BigInteger("0");
 
@@ -31,7 +31,7 @@ public class HashPassword {
 
 		long result = (45912 * w[3] + 35511 * w[2] + 65169 * w[1] + 4625 * w[0]) % 65521;
 
-		return result;
+		return Long.toString(result);
 	}
 	
 }
