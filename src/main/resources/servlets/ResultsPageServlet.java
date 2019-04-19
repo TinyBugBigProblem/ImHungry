@@ -114,7 +114,7 @@ public class ResultsPageServlet extends HttpServlet {
 		 * Get enough results to make up for restaurants/recipes in Do Not Show list, which will not be displayed
 		 */
 		Vector<Restaurant> restaurants;
-		if(session.getAttribute("restaurantResultsVector") == null) {
+		if(session.getAttribute("restaurantResultsVector") == null || request.getParameter("newSearch") != null) {
 			restaurants = AccessYelpAPI.YelpRestaurantSearch(searchTerm, resultCount + doNotShowRestaurants.size(), restaurantRadius);
 		}
 		else {
@@ -155,7 +155,7 @@ public class ResultsPageServlet extends HttpServlet {
 		 * Fetch a list of recipe objects made by web scraping from allrecipes.com
 		 */
 		Vector<Recipe> recipes;
-		if(session.getAttribute("recipeResultsVector") == null) {
+		if(session.getAttribute("recipeResultsVector") == null || request.getParameter("newSearch") != null) {
 			recipes  = Scrapper.search(searchTerm, resultCount + doNotShowRecipes.size());
 		}
 		else {

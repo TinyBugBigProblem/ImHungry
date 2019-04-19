@@ -5,6 +5,7 @@
 <head>
 	<%@page import="java.util.*" %>
 	<%@page import="data.*"%>
+	<%@page import="java.lang.Math"%>
 	<%
 	request.getSession().setAttribute("resultsOrList", "results");
 	String[] imageUrlVec = (String[])request.getAttribute("imageUrlVec");
@@ -164,6 +165,10 @@
 	      				</div>
 	      				
 	          		<% }} %>
+	          	 <%
+	          	   int currPage = restaurantIndex;
+	          	   int lastPage = (int) Math.ceil(restaurantArr.length/5);
+	          	 %>
           		 <!-- This is where the pagination is -->
 				 <div id="restaurantPagination" class="">
 				   <!-- 
@@ -175,7 +180,7 @@
 					 <input id="paginationRecipePage" type="hidden" name="restaurantIndex" value="<%=restaurantIndex%>">
 					 <input id="paginationRecipePage" type="hidden" name="recipeIndex" value="<%=recipeIndex%>">
 				   </form>
-				   <p>Page <%=restaurantIndex%></p>
+				   <p>Page <%=currPage+1%></p>
 				   <nav aria-label="Page pagination">
 				     <ul class="pagination">
 				     <%
@@ -183,38 +188,38 @@
 				        String disabledPage = "";
 				        // The current button is always in the third position, unless there are <= 5 pages total, or if it's below 3. or if it's less than 2 from the last possible page
 				     	// Prev button, only if not first page
-				     	if((restaurantIndex != 0)){%>
-				     		<li class="page-item"><a class="page-link" onclick="paginationForm(<%=i-1%>, <%=restaurantIndex%>, 'restaurant')">Prev</a></li>
+				     	if((currPage != 0)){%>
+				     		<li class="page-item"><a class="page-link" onclick="paginationForm(<%=restaurantIndex-1%>, <%=currPage%>, 'restaurant')">Prev</a></li>
 				     	<%}
 				     %>
 				       <% 
-				       	  // Display all pages if they are less than 5 total or if the current page is less than or equal to 3
-				       	  if(((restaurantArr.length/5) <= 5) || (restaurantIndex <= 3)){
+				       	  // Display all pages if they are less than 5 total or if the current page is less than or equal to 2
+				       	  if(lastPage <= 4 || currPage <= 2){
 				       	    for(int i = 0; i < 5; ++i){
 				       	      if(i == restaurantIndex){disabledPage = "disabled";}
 				       	    %>
-				              <li class="page-item"><a class="page-link <%=disabledPage %>" onclick="paginationForm(<%=i%>, <%=restaurantIndex%>, 'restaurant')"><%=i+1%></a></li>
+				              <li class="page-item"><a class="page-link <%=disabledPage %>" onclick="paginationForm(<%=i%>, <%=currPage%>, 'restaurant')"><%=i+1%></a></li>
 				         <% }}
 				          // Display only last 5 pages if the current page is less than two away from the last possible page
-				       	  else if((restaurantArr.length - restaurantIndex) < 2){
-				       	    for(int i = restaurantArr.length - 5; i < restaurantArr.length - 1; ++i){
-				       	      if(i == restaurantIndex){disabledPage = "disabled";}
+				       	  else if((lastPage - currPage) <= 2){
+				       	    for(int i = lastPage - 4; i <= lastPage; ++i){
+				       	      if(i == currPage){disabledPage = "disabled";}
 				       	    %>
-				              <li class="page-item"><a class="page-link <%=disabledPage %>" onclick="paginationForm(<%=i%>, <%=restaurantIndex%>, 'restaurant')"><%=i+1%></a></li>
+				              <li class="page-item"><a class="page-link <%=disabledPage %>" onclick="paginationForm(<%=i%>, <%=currPage%>, 'restaurant')"><%=i+1%></a></li>
 				       	  <%}}
 				          // Current page is in the middle of the pagination
 				       	  else{
-				       		for(int i = restaurantIndex - 2; i < restaurantIndex + 5; ++i){
+				       		for(int i = currPage - 2; i <= currPage + 2; ++i){
 				       		  if(i == restaurantIndex){disabledPage = "disabled";}
 				       		%>
-				              <li class="page-item"><a class="page-link <%=disabledPage %>" onclick="paginationForm(<%=i%>, <%=restaurantIndex%>, 'restaurant')"><%=i+1%></a></li>  
+				              <li class="page-item"><a class="page-link <%=disabledPage %>" onclick="paginationForm(<%=i%>, <%=currPage%>, 'restaurant')"><%=i+1%></a></li>  
 				       	  <%}}
 				         %>
 				       
 				     <%
 				       // Next button, only if not last page
-				       if(restaurantIndex != (restaurantArr.length/5)){%>
-				     		<li class="page-item"><a class="page-link" onclick="paginationForm(<%=i+1%>, <%=restaurantIndex%>, 'restaurant')">Next</a></li>
+				       if(currPage != lastPage){%>
+				     		<li class="page-item"><a class="page-link" onclick="paginationForm(<%=currPage+1%>, <%=currPage%>, 'restaurant')">Next</a></li>
 				     	<%}
 				       disabledPage = "";
 				     %>
@@ -302,6 +307,10 @@
 	          			</div>
 	      				</div>
 	          		<% }} %>
+		          	 <%
+		          	   currPage = recipeIndex;
+		          	   lastPage = (int) Math.ceil(recipeArr.length/5);
+		          	 %>
 					 <!-- This is where the pagination for recipes is -->
 					 <div id="recipeRagination" class="">
 					   <!-- 
@@ -313,44 +322,44 @@
 					     <input id="paginationRecipePage" type="hidden" name="restaurantIndex" value="<%=restaurantIndex%>">
 					     <input id="paginationRecipePage" type="hidden" name="recipeIndex" value="<%=recipeIndex%>">
 					   </form>
-				   <p>Page <%=recipeIndex%></p>
+				   <p>Page <%=currPage+1%></p>
 				   <nav aria-label="Page pagination">
 				     <ul class="pagination">
 				     <%
 				        // The current button is always in the third position, unless there are <= 5 pages total, or if it's below 3. or if it's less than 2 from the last possible page
 				     	// Prev button, only if not first page
-				     	if((recipeIndex != 0)){%>
-				     		<li class="page-item"><a class="page-link" onclick="paginationForm(<%=i-1%>, <%=recipeIndex%>, 'recipe')">Prev</a></li>
+				     	if((currPage != 0)){%>
+				     		<li class="page-item"><a class="page-link" onclick="paginationForm(<%=currPage-1%>, <%=currPage%>, 'recipe')">Prev</a></li>
 				     	<%}
 				     %>
 				       <% 
 				       	  // Display all pages if they are less than 5 total or if the current page is less than or equal to 3
-				       	  if(((recipeArr.length/5) <= 5) || (recipeIndex <= 3)){
+				       	  if(lastPage <= 4 || currPage <= 2){
 				       	    for(int i = 0; i < 5; ++i){
-				       	      if(i == recipeIndex){disabledPage = "disabled";}
+				       	      if(i == currPage){disabledPage = "disabled";}
 				       	    %>
-				              <li class="page-item"><a class="page-link <%=disabledPage %>" onclick="paginationForm(<%=i%>, <%=recipeIndex%>, 'recipe')"><%=i+1%></a></li>
+				              <li class="page-item"><a class="page-link <%=disabledPage %>" onclick="paginationForm(<%=i%>, <%=currPage%>, 'recipe')"><%=i+1%></a></li>
 				         <% }}
 				          // Display only last 5 pages if the current page is less than two away from the last possible page
-				       	  else if((recipeArr.length - recipeIndex) < 2){
-				       	    for(int i = recipeArr.length - 5; i < recipeArr.length - 1; ++i){
-				       	      if(i == recipeIndex){disabledPage = "disabled";}
+				       	  else if((lastPage - currPage) <= 2){
+				       	    for(int i = lastPage - 4; i <= lastPage; ++i){
+				       	      if(i == currPage){disabledPage = "disabled";}
 				       	    %>
-				              <li class="page-item"><a class="page-link <%=disabledPage %>" onclick="paginationForm(<%=i%>, <%=recipeIndex%>, 'recipe')"><%=i+1%></a></li>
+				              <li class="page-item"><a class="page-link <%=disabledPage %>" onclick="paginationForm(<%=i%>, <%=currPage%>, 'recipe')"><%=i+1%></a></li>
 				       	  <%}}
 				          // Current page is in the middle of the pagination
 				       	  else{
-				       		for(int i = recipeIndex - 2; i < recipeIndex + 5; ++i){
-				       		  if(i == recipeIndex){disabledPage = "disabled";}
+				       		for(int i = currPage - 2; i <= currPage + 2; ++i){
+				       		  if(i == currPage){disabledPage = "disabled";}
 				       		%>
-				              <li class="page-item"><a class="page-link <%=disabledPage %>" onclick="paginationForm(<%=i%>, <%=recipeIndex%>, 'recipe')"><%=i+1%></a></li>  
+				              <li class="page-item"><a class="page-link <%=disabledPage %>" onclick="paginationForm(<%=i%>, <%=currPage%>, 'recipe')"><%=i+1%></a></li>  
 				       	  <%}}
 				         %>
 				       
 				     <%
 				       // Next button, only if not last page
-				       if(recipeIndex != (recipeArr.length/5)){%>
-				     		<li class="page-item"><a class="page-link" onclick="paginationForm(<%=i+1%>, <%=recipeIndex%>, 'recipe')">Next</a></li>
+				       if(currPage != lastPage){%>
+				     		<li class="page-item"><a class="page-link" onclick="paginationForm(<%=currPage+1%>, <%=currPage%>, 'recipe')">Next</a></li>
 				     	<%}
 				       disabledPage = "";
 				     %>
