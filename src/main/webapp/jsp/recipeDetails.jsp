@@ -27,6 +27,7 @@
   <body class="text-center" style="background-color:whitesmoke; background-image: url('http://localhost:8080/FeedMe/images/knifeAndNutsBoard.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
 	    <!-- Holds all the buttons -->
 	    <div id="buttonDiv" class="btn-group btn-group-lg" role="group" style="width:300px;position:absolute;top:2%; left:42%;">
+	    
 	      <!-- Brings user to a printable version of the page -->
 	      <form id="printableForm" action="/FeedMe/recipeDetailsPagePrintableVersion?arrNum=<%=arrNum%>" method= "POST">
 	      	<button id="printButton" type="submit button" class="btn btn-primary" style="width:97px;">Printable Version</button>
@@ -34,12 +35,13 @@
 	      
 	      <!-- Brings user back to results page -->
 	       <form action="/FeedMe/results" method="POST">
-	        <button id="backToResults" type="submit button" class="btn btn-primary" style="width:97px;margin-left:3px">Back To Results</button>
+	        <button id="backToResults" type="submit button" class="btn btn-primary" style="width:97px;margin-left:15%;">Back To Results</button>
 	      </form>
+	      
 	      <!-- This is the drop-down menu -->
 	      <form id="addForm" method="POST" onsubmit="return addToList(this)">
 	      <!-- Button to add item to selected list, doesn't do anything if choice is empty -->
-	      <button type="submit button" id="addToList" class="btn btn-primary" style="width:97px;margin-left:3px">Add to List</button>
+	      <button type="submit button" id="addToList" class="btn btn-primary" style="width:97px;">Add to List</button>
 	      <input type="hidden" name="arrNum" value="<%= arrNum %>">
 	      <select name="listType" id="dropDownBar" class="dropDownBar">
           	<option disabled selected value id="defaultOption"> -- select an option -- </option>
@@ -48,16 +50,17 @@
           	<option id="doNotShowOption" value="d">Do Not Show</option>
           </select>
 	      </form>
+	      
 	    </div>
     <!-- Row -->
-    <div class="row">
+    <div class="row mt-5">
 	    <div id="recipeDiv" class="col-sm-10" style="display:inline;position:relative;width:60%;margin:5% auto 5% auto;">
 	      <!-- Title -->
 	      <h1 id="recipeName"><%= recipeVal.getName() %></h1><br>
 	      <!-- Holds image, prep and cook time of recipe-->
 	      <div id="details">
 	      	<% String picUrl = recipeVal.getPictureUrl(); %>
-	        <img id="recipePicture" src="<%= picUrl %>" alt="Recipe Image"/><br>
+	        <img class="mb-2" id="recipePicture" src="<%= picUrl %>" alt="Recipe Image"/><br>
 	        <div></div>
 	        <%     
 				double cookTime = recipeVal.getCookTime();

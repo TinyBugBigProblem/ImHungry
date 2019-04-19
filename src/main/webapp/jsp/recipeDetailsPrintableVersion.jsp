@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-
+  	 <%@page import="java.util.*" %>
+	<%@page import="data.*"%>
 <%@ page import="data.Recipe"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,8 +10,6 @@
     <meta charset="ISO-8859-1">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  	 <%@page import="java.util.*" %>
-	<%@page import="data.*"%>
     <% 
     String resultsOrList = (String) request.getSession().getAttribute("resultsOrList");
 	Recipe recipeVal = (Recipe) request.getAttribute("recipeVal");
@@ -27,14 +26,14 @@
 
   <body class="text-center" style="background-color:whitesmoke; background-image: url('http://localhost:8080/FeedMe/images/knifeAndNutsBoard.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
     <!-- Row -->
-    <div class="row">
+    <div class="row mt-5">
 	    <div id="recipeDiv" class="col-sm-10" style="display:inline;position:relative;width:60%;margin:5% auto 5% auto;">
 	      <!-- Title -->
 	      <h1 id="recipeName"><%= recipeVal.getName() %></h1><br>
 	      <!-- Holds image, prep and cook time of recipe-->
 	      <div id="details">
 	      	<% String picUrl = recipeVal.getPictureUrl(); %>
-	        <img id="recipePicture" src="<%= picUrl %>" alt="Recipe Image"/><br>
+	        <img class="mb-2" id="recipePicture" src="<%= picUrl %>" alt="Recipe Image"/><br>
 	        <div></div>
 	        <%     
 				double cookTime = recipeVal.getCookTime();
@@ -100,9 +99,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   </body>
-  <!-- Homebrew CSS  -->
-  <style>
-    <%@ include file="/css/buttons.css"%>
-    <%@ include file="/css/details.css"%>
-  </style>
 </html>
