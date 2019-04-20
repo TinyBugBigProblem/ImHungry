@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 
 <!DOCTYPE html>
-<html lang="en" style="height:100%;">
+<html lang="en">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">    
     <meta charset="ISO-8859-1">
@@ -53,10 +53,45 @@
     <title>List Management</title>
   </head>
   <body style="height:100%; background-color:whitesmoke; background-image: url('http://localhost:8080/FeedMe/images/breadBoard.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
-    <div id="main" class="d-inline-flex p-1">
-      <div class="p-2 ml-2">
+
+	<!-- Holds all the buttons -->
+	<ul class="navbar mb-5">	  
+	  <li>
+	    <img alt="navPic" class="linkToSite" src="http://localhost:8080/FeedMe/images/navPic.png">
+	  </li>
+	  <li>
+	    <!-- Takes user to the search page -->
+        <form action ="/FeedMe/jsp/search.jsp">
+      	  <button class="btn btn-primary linkToSite" id="returnToSearch" onclick="javascript:location.href = this.value;">Return to Search</button>
+        </form>
+	  </li>
+	
+	  <li>
+	    <!-- Takes the user to the results page -->
+	    <form action ="/FeedMe/results">
+          <button class="btn btn-primary linkToSite" id="backToResults" onclick="javascript:location.href = this.value;">Return to Results</button>
+        </form>
+	  </li>
+	  
+	  <li class="listManage">
+        <!-- This is the drop-down menu -->
+	    <form id="addForm" method="POST" role="group" onsubmit="return manageList(this);">
+        <!-- Button to add item to selected list, doesn't do anything if choice is empty -->
+          <button class="btn btn-primary" type="submit" id="manageListButton">Manage List</button><br>
+          <select name="listType" id="dropDownBar" class="dropDownBar">
+         	    <option disabled selected id="defaultOption"> -- select an option -- </option>
+       		    <option value ="f" >Favorites</option>
+          	    <option value ="t">To Explore</option>
+        	    <option value ="d">Do Not Show</option>
+          </select>
+        </form>
+	  </li>
+	  
+	</ul>
+    <div id="main" class="mx-auto">
+      <div class="">
       <!-- Restaurants and Recipes lists  -->
-      	<h1><%=listName %> List</h1>
+      	<h1 style="text-align:center;" class="center-text"><%=listName %> List</h1>
       		<% 
       		// Used to alternate colors
    			int j = index;
@@ -71,7 +106,8 @@
           	}
           	%>
     <!-- This is the restaurant div -->
-          	<div class="col-12" id="managementList<%=j%>">
+    
+          	<div class="col-6 mx-auto" id="managementList<%=j%>">
           	<%
           		String type = managementList.get(j).getType();
           		String name = "";
@@ -192,34 +228,9 @@
     		</div>
          <% ++j;++k;} %>
 	</div>
-    	      	
-	<!-- Takes the user to the specified list -->
-   	<div id="buttons" class="buttons align-middle p-1">
-		<form name="list" onsubmit="return manageList(this);">
-      	<select id="dropDownBar" name="listName" class="dropDownBar">
-      		<option disabled selected value> -- select an option -- </option>
-       		<option value ="f" >Favorites</option>
-        	<option value ="t">To Explore</option>
-        	<option value ="d">Do Not Show</option>
-      	</select>
-     	<!-- Button to add item to selected list, doesn't do anything if choice is empty -->
-     	<button class="Button" id="manageListButton">Manage List</button> <br>
-
-       </form>
-	  <!-- Takes user to the search page -->
-      <form action ="/FeedMe/jsp/search.jsp">
-      	<button class="Button" id="returnToSearch" onclick="javascript:location.href = this.value;">Return to Search</button>
-      </form>
-      <!-- Takes the user to the results page -->
-	   <form action ="/FeedMe/results">
-      	<button class="Button" id="backToResults" onclick="javascript:location.href = this.value;">Return to Results</button>
-      </form>
-	
-	  </div>
-	 </div>
-	 
+	 <br>
 	 <!-- This is where the pagination is -->
-	 <div id="pagination" class="">
+	 <div id="pagination" class="text-center">
 	   <!-- 
 	       Need a current page, and size of list
 	        - For this, can keep the original list on front end
@@ -228,14 +239,16 @@
 	     <input id="paginationListName" type="hidden" name="listName" value="<%=listName.toLowerCase().charAt(0)%>">
 	     <input id="paginationPage2" type="hidden" name="page" value="">
 	   </form>
-	   <p>Page <%=index%></p>
+	   <p>Page <%=index+1%></p>
 	   <nav aria-label="Page pagination">
-	     <ul class="pagination">
+	     <ul class="pagination mx-auto mb-3">
 	       <% for(int i = 0; i <= managementList.size()/5; ++i){%>
-	         <li class="page-item"><a class="page-link" onclick="paginationForm(<%=i%>)"><%=i%></a></li>
+	         <li class="page-item"><a class="page-link" onclick="paginationForm(<%=i%>)"><%=i+1%></a></li>
 	       <%} %>
 	     </ul>
 	   </nav>
+	 </div>
+
 	 </div>
 	<!-- End of html/java code -->
   </body>
@@ -264,7 +277,40 @@
 		}
 	}
 </script>
-  <style>
-    <%@ include file="/css/buttons.css"%>
-  </style>
+<style>
+.navbar {
+    display:table;
+    border-collapse:collapse;
+    border-radius:.25em;
+    box-shadow:#d0d0d0 0px 0px 0px 1px;
+    background-color: rgba(108, 122, 137, .75);
+    float: left;
+    width: 100%;
+}
+ul {
+  width: 25%;
+  list-style-type: none;
+  margin: 0;
+  width: 60px;
+} 
+
+li {
+  display: block;
+  float:left;
+}
+button{
+    width:100%;
+}
+.listManage{
+  position: relative;
+  float: right;
+}
+.linkToSite{
+  height:63px;
+  border-right: 1px solid #bbb;
+}
+li img{
+  width: 50px;
+}  
+</style>
 </html>

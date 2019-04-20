@@ -26,7 +26,7 @@
 
   <body class="text-center" style="background-color:whitesmoke; background-image: url('http://localhost:8080/FeedMe/images/knifeAndNutsBoard.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
 	    <!-- Holds all the buttons -->
-	    <div id="buttonDiv" class="btn-group btn-group-lg" role="group" style="width:300px;position:absolute;top:2%; left:42%;">
+	    <div id="buttonDiv" class="btn-group btn-group-lg" role="group" style="width:300px;position:relative;margin:1% auto;">
 	    
 	      <!-- Brings user to a printable version of the page -->
 	      <form id="printableForm" action="/FeedMe/recipeDetailsPagePrintableVersion?arrNum=<%=arrNum%>" method= "POST">
@@ -53,7 +53,7 @@
 	      
 	    </div>
     <!-- Row -->
-    <div class="row mt-5">
+    <div class="row">
 	    <div id="recipeDiv" class="col-sm-10" style="display:inline;position:relative;width:60%;margin:5% auto 5% auto;">
 	      <!-- Title -->
 	      <h1 id="recipeName"><%= recipeVal.getName() %></h1><br>

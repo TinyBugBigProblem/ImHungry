@@ -31,7 +31,7 @@
 
   <body class="text-center" style="background-color:whitesmoke; background-image: url('http://localhost:8080/FeedMe/images/knifeAndNutsBoard.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
 	    <!-- Holds all the buttons -->
-	    <div id="buttonDiv" class="btn-group btn-group-lg" role="group" style="width:300px;position:absolute;top:2%; left:42%; margin-bottom:15%;">
+	    <div id="buttonDiv" class="btn-group btn-group-lg" role="group" style="width:300px;position:relative;margin:1% auto;">
 	    
 	      <!-- Brings user to a printable version of the page -->
 	      <form id="printableForm" action="/FeedMe/recipeDetailsPagePrintableVersion?arrNum=<%=arrNum%>" method= "POST">
@@ -40,7 +40,7 @@
 	      
 	      <!-- Brings user back to results page -->
 	       <form action="/FeedMe/results" method="POST">
-	        <button id="backToResults" type="submit button" class="btn btn-primary" style="width:97px;margin-left:15%;">Back To Results</button>
+	        <button id="backToResults" type="submit button" class="btn btn-primary" style="width:97px;margin-left: 20%;">Back To Results</button>
 	      </form>
 	      
 	      <!-- This is the drop-down menu -->
@@ -59,7 +59,7 @@
 	    </div>
     <!-- Row -->
     <div class="row">
-	    <div class="col-sm-10" style="display:inline-block;width:1000px; margin:10% auto; background-color: rgba(245, 245, 245, 0.5);">
+	    <div class="col-sm-10" style="display:inline-block;width:1000px; margin:5% auto; background-color: rgba(245, 245, 245, 0.5);">
 	       <!-- Title -->
 	       <h1 id="restaurantName"><%= restaurantVal.getName() %></h1>
 	       <!-- Holds image, prep and cook time of recipe-->
