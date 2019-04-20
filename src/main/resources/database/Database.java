@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.json.simple.JSONObject;
+
 public class Database {
 	
 	private Connection conn = null;
@@ -42,8 +44,10 @@ public class Database {
 	}
 	
 	/* Handle User Information */
-	public boolean signUpUser(String username, String password) {
+	public JSONObject signUpUser(String username, String password) {
 		this.connection(); //connecting to database
+		boolean status = false;
+		String comment = "";
 
 		if (!this.findExistedUser(username)) {
 			try {
@@ -60,15 +64,22 @@ public class Database {
 				this.closeOperators();
 				this.disconnectMySQL();
 			}
-			System.out.println("User: " + username + " SignUp Successfully");
-			return true;
+			System.out.println("User: " + username + " SignUp Successfully.");
+			status =  true;
+			comment = "User: " + username + " SignUp Successfully.";
+			return getJsonObject(status, comment);
 		}
 		System.out.println("Error: Username has been used.");
-		return false;
+		status =  false;
+		comment = "Username: " + username + " has been used.";
+		
+		return getJsonObject(status, comment);
 	}
 	
-	public boolean signInUser(String username, String password) {
+	public JSONObject signInUser(String username, String password) {
 		this.connection(); //connecting to database
+		boolean status = false;
+		String comment = "";
 		
 		try {
 			st = conn.createStatement();
@@ -81,10 +92,14 @@ public class Database {
 						+ "' AND UserPassword='" + hashedpasswrod + "';");
 				while (rs2.next()) {
 					System.out.println("User: " + username + " Login Successfully.");
-					return true;
+					status = true;
+					comment = "User: " + username + " Login Successfully.";
+					return getJsonObject(status, comment);
 				}
-				System.out.println("Password Incorrect.");
-				return false;
+				System.out.println("Password is Incorrect.");
+				status = false;
+				comment = "Password is Incorrect.";
+				return getJsonObject(status, comment);
 			}
 		} catch (SQLException sqle) {
 			System.out.println("Sign-In User Exception: " + sqle.getMessage());
@@ -93,7 +108,18 @@ public class Database {
 			this.disconnectMySQL();
 		}
 		System.out.println("Username does not exist.");
-		return false;
+		status =  false;
+		comment = "Username: " + username + " does not exist.";
+		
+		return getJsonObject(status, comment);
+	}
+	
+	private JSONObject getJsonObject(boolean status, String comment) {
+		JSONObject obj = new JSONObject();
+		obj.put("Status", status); // return boolean
+		obj.put("Comment", comment); // return comment
+		
+		return obj;
 	}
 	
 	private void closeOperators() {
