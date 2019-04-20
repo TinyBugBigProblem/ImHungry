@@ -1,0 +1,13 @@
+DROP DATABASE IF EXISTS Info;
+CREATE DATABASE Info;
+USE Info;
+
+CREATE TABLE Userinfo(
+	SaveID INT(11) AUTO_INCREMENT PRIMARY KEY,
+	Username VARCHAR(255),
+	UserPassword VARCHAR(255)
+);
+
+INSERT INTO Userinfo (Username, UserPassword)
+	VALUES ('Vincent', '53195'); 
+
