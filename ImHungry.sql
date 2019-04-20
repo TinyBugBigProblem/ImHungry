@@ -11,9 +11,9 @@ CREATE TABLE IF NOT EXISTS Userinfo(
 CREATE TABLE IF NOT EXISTS GroceryList(	
 	GroceryID INT(11) PRIMARY KEY UNIQUE AUTO_INCREMENT,
     GroceryName VARCHAR(255),
-	Amount DOUBLE(16,4),
+	Amount DOUBLE(16,2),
 	Units VARCHAR(255),
     Qualifier VARCHAR(255),
-    Cost DOUBLE(16,4),
+    Cost DOUBLE(16,2),
     Username VARCHAR(255)
 );
