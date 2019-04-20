@@ -16,6 +16,8 @@ public class forTest {
 		System.out.println("Sign Up User: \n" + d.signUpUser("Vincents", password));
 		System.out.println("Sign In User: \n" + d.signInUser("Vincent", password));
 		
+		System.out.println("Add Grocery: \n" + d.addGroceryItem("Salt", 1.1, "spoon", "What is this", 2.2, "Vincents"));
+		System.out.println("Remove Grocery: \n" + d.removeGroceryItem("Saslt", 1.1, "spoon", "What is this", 2.2, "Vincents"));
 	}
 	
 }

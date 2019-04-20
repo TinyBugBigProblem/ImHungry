@@ -69,6 +69,9 @@ public class Database {
 			comment = "User: " + username + " SignUp Successfully.";
 			return getJsonObject(status, comment);
 		}
+		this.closeOperators();
+		this.disconnectMySQL();
+		
 		System.out.println("Error: Username has been used.");
 		status =  false;
 		comment = "Username: " + username + " has been used.";
@@ -120,6 +123,99 @@ public class Database {
 		obj.put("Comment", comment); // return comment
 		
 		return obj;
+	}
+	
+	/* Handle Grocery Information */
+	private boolean findExistedGroceryItem(String groceryname) { // check if groceryname exists
+		boolean existed = false;
+		try {
+			st = conn.createStatement();
+			rs = st.executeQuery("SELECT * FROM GroceryList WHERE GroceryName='" + groceryname + "';");
+			while (rs.next()) {
+				String gname = rs.getString("GroceryName");
+				if (gname.equals(groceryname))
+					existed = true;
+			}
+		} catch (SQLException sqle) {
+			System.out.println("Sign-In User Exception: " + sqle.getMessage());
+		} 
+		return existed;
+	}
+	
+	public JSONObject addGroceryItem(String groceryname, double amount, String units, String qualifier, double cost, String username) {
+		this.connection(); //connecting to database
+		boolean status = false;
+		String comment = "";
+
+		if (!this.findExistedGroceryItem(groceryname)) {
+			try {
+				ps = conn.prepareStatement(
+						"insert into GroceryList(GroceryName, Amount, Units, Qualifier, Cost, Username) VALUES(?, ?, ?, ?, ?, ?)");
+
+				ps.setString(1, groceryname);
+				ps.setDouble(2, amount);
+				ps.setString(3, units);
+				ps.setString(4, qualifier);
+				ps.setDouble(5, cost);
+				ps.setString(6, username);
+				ps.executeUpdate();
+				
+			} catch (SQLException sqle) {
+				System.out.println("Add Grocery Exception :" + sqle.toString());
+			} finally {
+				this.closeOperators();
+				this.disconnectMySQL();
+			}
+			System.out.println("Grocery: " + groceryname + " is added.");
+			status =  true;
+			comment = "Grocery: " + groceryname + " is added.";
+			return getJsonObject(status, comment);
+		}
+		this.closeOperators();
+		this.disconnectMySQL();
+		
+		System.out.println("Error: Grocery is existed.");
+		status =  false;
+		comment = "Grocery: " + groceryname + " is existed.";
+		
+		return getJsonObject(status, comment);
+	}
+
+	public JSONObject removeGroceryItem(String groceryname, double amount, String units, String qualifier, double cost, String username) {
+		this.connection(); //connecting to database
+		boolean status = false;
+		String comment = "";
+
+		if (findExistedGroceryItem(groceryname)) {
+			try {
+				String cmd = "DELETE FROM GroceryList WHERE GroceryName = ? AND Amount = ? AND Units = ? AND Qualifier = ? AND Cost = ? AND Username = ?";
+				ps = conn.prepareStatement(cmd);
+				ps.setString(1, groceryname);
+				ps.setDouble(2, amount);
+				ps.setString(3, units);
+				ps.setString(4, qualifier);
+				ps.setDouble(5, cost);
+				ps.setString(6, username);
+				ps.executeUpdate();
+				
+			} catch (SQLException sqle) {
+				System.out.println("Remove GroceryItem Exception: " + sqle.getMessage());
+			} finally {
+				this.closeOperators();
+				this.disconnectMySQL();
+			}
+			System.out.println("Remove GroceryItem: " + groceryname + " Successfully.");
+			status = true;
+			comment = "Remove GroceryItem: " + groceryname + " Successfully.";
+			return getJsonObject(status, comment);
+		}
+		this.closeOperators();
+		this.disconnectMySQL();
+		
+		System.out.println("GroceryItem: " + groceryname + " does not exist.");
+		status = false;
+		comment = "GroceryItem: " + groceryname + " does not exist.";
+		return getJsonObject(status, comment);
 	}
 	
 	private void closeOperators() {
