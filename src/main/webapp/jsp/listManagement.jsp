@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height:100%;">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">    
     <meta charset="ISO-8859-1">
@@ -75,10 +75,10 @@
 	  
 	  <li class="listManage">
         <!-- This is the drop-down menu -->
-	    <form id="addForm" method="POST" role="group" onsubmit="return manageList(this);">
+	    <form name="list" id="addForm" method="POST" role="group" onsubmit="return manageList(this);">
         <!-- Button to add item to selected list, doesn't do anything if choice is empty -->
           <button class="btn btn-primary" type="submit" id="manageListButton">Manage List</button><br>
-          <select name="listType" id="dropDownBar" class="dropDownBar">
+          <select name="listName" id="dropDownBar" class="dropDownBar">
          	    <option disabled selected id="defaultOption"> -- select an option -- </option>
        		    <option value ="f" >Favorites</option>
           	    <option value ="t">To Explore</option>
@@ -107,7 +107,7 @@
           	%>
     <!-- This is the restaurant div -->
     
-          	<div class="col-6 mx-auto" id="managementList<%=j%>">
+          	<div class="col-4 mx-auto" id="managementList<%=j%>">
           	<%
           		String type = managementList.get(j).getType();
           		String name = "";
@@ -291,7 +291,6 @@ ul {
   width: 25%;
   list-style-type: none;
   margin: 0;
-  width: 60px;
 } 
 
 li {

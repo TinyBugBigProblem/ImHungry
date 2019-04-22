@@ -41,37 +41,41 @@
 </head>
 
 <body style="background-color:whitesmoke; background-image: url('http://localhost:8080/FeedMe/images/knifeAndFoodBoard.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+	<ul class="navbar mb-5">	  
+	  <li>
+	    <img alt="navPic" class="linkToSite" src="http://localhost:8080/FeedMe/images/navPic.png">
+	  </li>
+	  <li>
+	    <!-- Takes user to the search page -->
+        <form action ="/FeedMe/jsp/search.jsp">
+      	  <button class="btn btn-primary linkToSite" id="returnToSearch" onclick="javascript:location.href = this.value;">Return to Search</button>
+        </form>
+	  </li>
+	  
+	  <li class="listManage">
+        <!-- This is the drop-down menu -->
+	    <form name="list" id="listDropDown" method="POST" role="group" onsubmit="return manageList(this);">
+        <!-- Button to add item to selected list, doesn't do anything if choice is empty -->
+          <button class="btn btn-primary" type="submit" id="addToList">Manage List</button><br>
+          <select name="listName" id="listName" class="dropDownBar">
+       		    <option id="nOptionButton" disabled selected value> -- select an option -- </option>
+     			<option id="fOptionButton" value ="f">Favorites</option>
+    		    <option id="tOptionButton" value ="t">To Explore</option>
+    			<option id="dOptionButton" value ="d">Do Not Show</option>
+          </select>
+        </form>
+	  </li>
+	  
+	</ul>
 	<div class="container mt-2">
 		<!-- Row for collage and buttons -->
-		<div class = "row align-items-start">
-			<div class="col-sm-2 order-3">
-		 		<div class="buttons">
-		 			<form id="listDropDown" name="list" onsubmit="return manageList(this);">
-      					<select id="listName" name="listName" class="dropDownBar">
-      					<option id="nOptionButton" disabled selected value> -- select an option -- </option>
-       				    <option id="fOptionButton" value ="f">Favorites</option>
-        				<option id="tOptionButton" value ="t">To Explore</option>
-        				<option id="dOptionButton" value ="d">Do Not Show</option>
-      					</select> <br>
-      					<!-- Button to add item to selected list, doesn't do anything if choice is empty -->
-     					<button id="addToList" class="Button">Manage Lists</button> <br>
-
-      				</form>
-
-
-      				<form action ="/FeedMe/jsp/search.jsp">
-      					<button id="returntoSearch" onclick="javascript:location.href = this.value;" class="Button">Return to Search</button>
-      				</form>
-
-		 		</div>
-		 	</div>
-
-		 	<div id="collageDiv" style=" max-width: 60vw; min-width:40vw; max-height: 50vh;text-align: center; min-height: 35vh; border: 2px solid black;" class="col-sm-6 order-2 pt-3 overflow-hidden">
+		<div class = "align-items-start mx-auto">
+		 	<div id="collageDiv" style="background-color: rgba(245, 245, 245, 0.5); max-width: 60vw; min-width:40vw; max-height: 50vh;text-align: center; min-height: 35vh;" class="py-5 overflow-hidden mx-auto">
 		 	<% for (int i = 0; i < 10; i++) {
 		 		Random rand = new Random();
 		 		int angle = rand.nextInt(90) -45;
 		 	%>
-			<img style =" vertical-align: middle; transform: rotate(<%=angle%>deg);" src="<%=imageUrlVec[i] %>" height="100" width="100">
+			<img style ="vertical-align: middle; transform: rotate(<%=angle%>deg);" src="<%=imageUrlVec[i] %>" height="200px" width="200px" class="center-block">
 		 	<% } %>
 		 	<%--
 
@@ -81,7 +85,6 @@
 		 	--%>
 
 			</div>
-			<div class="col-sm-3 order-1"></div>
 		</div>
 		<div style="background-color: rgba(245, 245, 245, 0.5);">
 			<!-- Search For xx  -->
@@ -180,8 +183,8 @@
 					 <input id="paginationRecipePage" type="hidden" name="restaurantIndex" value="<%=restaurantIndex%>">
 					 <input id="paginationRecipePage" type="hidden" name="recipeIndex" value="<%=recipeIndex%>">
 				   </form>
-				   <p>Page <%=currPage+1%></p>
-				   <nav aria-label="Page pagination">
+				   <p class="text-center">Page <%=currPage+1%></p>
+				   <nav aria-label="Page pagination" style="padding: 0px 30%;">
 				     <ul class="pagination">
 				     <%
 				        // Disable page if true
@@ -322,8 +325,9 @@
 					     <input id="paginationRecipePage" type="hidden" name="restaurantIndex" value="<%=restaurantIndex%>">
 					     <input id="paginationRecipePage" type="hidden" name="recipeIndex" value="<%=recipeIndex%>">
 					   </form>
-				   <p>Page <%=currPage+1%></p>
-				   <nav aria-label="Page pagination">
+					   
+				   <p class="text-center">Page <%=currPage+1%></p>
+				   <nav aria-label="Page pagination" style="padding: 0px 30%;">
 				     <ul class="pagination">
 				     <%
 				        // The current button is always in the third position, unless there are <= 5 pages total, or if it's below 3. or if it's less than 2 from the last possible page
@@ -402,3 +406,39 @@ function manageList(form){
 	}
 } 
 </script>
+<style>
+.navbar {
+    display:table;
+    border-collapse:collapse;
+    border-radius:.25em;
+    box-shadow:#d0d0d0 0px 0px 0px 1px;
+    background-color: rgba(108, 122, 137, .75);
+    width: 100%;
+}
+.navbar ul {
+  width: 25%;
+  list-style-type: none;
+  margin: 0;
+} 
+
+li {
+  display: block;
+  float:left;
+}
+button{
+    width:100%;
+}
+.listManage{
+  position: relative;
+  height: 63px;
+  float: right;
+}
+.linkToSite{
+  height:63px;
+  border-right: 1px solid #bbb;
+}
+li img{
+  width: 50px;
+}  
+</style>
+</html>
