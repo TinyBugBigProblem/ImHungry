@@ -9,6 +9,12 @@
 <meta charset="ISO-8859-1">
 <title>Login</title>
 </head>
+<%@page import="java.util.*" %>
+<%@page import="data.*"%>
+<%
+	String status = (String) request.getAttribute("returnStatus");
+	String comment = (String) request.getAttribute("returnComment");
+%>
 <body>
   <!-- Holds all the buttons -->
   <ul class="navbar mb-5">	  
@@ -49,6 +55,16 @@
 		<div id="loginDiv" class="card mx-auto">
 			<div class="card-body">
 				<h1 class="text-center" style="color:white;">Login</h1>
+				
+		    	<%if(status != null && status.equals("false")){ %>
+	 			<div id="loginBadStatus" class="mx-auto text-center" style="color:red;">
+	 				<p><%=comment %></p>
+	 			</div>
+	 			<%}else if(status != null && status.equals("true")){ %>
+	 			<div id="loginGoodStatus" class="mx-auto text-center" style="color:green;">
+	 				<p><%=comment %></p>
+	 			</div>
+	 			<%}%>
 				<form method="POST" action="/FeedMe/login">
 				    <input name="loginOrRegister" value="login" type="hidden" value="login">
 					<div class="input-group form-group">

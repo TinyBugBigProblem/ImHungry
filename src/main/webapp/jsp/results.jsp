@@ -198,7 +198,7 @@
 				       <% 
 				       	  // Display all pages if they are less than 5 total or if the current page is less than or equal to 2
 				       	  if(lastPage <= 4 || currPage <= 2){
-				       	    for(int i = 0; i < 5; ++i){
+				       	    for(int i = 0; i <= lastPage; ++i){
 				       	      if(i == restaurantIndex){disabledPage = "disabled";}
 				       	    %>
 				              <li class="page-item"><a class="page-link <%=disabledPage %>" onclick="paginationForm(<%=i%>, <%=currPage%>, 'restaurant')"><%=i+1%></a></li>
@@ -339,7 +339,7 @@
 				       <% 
 				       	  // Display all pages if they are less than 5 total or if the current page is less than or equal to 3
 				       	  if(lastPage <= 4 || currPage <= 2){
-				       	    for(int i = 0; i < 5; ++i){
+				       	    for(int i = 0; i <= lastPage; ++i){
 				       	      if(i == currPage){disabledPage = "disabled";}
 				       	    %>
 				              <li class="page-item"><a class="page-link <%=disabledPage %>" onclick="paginationForm(<%=i%>, <%=currPage%>, 'recipe')"><%=i+1%></a></li>
