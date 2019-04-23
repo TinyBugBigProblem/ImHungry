@@ -102,14 +102,23 @@ public class Database {
 		String[] response = new String[2];
 		
 		try {
-			st = conn.createStatement();
-			rs = st.executeQuery("SELECT * FROM Userinfo WHERE Username='" + username + "';");
-			// hash it
+			String sqlu = "SELECT * FROM Userinfo WHERE Username = ?";
+			ps = conn.prepareStatement(sqlu);
+			ps.setString(1, username);
+			rs = ps.executeQuery();
+			//st = conn.createStatement();
+			//rs = st.executeQuery("SELECT * FROM Userinfo WHERE Username='" + username + "';");
+			// hash password
 			HashPassword hash = new HashPassword();
 			String hashedpasswrod = hash.getHashPassword(password);
 			while (rs.next()) {
-				ResultSet rs2 = st.executeQuery("SELECT * FROM Userinfo WHERE Username='" + username
-						+ "' AND UserPassword='" + hashedpasswrod + "';");
+				String sql = "SELECT * FROM Userinfo WHERE Username = ? AND UserPassword = ?";
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, username);
+				ps.setString(2, hashedpasswrod);
+				//ResultSet rs2 = st.executeQuery("SELECT * FROM Userinfo WHERE Username='" + username
+				//		+ "' AND UserPassword='" + hashedpasswrod + "';");
+				ResultSet rs2 = ps.executeQuery();
 				while (rs2.next()) {
 					System.out.println("User: " + username + " Login Successfully.");
 					status = "true";
@@ -368,6 +377,33 @@ public class Database {
 		
 		return userlist;
 	}
+	
+	// Update Favorite List Order
+//	public void updateFavoriteListOrder(ArrayList<ListItem> listitems, UserInfo user) {
+//		this.connection(); //connecting to database
+//		
+//		try {
+//			String cmd = "DELETE FROM FavoriteRestaurant WHERE Username = '" + user.getUsername() + "';";
+//			ps = conn.prepareStatement(cmd);
+//			ps.executeUpdate();
+//		} catch (SQLException sqle) {
+//			System.out.println("Remove FavoriteRestaurant Exception: " + sqle.getMessage());
+//		} finally {
+//			this.closeOperators();
+//		}
+//		
+//		for(int i = 0; i < listitems.size(); i++) {
+//			
+//		}
+//		
+//		
+//		this.disconnectMySQL();
+//		
+//		for(GroceryItem groceryitem: newgroverylist.getGroceries()) {
+//			addGroceryItem(groceryitem, user);
+//		}
+//		
+//	}
 	
 	/* Handle Do not show ListItem */
 	public String[] addDoNotShowListItem(ListItem listitem, UserInfo user) {
