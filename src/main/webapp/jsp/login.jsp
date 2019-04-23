@@ -45,32 +45,24 @@
   </ul>
   <div class="container">
     <div>
-		<div class="card mx-auto">
-			<div class="card-header">
-				<h3>Sign In</h3>
-				<div class="d-flex justify-content-end social_icon">
-					<span><i class="fab fa-facebook-square"></i></span>
-					<span><i class="fab fa-google-plus-square"></i></span>
-					<span><i class="fab fa-twitter-square"></i></span>
-				</div>
-			</div>
+    	<!-- Login form default -->
+		<div id="loginDiv" class="card mx-auto">
 			<div class="card-body">
-				<form>
+				<h1 class="text-center" style="color:white;">Login</h1>
+				<form method="POST" action="/FeedMe/login">
+				    <input name="loginOrRegister" value="login" type="hidden" value="login">
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-user"></i></span>
 						</div>
-						<input type="text" class="form-control" placeholder="username">
+						<input name="username" type="text" class="form-control" placeholder="username">
 						
 					</div>
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-key"></i></span>
 						</div>
-						<input type="password" class="form-control" placeholder="password">
-					</div>
-					<div class="row align-items-center remember">
-						<input type="checkbox">Remember Me
+						<input name="password" type="password" class="form-control" placeholder="password">
 					</div>
 					<div class="form-group">
 						<input type="submit" value="Login" class="btn float-right login_btn">
@@ -79,10 +71,37 @@
 			</div>
 			<div class="card-footer">
 				<div class="d-flex justify-content-center links">
-					Don't have an account?<a href="#">Sign Up</a>
+					Don't have an account?<a href="#" onclick="return openRegisterForm()">Sign Up</a>
 				</div>
-				<div class="d-flex justify-content-center">
-					<a href="#">Forgot your password?</a>
+			</div>
+		</div>
+		<!-- Register form, default is 0 width and transparent -->
+		<div id="registerDiv" class="card mx-auto" style="width:0px;height:0px;opacity:0;">
+			<div class="card-body">
+				<h1 class="text-center" style="color:white;">Sign Up</h1>
+				<form method="POST" action="/FeedMe/login">
+				    <input name="loginOrRegister" value="register" type="hidden" value="register">
+					<div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-user"></i></span>
+						</div>
+						<input name="username" type="text" class="form-control" placeholder="Enter username">
+						
+					</div>
+					<div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-key"></i></span>
+						</div>
+						<input name="password" type="password" class="form-control" placeholder="Enter password">
+					</div>
+					<div class="form-group">
+						<input type="submit" value="Register" class="btn float-right login_btn">
+					</div>
+				</form>
+			</div>
+			<div class="card-footer">
+				<div class="d-flex justify-content-center links">
+					Already have an account?<a href="#" onclick="return openLoginForm()">Sign In</a>
 				</div>
 			</div>
 		</div>
@@ -90,6 +109,22 @@
   </div>
 </body>
 
+<script>
+function openRegisterForm(){
+	var loginForm = document.getElementById("loginDiv");
+	loginForm.style = "width:0px;height:0px;opacity:0;";
+	var registerForm = document.getElementById("registerDiv");
+	registerForm.style = "";
+}
+function openLoginForm(){
+	var loginForm = document.getElementById("loginDiv");
+	loginForm.style = "";
+	var registerForm = document.getElementById("registerDiv");
+	registerForm.style = "width:0px;height:0px;opacity:0;";
+}
+
+
+</script>
 
 <style>
 .login{
@@ -148,7 +183,6 @@ font-family: 'Numans', sans-serif;
 
 
 .card{
-height: 370px;
 margin-top: auto;
 margin-bottom: auto;
 width: 400px;

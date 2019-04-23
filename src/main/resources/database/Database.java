@@ -16,10 +16,13 @@ public class Database {
 	private ResultSet rs = null;
 	private PreparedStatement ps = null;
 	
+	public Database(){
+	  connection();
+	}
 	private void connection() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Info?user=root&password=root&useSSL=false");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Info?user=root&password=root");
 		} catch (SQLException sqle) {
 			System.out.println("SQLException: " + sqle.getMessage());
 		} catch (ClassNotFoundException cnfe) {
@@ -44,9 +47,9 @@ public class Database {
 	}
 	
 	/* Handle User Information */
-	public JSONObject signUpUser(String username, String password) {
+	public String[] signUpUser(String username, String password) {
 		this.connection(); //connecting to database
-		boolean status = false;
+		String status = "false";
 		String comment = "";
 
 		if (!this.findExistedUser(username)) {
@@ -65,18 +68,23 @@ public class Database {
 				this.disconnectMySQL();
 			}
 			System.out.println("User: " + username + " SignUp Successfully.");
-			status =  true;
+			status =  "true";
 			comment = "User: " + username + " SignUp Successfully.";
-			return getJsonObject(status, comment);
+			String[] stringArray = new String[2];
+	    stringArray[0] = status;
+	    stringArray[1] = comment;
+			return stringArray;
 		}
 		this.closeOperators();
 		this.disconnectMySQL();
 		
 		System.out.println("Error: Username has been used.");
-		status =  false;
+		status =  "false";
 		comment = "Username: " + username + " has been used.";
-		
-		return getJsonObject(status, comment);
+		String[] stringArray = new String[2];
+		stringArray[0] = status;
+		stringArray[1] = comment;
+		return stringArray;
 	}
 	
 	public JSONObject signInUser(String username, String password) {
