@@ -9,22 +9,26 @@
 	<title id="searchTitle">Search Page</title>
 </head>
 
-<body style="background-color:whitesmoke;">
+<body style="background-color:lightyellow;">
 <div class="container">
   <div class="row">
     <div class="col">
     </div>
     <div class="col-6">
-      	<h2 class="text-center">I'm Hungry</h2>
-      	
-      <div class="col-md-12 text-center"> 
-    	<form id="form" onsubmit= "return changeEmoji(this);"> <!-- Calls the js function that changes the emoji -->
-  		 <input id="userInput" type="text" name="q" placeholder="Enter Food">
-  		 <input id="searchTermTest" title="Number of items to show in results" type="text" name="n" value="" placeholder="Enter number of items to show in results">
-  		 <input id="restaurantRadius" title="Radius in miles for restaurants" type="text" name="r" value="" placeholder="Enter radius, in miles, to show restaurant">
+    <br>
+      	<h1 class="text-center">I'm Hungry</h1>
+      	<form id="form" onsubmit= "return changeEmoji(this);"> <!-- Calls the js function that changes the emoji -->
+      <div class="col-md-12 text-center">
+  		 <br>
+  		 <input id="userInput" type="text" name="q" title="Enter Food">
+  		 <br>
+  		 <input id="searchTermTest" title="Number of items to show in results" type="text" name="n" value="" title="Enter number of items to show in results">
+  		 <br>
+  		 <input id="restaurantRadius" title="Radius in miles for restaurants" type="text" name="r" value="" title="Enter radius, in miles, to show restaurant">
+  			<br>
   			<br>
   			<img src="https://images.emojiterra.com/twitter/v11/512px/1f620.png" id ="emoji" height = 20 width = 20>
-  			<button class="text-center" type="submit" value="Feed Me" name ="feedMeButton"id="feedMeButton" style="color: red;">Feed Me!</button>
+  			<button class="text-center" type="submit" value="Feed Me" name ="feedMeButton"id="feedMeButton" style="color: lightyellow; background-color: black">Feed Me!</button>
   		</form>
   	  </div>
 		

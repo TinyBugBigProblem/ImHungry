@@ -39,8 +39,8 @@ public class ResultsPageServlet extends HttpServlet {
 		 * Else, retrieve UserList array from session.
 		 */
 		if (userLists == null) {
-			userLists = new UserList[3];
-			for (int i = 0; i < 3; ++i) {
+			userLists = new UserList[4];
+			for (int i = 0; i < 4; ++i) {
 				userLists[i] = new UserList();
 			}
 			session.setAttribute("userLists", userLists);

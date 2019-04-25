@@ -16,6 +16,6 @@ public class SearchPageServlet extends HttpServlet {
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
 		RequestDispatcher dispatch = request.getRequestDispatcher("/jsp/search.jsp");
-		dispatch.forward(request,  response);			
+		dispatch.forward(request,  response);
 	}
 }

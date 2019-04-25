@@ -34,7 +34,7 @@
     ArrayList<ListItem> managementList = null;
     // Check if the list exists
     if(lists != null){ // If it does, get the two different lists from it
-    	  restaurantArr = lists.getRestaurants();
+    	restaurantArr = lists.getRestaurants();
         recipeArr = lists.getRecipes();
         managementList = lists.getLists();
     }
@@ -184,6 +184,7 @@
 	                		<option value="f">Favorites</option>
     	            		<option value="t">To Explore</option>
         	        		<option value="d">Do Not Show</option>
+        	        		<option value="g">Grocery</option>
                 			<option value="" disabled>---- Remove Item from list ----</option>
             	    		<option value="r">Trash</option>
                 		</select>
@@ -201,6 +202,7 @@
        		<option value ="f" >Favorites</option>
         	<option value ="t">To Explore</option>
         	<option value ="d">Do Not Show</option>
+        	<option value ="g">Grocery</option>
       	</select>
      	<!-- Button to add item to selected list, doesn't do anything if choice is empty -->
      	<button class="Button" id="manageListButton">Manage List</button> <br>

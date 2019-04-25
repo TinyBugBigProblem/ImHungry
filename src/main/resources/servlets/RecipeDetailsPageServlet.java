@@ -24,7 +24,7 @@ public class RecipeDetailsPageServlet extends HttpServlet {
 		//  send the user back to the search page
 		Recipe[] recipeResults = (Recipe[]) session.getAttribute("recipeResults");
 		if (recipeResults == null) {
-			// if recipe results are not stored in session (meaning session has expired), 
+			//  if recipe results are not stored in session (meaning session has expired),
 			//  send the user back to the search page
 			RequestDispatcher dispatch = request.getRequestDispatcher("/jsp/search.jsp");
 			dispatch.forward(request,  response);
@@ -43,7 +43,8 @@ public class RecipeDetailsPageServlet extends HttpServlet {
 			case 'f':
 				// Adding to favorite list
 				if (!userLists[1].contains(r) && !userLists[2].contains(r)) {
-					userLists[0].add(r);					
+					userLists[0].add(r);
+					userLists[3].add(r);
 				}
 				break;
 			case 'd':
@@ -56,6 +57,13 @@ public class RecipeDetailsPageServlet extends HttpServlet {
 				// adding to To Explore list
 				if (!userLists[0].contains(r) && !userLists[1].contains(r)) {
 					userLists[2].add(r);
+					userLists[3].add(r);
+				}
+				break;
+			case 'g':
+				// adding to Grocery list
+				if (!userLists[0].contains(r) && !userLists[1].contains(r) && !userLists[2].contains(r)) {
+					userLists[3].add(r);
 				}
 				break;
 			}
@@ -67,6 +75,6 @@ public class RecipeDetailsPageServlet extends HttpServlet {
 		request.setAttribute("arrNum", arrNum);
 
 		RequestDispatcher dispatch = request.getRequestDispatcher("/jsp/recipeDetails.jsp");
-		dispatch.forward(request,  response);				
+		dispatch.forward(request,  response);
 	}
 }

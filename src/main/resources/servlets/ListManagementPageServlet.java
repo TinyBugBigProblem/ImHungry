@@ -55,11 +55,14 @@ public class ListManagementPageServlet extends HttpServlet {
 			else if(sFromList.equals("d")) {
 				listNum = 1;
 			}
-			else if(sFromList.contentEquals("t")){
+			else if(sFromList.equals("t")){
 				listNum = 2;
 			}
-			else {
+			else if(sFromList.equals("g")){
 				listNum = 3;
+			}
+			else {
+				listNum = 4;
 			}
 //			Get position of item in question from current list
 			int arrNum = Integer.parseInt(request.getParameter("arrNum"));
@@ -98,6 +101,9 @@ public class ListManagementPageServlet extends HttpServlet {
 				else if(op.equals("t")) {
 						
 					toListNum = 2;
+				}
+				else if(op.equals("g")) {
+					toListNum = 3;
 				}
 				else if(op.equals("up")) {
 					toListNum = listNum;
@@ -190,6 +196,14 @@ public class ListManagementPageServlet extends HttpServlet {
 				session.setAttribute("restaurants", userLists[2].getRestaurants()); // So that when user clicks on item, it shows in the details page
 				session.setAttribute("recipes", userLists[2].getRecipes()); // Same as previous comment
 				session.setAttribute("list", userLists[2].getLists());
+				
+				break;
+			case 'g': // User wants to go to Grocery list
+				request.setAttribute("listVal", userLists[3]); // Send the userList object that contains both restaurant and recipe files
+				request.setAttribute("listName", "Grocery"); // Send the list name
+				session.setAttribute("restaurants", userLists[3].getRestaurants()); // So that when user clicks on item, it shows in the details page
+				session.setAttribute("recipes", userLists[3].getRecipes());
+				session.setAttribute("list", userLists[3].getLists());
 				
 				break;
 			}			

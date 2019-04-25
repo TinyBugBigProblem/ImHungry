@@ -29,7 +29,7 @@
 	 <title><%=searchTerm %></title>
 </head>
 
-<body style="background-color:whitesmoke;">
+<body style="background-color:lightyellow;">
 	<div class="container mt-5">
 		<!-- Row for collage and buttons -->
 		<div class = "row align-items-start">
@@ -98,7 +98,7 @@
           			<% System.out.println("Rest Arr: " + i + " " + (restaurantArr[i] == null));  %>
          			<div class="row no-gutters border rounded overflow-hidden flex-md-row md-4 shadow-md h-md-250 position-relative" id="Restaurant<%=i%>">
         			<div style="background-color:<%=colorStyle %>;"class="col p-4 d-flex flex-column position-static">
-          			<div class="container">
+          			<div class="container" style="min-height:200px !important">
   						<div class="row">
     					<div class="col-sm">
 							<strong id="NameRestaurant">Name:</strong> <br><p><%=restaurantArr[i].getName() %> </p>
