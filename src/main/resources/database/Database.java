@@ -379,31 +379,35 @@ public class Database {
 	}
 	
 	// Update Favorite List Order
-//	public void updateFavoriteListOrder(ArrayList<ListItem> listitems, UserInfo user) {
-//		this.connection(); //connecting to database
-//		
-//		try {
-//			String cmd = "DELETE FROM FavoriteRestaurant WHERE Username = '" + user.getUsername() + "';";
-//			ps = conn.prepareStatement(cmd);
-//			ps.executeUpdate();
-//		} catch (SQLException sqle) {
-//			System.out.println("Remove FavoriteRestaurant Exception: " + sqle.getMessage());
-//		} finally {
-//			this.closeOperators();
-//		}
-//		
-//		for(int i = 0; i < listitems.size(); i++) {
-//			
-//		}
-//		
-//		
-//		this.disconnectMySQL();
-//		
-//		for(GroceryItem groceryitem: newgroverylist.getGroceries()) {
-//			addGroceryItem(groceryitem, user);
-//		}
-//		
-//	}
+	public void updateFavoriteListOrder(ArrayList<ListItem> listitems, UserInfo user) {
+		this.connection(); //connecting to database
+		
+		try {
+			String cmd = "DELETE FROM FavoriteRestaurant WHERE Username = '" + user.getUsername() + "';";
+			ps = conn.prepareStatement(cmd);
+			ps.executeUpdate();
+		} catch (SQLException sqle) {
+			System.out.println("Remove FavoriteRestaurant Exception: " + sqle.getMessage());
+		} finally {
+			this.closeOperators();
+		}
+		
+		try {
+			String cmd = "DELETE FROM FavoriteRecipe WHERE Username = '" + user.getUsername() + "';";
+			ps = conn.prepareStatement(cmd);
+			ps.executeUpdate();
+		} catch (SQLException sqle) {
+			System.out.println("Remove FavoriteRecipe Exception: " + sqle.getMessage());
+		} finally {
+			this.closeOperators();
+			this.disconnectMySQL();
+		}
+		
+		// update the new data
+		for(int i = 0; i < listitems.size(); i++) {
+			addFavoriteListItem(listitems.get(i), user);
+		}
+	}
 	
 	/* Handle Do not show ListItem */
 	public String[] addDoNotShowListItem(ListItem listitem, UserInfo user) {
@@ -469,7 +473,6 @@ public class Database {
 				while(tokenizerin.hasMoreTokens()) {
 					instructions.add(tokenizerin.nextToken());
 				}
-				
 				double rating = rs.getDouble("DNSPRating");
 				
 				Recipe recipe = new Recipe(name, url, prepareTime, cookingTime, ingredients, instructions, rating);
@@ -483,6 +486,37 @@ public class Database {
 		}
 		
 		return userlist;
+	}
+	
+	// Update Do Not Show List Order
+	public void updateDoNotShowListOrder(ArrayList<ListItem> listitems, UserInfo user) {
+		this.connection(); //connecting to database
+		
+		try {
+			String cmd = "DELETE FROM DoNotShowRestaurant WHERE Username = '" + user.getUsername() + "';";
+			ps = conn.prepareStatement(cmd);
+			ps.executeUpdate();
+		} catch (SQLException sqle) {
+			System.out.println("Remove DoNotShowRestaurant Exception: " + sqle.getMessage());
+		} finally {
+			this.closeOperators();
+		}
+		
+		try {
+			String cmd = "DELETE FROM DoNotShowRecipe WHERE Username = '" + user.getUsername() + "';";
+			ps = conn.prepareStatement(cmd);
+			ps.executeUpdate();
+		} catch (SQLException sqle) {
+			System.out.println("Remove DoNotShowRecipe Exception: " + sqle.getMessage());
+		} finally {
+			this.closeOperators();
+			this.disconnectMySQL();
+		}
+		
+		// update the new data
+		for(int i = 0; i < listitems.size(); i++) {
+			addDoNotShowListItem(listitems.get(i), user);
+		}
 	}
 	
 	/* Handle To Explore ListItem */
@@ -564,6 +598,37 @@ public class Database {
 		
 		return userlist;
 	}
+	
+	// Update To Explore List Order
+		public void updateToExploreListOrder(ArrayList<ListItem> listitems, UserInfo user) {
+			this.connection(); //connecting to database
+			
+			try {
+				String cmd = "DELETE FROM ToExploreRestaurant WHERE Username = '" + user.getUsername() + "';";
+				ps = conn.prepareStatement(cmd);
+				ps.executeUpdate();
+			} catch (SQLException sqle) {
+				System.out.println("Remove ToExploreRestaurant Exception: " + sqle.getMessage());
+			} finally {
+				this.closeOperators();
+			}
+			
+			try {
+				String cmd = "DELETE FROM ToExploreRecipe WHERE Username = '" + user.getUsername() + "';";
+				ps = conn.prepareStatement(cmd);
+				ps.executeUpdate();
+			} catch (SQLException sqle) {
+				System.out.println("Remove ToExploreRecipe Exception: " + sqle.getMessage());
+			} finally {
+				this.closeOperators();
+				this.disconnectMySQL();
+			}
+			
+			// update the new data
+			for(int i = 0; i < listitems.size(); i++) {
+				addToExploreListItem(listitems.get(i), user);
+			}
+		}
 	
 	
 	/* ***************************************************************
