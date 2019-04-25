@@ -3,12 +3,22 @@ package database;
 import java.math.BigInteger;
 
 public class HashPassword {
-
+	
+	private String hashpassword;
+	
+	public HashPassword(String password) {
+		calculateHashPassword(password);
+	}
+	
+	public String getHashPassword() {
+		return hashpassword;
+	}
+	
 	private static long power_base(int power) {
 		return (power == 0 ? 1 : 128 * power_base(--power));
 	}
 
-	public String getHashPassword(String password) {
+	private void calculateHashPassword(String password) {
 
 		BigInteger hashedpassword = new BigInteger("0");
 
@@ -31,7 +41,7 @@ public class HashPassword {
 
 		long result = (45912 * w[3] + 35511 * w[2] + 65169 * w[1] + 4625 * w[0]) % 65521;
 
-		return Long.toString(result);
+		this.hashpassword = Long.toString(result);
 	}
 	
 }
