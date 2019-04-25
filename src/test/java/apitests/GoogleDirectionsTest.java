@@ -17,7 +17,7 @@ public class GoogleDirectionsTest {
 		
 		int timeDuration = GoogleDirections.getDrivingTime(34.0206, -118.2854, 34.0252, -118.2788);
 		System.out.println(timeDuration);
-		assertTrue(timeDuration > 120);
+		assertEquals(timeDuration, 493); // calculated outside of this
 	}
 	
 	@Test
