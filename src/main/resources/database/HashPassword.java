@@ -4,6 +4,10 @@ import java.math.BigInteger;
 
 public class HashPassword {
 
+	public HashPassword() {
+
+	}
+	
 	private static long power_base(int power) {
 		return (power == 0 ? 1 : 128 * power_base(--power));
 	}
