@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import database.*;
-
+import data.*;
 /*
  * Back-end code for generating the Results Page
  */
@@ -42,11 +42,12 @@ public class loginPageServlet extends HttpServlet {
       RequestDispatcher dispatch = request.getRequestDispatcher("/jsp/login.jsp");
       dispatch.forward(request,  response);     
     }
+    UserInfo user = new UserInfo(request.getParameter("username"), request.getParameter("password"));
     if(type.equals("login")) { // Perform login
-      dbResult = database.signInUser(request.getParameter("username"), request.getParameter("password"));
+      dbResult = database.signInUser(user);
     }
     else { // Perform register
-      dbResult = database.signUpUser(request.getParameter("username"), request.getParameter("password"));
+      dbResult = database.signUpUser(user);
     }
     
     returnStatus = dbResult[0];
