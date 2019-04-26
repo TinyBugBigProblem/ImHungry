@@ -56,19 +56,19 @@ public class Database {
 	}
 	
 	/* Handle User Information */
-	public String[] signUpUser(String username, String password) {
+	public String[] signUpUser(UserInfo user) {
 		this.connection(); //connecting to database
 		String status = "";
 		String comment = "";
 		String[] response = new String[2];
 
-		if (!this.findExistedUser(username)) {
+		if (!this.findExistedUser(user.getUsername())) {
 			try {
 				ps = conn.prepareStatement("insert into Userinfo(Username, UserPassword) VALUES(?, ?)");
-				ps.setString(1, username);
+				ps.setString(1, user.getUsername());
 				// hash it
 				HashPassword hash = new HashPassword();
-				String hashedpasswrod = hash.getHashPassword(password);
+				String hashedpasswrod = hash.getHashPassword(user.getPassword());
 				ps.setString(2, hashedpasswrod);
 				ps.executeUpdate();
 			} catch (SQLException sqle) {
@@ -77,9 +77,9 @@ public class Database {
 				this.closeOperators();
 				this.disconnectMySQL();
 			}
-			System.out.println("User: " + username + " SignUp Successfully.");
+			System.out.println("User: " + user.getUsername() + " SignUp Successfully.");
 			status = "true";
-			comment = "User: " + username + " SignUp Successfully.";
+			comment = "User: " + user.getUsername() + " SignUp Successfully.";
 			response[0] = status;
 			response[1] = comment;
 			return response;
@@ -89,13 +89,13 @@ public class Database {
 		
 		System.out.println("Error: Username has been used.");
 		status =  "false";
-		comment = "Username: " + username + " has been used.";
+		comment = "Username: " + user.getUsername() + " has been used.";
 		response[0] = status;
 		response[1] = comment;
 		return response;
 	}
 	
-	public String[] signInUser(String username, String password) {
+	public String[] signInUser(UserInfo user) {
 		this.connection(); //connecting to database
 		String status = "";
 		String comment = "";
@@ -104,25 +104,25 @@ public class Database {
 		try {
 			String sqlu = "SELECT * FROM Userinfo WHERE Username = ?";
 			ps = conn.prepareStatement(sqlu);
-			ps.setString(1, username);
+			ps.setString(1, user.getUsername());
 			rs = ps.executeQuery();
 			//st = conn.createStatement();
 			//rs = st.executeQuery("SELECT * FROM Userinfo WHERE Username='" + username + "';");
 			// hash password
 			HashPassword hash = new HashPassword();
-			String hashedpasswrod = hash.getHashPassword(password);
+			String hashedpasswrod = hash.getHashPassword(user.getPassword());
 			while (rs.next()) {
 				String sql = "SELECT * FROM Userinfo WHERE Username = ? AND UserPassword = ?";
 				ps = conn.prepareStatement(sql);
-				ps.setString(1, username);
+				ps.setString(1, user.getUsername());
 				ps.setString(2, hashedpasswrod);
 				//ResultSet rs2 = st.executeQuery("SELECT * FROM Userinfo WHERE Username='" + username
 				//		+ "' AND UserPassword='" + hashedpasswrod + "';");
 				ResultSet rs2 = ps.executeQuery();
 				while (rs2.next()) {
-					System.out.println("User: " + username + " Login Successfully.");
+					System.out.println("User: " + user.getUsername() + " Login Successfully.");
 					status = "true";
-					comment = "User: " + username + " Login Successfully.";
+					comment = "User: " + user.getUsername() + " Login Successfully.";
 					response[0] = status;
 					response[1] = comment;
 					return response;
@@ -142,7 +142,7 @@ public class Database {
 		}
 		System.out.println("Username does not exist.");
 		status =  "false";
-		comment = "Username: " + username + " does not exist.";
+		comment = "Username: " + user.getUsername() + " does not exist.";
 		response[0] = status;
 		response[1] = comment;
 		return response;
